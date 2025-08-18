@@ -1,0 +1,169 @@
+* {
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 0px;
+  margin: 0px;
+}
+
+body {
+  background-color: rgb(163, 74, 247);
+  padding: 100px 15px 0px;
+}
+
+header {
+  position: fixed;
+
+  width: 100vw;
+  top: 0px;
+  margin: 0px -15px;
+  text-align: center;
+}
+
+footer {
+  width: 100vw;
+  position: relative;
+  bottom: 0px;
+  text-align: center;
+}
+
+section,
+article,
+aside {
+  margin: 15px 0px;
+  padding: 10px 20px;
+  background-color: rgb(167, 86, 248);
+}
+
+#navbar {
+  background-color: rgb(73, 0, 146);
+  height: 50px;
+  padding: 5px;
+  color: rgb(167, 86, 248);
+  align-content: center;
+}
+
+.headings {
+  display: block;
+  margin-bottom: 25px;
+}
+
+.h {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: stretch;
+}
+
+.h > * {
+  background-color: rgb(73, 0, 146);
+  color: rgb(167, 86, 248);
+  margin: 5px;
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+h1 {
+  font-size: 2.8em;
+  margin: 5px 2px;
+}
+
+h2 {
+  font-size: 2.4em;
+  margin: 5px 2px;
+}
+
+h3 {
+  font-size: 2em;
+  margin: 5px 2px;
+}
+
+h4 {
+  font-size: 1.6em;
+  margin: 5px 2px;
+}
+
+h5 {
+  font-size: 1.2em;
+  margin: 5px 2px;
+}
+
+h6 {
+  font-size: 0.8em;
+  margin: 5px 2px;
+}
+
+.contain {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.para {
+  margin: 5px;
+  padding: 10px;
+  background-color: blueviolet;
+  width: 45%;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.h-cont {
+  display: inline-flex;
+  align-content: center;
+  width: 100%;
+}
+
+.h-item {
+  width: 100%;
+}
+
+a {
+  text-decoration: none;
+}
+
+.link {
+  color: rgb(73, 0, 146);
+  font-weight: bolder;
+  font-size: 30px;
+  background-color: rgb(158, 126, 188);
+  text-align: center;
+  align-content: center;
+  display: inline;
+}
+
+.link:hover {
+  border: 2px solid purple;
+}
+
+.anim {
+  display: flex;
+  margin: 10px;
+  flex-wrap: wrap;
+  justify-content: stretch;
+  background-color: darkmagenta;
+  align-items: center;
+}
+
+.a-item {
+  background-color: aqua;
+}
+
+.lists {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.list {
+  min-width: 100px;
+  width: 300px;
+  background-color: blue;
+  padding: 10px;
+}
+
+ul,
+ol,
+dl {
+  list-style: none;
+}

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Table</title>
+
+  <style>
+    .light {
+      background-color: rgb(202, 251, 251);
+      padding: 5px 20px;
+    }
+
+    .dark {
+      background-color: rgb(177, 232, 232);
+      padding: 5px 20px;
+    }
+
+    table {
+      border: 1px solid blue;
+    }
+
+    th,
+    td {
+      padding: 0px 20px;
+      text-align: center;
+      border: 1px solid blue;
+    }
+  </style>
+</head>
+
+<body style="background-color: lightcyan">
+  <table style="
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+      ">
+    <caption style="
+          background-color: rgb(147, 226, 226);
+          margin: 5px 0px;
+          padding: 5px;
+          border: 1px solid blue;
+        ">
+      Seminar Schedule
+    </caption>
+    <tr>
+      <th scope="col" rowspan="3" class="dark">Day</th>
+      <th class="dark" scope="colgroup" colspan="4">Seminar</th>
+    </tr>
+    <tr>
+      <th class="dark" scope="colgroup" colspan="2">Schedule</th>
+      <th class="dark" scope="col" rowspan="2" colspan="2">Topic</th>
+    </tr>
+    <tr>
+      <th class="dark" scope="col">Begin</th>
+      <th class="dark" scope="col">End</th>
+    </tr>
+    <tr>
+      <td class="light" rowspan="2">Monday</td>
+      <td class="light" rowspan=" 2">8:00 a.m.</td>
+      <td class="light" rowspan="2">5:00 p.m.</td>
+      <td class="light">Introduction to XML</td>
+    </tr>
+    <tr>
+      <td class="light">Validity: DTD and Relax NG</td>
+    </tr>
+    <tr>
+      <td class="dark" rowspan="3">Tuesday</td>
+      <td class="dark">8:00 a.m.</td>
+      <td class="dark">11:00 a.m.</td>
+      <td rowspan="3" style="border: 0px; margin: 0px !important; padding: 0px !important">
+        <div style="border: 1px solid blue" class="dark">
+          <p style="text-align: center">XPath</p>
+        </div>
+        <div style="border: 1px solid blue; margin-top: 2px" class="dark">
+          <p style="text-align: center">XSL Transformations</p>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="dark">11:00 a.m.</td>
+      <td class="dark">2:00 p.m.</td>
+    </tr>
+    <tr>
+      <td class="dark">2:00 p.m.</td>
+      <td class="dark">5:00 p.m.</td>
+    </tr>
+    <tr>
+      <td class="light">Wednesday</td>
+      <td class="light">8:00 a.m.</td>
+      <td class="light">12:00 p.m.</td>
+      <td class="light">XSL Formatting Objects</td>
+    </tr>
+  </table>
+</body>
+
+</html>

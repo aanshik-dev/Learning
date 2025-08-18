@@ -1,0 +1,21 @@
+TIPS TO RUN A C FILE ON:
+
+1. VS CODE
+  A. USING CODE RUNNER EXTENSION
+  B. USING TERMINAL
+     i. TYPE gcc filename.c -o exefilename   // if in Parent folder
+        TYPE gcc ./Child/filename.c -o exefilename  // if in Child folder
+    ii. TYPE ./exefilename.exe // if in Parent folder
+        TYPE ./Child/exefilename.exe // if in Child folder
+        
+2. WINDOWS POWERSHELL
+    i. TYPE cd Directory_location   //opens TERMINAL in that folder
+   ii. TYPE filename.c -o exefilename
+  iii. TYPE ./exefilename.exe
+]
+
+3. COMMAND PROMPT
+    i. TYPE E:   // to chande directory
+   ii. TYPE cd Directory_location   //opens TERMINAL in that folder
+  iii. TYPE filename.c -o exefilename
+   iV. TYPE exefilename.exe
