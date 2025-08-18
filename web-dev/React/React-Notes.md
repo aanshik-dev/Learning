@@ -9,7 +9,7 @@
 
 > 🔸 Install node.js and run the following command:
 >
-> ``` 
+> ```
 > npx create-react-app@latest my-app
 > ```
 
