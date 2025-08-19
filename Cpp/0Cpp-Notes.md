@@ -605,7 +605,37 @@ pair a special container inside the utility library of c++. used to create a pai
   pair <int, pair<char, string>> p2 = {1, {'A', "Student"}}
   cout << p1.first();
   cout << p2.first() << p2.second.first() << p2.second.second();
+
+  vector<pair<int, int>> coordinate = {{2,3}, {5,6}};
+  pair.push_back({2,4})  // adds already created pair
+  pair.emplace_back(5,9)  // create inplace object
 ```
+
+<br>
+
+## 🐦‍🔥 Stack
+
+It is a non-sequential container adapter which means that it itself is not a container but uses another container as for its implementation. It uses deque as its underlying container. It follows Last In First Out (LIFO) Principle.
+
+```cpp
+#include <stack>  // Preprocessor directive
+```
+
+```cpp
+  stack <int> st = {1, 5, 9, 4}  // initialization
+```
+Stack methods
+
+🔸 `st.push()`
+🔸 `st.emplace()`
+🔸 `st.pop()`
+🔸 `st.top()`
+🔸 `st.size()`
+🔸 `st.empty()`
+🔸 `st.swap()`
+
+
+
 
 </div>
 </div>
