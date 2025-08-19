@@ -7,7 +7,7 @@
 
 ## 🐦‍🔥 FACTS
 
-> - The foundation of C++ language is the Standard C language of dennis Ritchie hence all the library functions of C are valid in C++
+> - The foundation of C++ language is the Standard C language of Dennis Ritchie hence all the library functions of C are valid in C++
 > - Block Structured: These are those languages that allow procedures and functions to be declared inside another function
 > - C is a Structured language
 
@@ -65,7 +65,7 @@
 > }
 > ```
 
-<h3 style="width: 100%; text-align: center; font-size: 25px"> OR </h3>
+<h3 style="width: 100%; text-align: center; font-size: 20px"> OR </h3>
 
 > ```cpp
 > #include <iostream>
@@ -76,7 +76,7 @@
 
 > 📝 NOTE :&nbsp; `endl` is the endline character newly introduced in c++, although `\n` also exist and is faster than `endl`
 
-## 🔥cin
+## 🔥CIN
 
 ```cpp
 int main(){
@@ -190,6 +190,15 @@ int main(){
 > 📝 NOTE : The `,` operators always evaluate left side as void and then combined with right side becomes the final value
 > `int x = (y = 4, y + 1)` in this expression, y = 4 is calculated and then y + 1 is done to finally assign to x as 5
 
+## 🔥 Reference operator &
+
+```cpp
+  int var = 10;
+  int &ref = var;  // `ref` is alias for 'var'     ref     var
+  ref = 20;      // Modifies 'var' directly          \    /
+  cout << var;     // Output: 20                      [20]
+```
+
 <br>
 
 ## 🐦‍🔥 CONDITIONAL STATEMENTS
@@ -221,7 +230,6 @@ switch(key){
   case b: cout << "I am good" << endl;
           break;
   default: cout << " Bye!!" << endl;
-
 }
 ```
 
@@ -254,6 +262,14 @@ do {
   cout << i << endl;
   // do something
 } while (i > 10);
+```
+
+## 🔥 for each loop
+
+```cpp
+  for (int value : vector) {
+    cout << value << endl;
+  }     // here value is not index but value itself
 ```
 
 ## 🔥 goto, break and continue
@@ -292,7 +308,7 @@ for (int i = 0; i < 6; i++) {
 #include <iostream>
 using namespace std;
 
-int sum(int, int);    // function declaration
+int sum(int, int);    // function declaration or Prototype
 
 int main() {
   int a = 10, b = 20;
@@ -327,7 +343,21 @@ int fibo(int num) {
 
 <br>
 
+## 🐦‍🔥 STL - STANDARD TEMPLATE LIBRARY
+
+It is a library of C++ which contain all the prebuilt containers like array, vectors, stack etc and algorithms like sorting etc.
+
+It contains the following:
+♦️ `Container`
+♦️ `Iterators`
+♦️ `Algorithms`
+♦️ `Functors`
+
 ## 🐦‍🔥 ARRAYS
+
+Arrays in C++ are of two type, one which are basic to C, without any methods, and the other which are included in C++ STL.
+
+## 🔥 Basic C Array
 
 ```cpp
 // arrays in cpp have fixed size
@@ -336,6 +366,50 @@ char charset[4];
 bool truth[] = {true, false, false, true};
 ```
 
+## 🔥 C++ STL Array
+
+```cpp
+#include <array>  // Preprocessor directive for the array
+```
+
+```cpp
+#include <array>
+std::array<int, 5> arr = {1, 2, 3, 4, 5};
+
+// or
+
+#include <array>
+use namespace std;
+array<int, 5> arr = {1, 2, 3, 4, 5};
+
+```
+
+<br>
+
+## 🐦‍🔥 Array Methods
+
+♦️ Element Access
+🔸 `arr.at(i)` bounds-checked access (throws exception if out of range).
+🔸 `arr[i]` direct access.
+🔸`arr.front()` first element.
+🔸`arr.back()` last element.
+🔸`arr.data()` pointer to underlying raw array, safe even array is empty.
+&nbsp;&nbsp;&nbsp; ▫️ `&arr[0]` also give the same thing but undefined behaviour of pointer when empty array.
+
+♦️ Capacity
+🔸`arr.size()` number of elements.
+🔸`arr.max_size()` maximum size (same as size() since fixed).
+🔸`arr.empty()` checks if array is empty.
+
+♦️ Iterators
+🔸`arr.begin()`, `arr.end()` forward iteration.
+🔸`arr.rbegin()`, `arr.rend()` reverse iteration.
+🔸`arr.cbegin()`, `arr.cend()` const iterators
+
+♦️ Modefiers
+🔸`arr.fill(value)` fills entire array with a value.
+🔸`arr.swap(other)` swaps contents with another array
+
 <br>
 
 ## 🐦‍🔥 VECTORS
@@ -343,7 +417,11 @@ bool truth[] = {true, false, false, true};
 > 📝 NOTE
 > 🔸 Unlike arrays vectors are dinamic in size.
 > 🔸 Vector is part of the standard tempelete library (STL) of cpp. It is the collection of basic data structures like queue, stack etc.
-> 🔸 All the basic data of stl are called STL containers, hence vector is a stl container.
+> 🔸 All the basic data types of stl are called STL containers, hence vector is a stl container.
+
+```cpp
+#include <vector>  // Preprocessor directive
+```
 
 ```cpp
 #include <iostream>
@@ -353,21 +431,23 @@ using namespace std;
 int main() {
   vector<int> vect;
   vector<int> vect = {1, 2, 3, 4, 5};
+  vector<int> vect2(vect)    // vect2 = {1, 2, 3, 4, 5}
   vector<int> vect(5, 0);    // size five with value 0
   vector<int> vect(5);          // by default value 0
   vector<char> vect(5);          // by default value \0
   vector<string> vect(5);          // by default value ""
   vector<int> temp(Iterator1, Iterator2);
   // Gives temp Sub vector, iterators are like pointers
-
   return 0;
 }
 ```
 
-## 🔥 Vector Functions
+## 🔥 Vector Methods
 
+♦️ Capacity
 🔸 `vector.size()` returns number of element in vector
 🔸 `vector.capacity()` returns the total capacity of vector before new memory allocation
+🔸 `vector.shrink_to_fit();` It is used to reduce the capacity to the size of vector.
 
 ```cpp
   vector<int> v(10);
@@ -377,32 +457,154 @@ int main() {
   cout << v.capacity();             // 10
 ```
 
-🔸 `vector.push_ back(value)` allocates space and adds value at last
-🔸 `vector.pop_back()` deletes last element leaving the space
-🔸 `vector.front()` prints the front element
-🔸 `vector.back()` prints the last element
+♦️ Element Access
 🔸 `vector.at(index)` It works same as vector[ index ]
-🔸 `vector.shrink_to_fit();` It is used to reduce the capacity to the size of vector.
+🔸 `vector.front()` first element
+🔸 `vector.back()` last element
+
+♦️ Element Write
+🔸 `vector.push_back(value)` allocates space and copies/moves value at last
+🔸 `vector.emplace_back(value)` allocates space and adds value directly at last
+
+```cpp
+    v.push_back(10);       // copies/moves 10 into vector
+    v.emplace_back(20);    // constructs 20 directly in place
+```
+
+🔸 `vector.pop_back()` deletes last element leaving the space
+
+♦️ Iterators
+🔸 `vector.begin()` returns the iterator or the pointer to the first element
+🔸 `vector.end()` returns the iterator or the pointer to the `NEXT` to last element
+
+```cpp
+vector<int> temp(vect.begin() + 1, vect.begin() + 4);
+// Gives a Sub Vector on passinng iterators
+  for (auto i : temp) {    //  auto takes data type automatically
+    cout << i << " ";
+  }
+  cout << endl;
+```
+
+```cpp
+*(vect.begin())  // first element
+*(vect.begin())  // Next to last element (Garbage value)
+```
+
+> 📝 NOTE : for `(Itr1, Itr2)` the set is like [Itr1, Itr2) with Itr1 included and Itr2 excluded
+
+🔸 `vector.rbegin()` returns the iterator to the last element
+🔸 `vector.rend()` returns the iterator to the element `BEFORE` the first elemrent
+
+```cpp
+vector<int>::iterator itr;
+  for(itr = vect.begin(); itr != vect.end(); itr++) {
+    cout << *itr << " ";
+  }
+```
+
+```cpp
+   for( vector<int>::reverse_iterator itr2 = vect.begin(); itr2 != vect.end(); itr2++) {
+    cout << *itr2 << " ";
+  }
+
+  //   OR
+  // vector<int>::reverse_iterator itr2  understood by auto keyword
+  for( auto itr2 = vect.begin(); itr2 != vect.end(); itr2++) {
+    cout << *itr2 << " ";
+  }
+```
+
+♦️ Miscellaneous
 🔸 `vector.clear()` It clears all the elements and size become 0.
+🔸 `vector.erase(Iter)` It clears the element or a range pointed by iter
+▫️ `vector.erase(IterSt, IterEnd)`
 🔸 `vector.empty()` It tells if vector is empty or not.
+
+🔸 `swap(vect1, vect2)` It swaps two vectors not to values in a vecotor
 
 > 📝 NOTE : At runtime when, `push_back()` is used and no further space is left, then new mamory is allocated with double the size of current array.
 
-## 🔥 for each loop
+## 🔥 Static Vs Dynamic Memory
+
+| Static Allocation             | Dynamic Allocation       |
+| :---------------------------- | :----------------------- |
+| 🔸 Allocated at complile time | 🔸 Allocated at runtime  |
+| 🔸 Stored in Stack Memory     | 🔸 Stored in heap memory |
+| 🔸 Example: Array             | 🔸 Example: Vector       |
+
+> 📝 NOTE : For Array dynamic memory allocation is done using the malloc, calloc and realloc functions
+> 🔸 `ptr = (int*) malloc(n * sizeof(int));`
+> 🔸 `ptr = (int*) calloc(n, sizeof(int));`
+> 🔸 `ptr = (int*) realloc(ptr, new_size);`
+
+<br>
+
+## 🐦‍🔥 LISTS
+
+Lists are implented using the doubly link list, and can take entry from both sides
 
 ```cpp
-  for (int value : vector) {
-    cout << value << endl;
-  }     // here value is not index but value itself
+#include <list>  // Preprocessor directive
 ```
 
-## 🔥 Reference operator &
+```cpp
+// Initialization
+
+ list<int> ls;
+ list<int> ls1 = {2, 5, 6, 8, 9};
+ list<int> ls2(ls1);   // Copy of ls1
+ list<int> ls3(5, 0);  // {0, 0, 0, 0, 0}
+ list<char> l4(10);    // size 10, all '\0'
+```
+
+🔸 `list.push_back()`
+🔸 `list.push_front()`
+🔸 `list.emplace_back()`
+🔸 `list.emplace_front()`
+🔸 `list.pop_back()`
+🔸 `list.pop_front()`
+Other methods like the `clear()`, `erase()`, `empty()`, `size()`,`front()`, `end()`, `begin()`, `end()`, `rbegin()`, `rend()` are same as the vectors.
+
+> 📝 NOTE : We cannot directly use the random index to access elements like ls[4], but we have to use iterators like shown
 
 ```cpp
-  int var = 10;
-  int &ref = var;  // `ref` is alias for 'var'     ref     var
-  ref = 20;      // Modifies 'var' directly          \    /
-  cout << var;     // Output: 20                      [20]
+  list<int> l = {10, 20, 30, 40, 50};
+  auto it = l.begin();   // points to 10
+  advance(it, 3);        // move forward 3 steps
+  cout << *it << endl;
+```
+
+<br>
+
+## 🐦‍🔥 DEQUE
+
+Deque stands for the Double Ended Queue, means the elements can be inserted and removed from both front and back efficiently.
+
+They have same methods like the lists, just the implementation is done using the queue
+
+```cpp
+#include <deque>  // Preprocessor directive
+```
+
+```cpp
+  deque <int> dq= {1, 5, 9, 4}
+```
+
+We can use the random index access in deque like the vector or array, which is not possible in case of list.
+
+<br>
+
+## 🐦‍🔥 PAIR
+
+pair a special container inside the utility library of c++. used to create a pair of same or different datatypes
+
+```cpp
+  pair <int, int> p = {1, 5}
+  pair <int, char> p1 = {1, 'A'}
+  pair <int, pair<char, string>> p2 = {1, {'A', "Student"}}
+  cout << p1.first();
+  cout << p2.first() << p2.second.first() << p2.second.second();
 ```
 
 </div>

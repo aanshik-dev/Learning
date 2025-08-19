@@ -37,6 +37,7 @@ int main() {
     vector<int> vect;
     vect = {1, 2, 3, 4, 5};
     vect = {5, 4, 11, 24, 25}; // this retains
+    vector<int> Vect2(vect);   // {5, 4, 11, 24, 25};
     vector<int> vect1(5, 0);   // size five with value 0
     vector<char> vect2(10);    // by default value is \0
     vect2[0] = 'A';
@@ -44,8 +45,12 @@ int main() {
     vect2[2] = '$';
     cout
         << endl
-        << "Excercise 1: "
-        << vect2[2] << " ";
+        << "Excercise 1: " << vect2[2] << " ";
+
+    vector<int>::iterator itr;
+    for(itr = vect.begin(); itr != vect.end(); itr++) {
+      cout << *itr << " ";
+    }
 
     vector<int> temp(vect.begin() + 1, vect.begin() + 4);
     cout << "Sub vector: "; // Gives a Sub Vector on passinng iterators

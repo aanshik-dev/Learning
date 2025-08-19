@@ -20,12 +20,13 @@ int main() {
 
   // RELATIONAL OPERATORS
   int p = 5, q = 8;
-  bool isLess = p < q;
-  cout << "Is Less : " << isLess << endl;
   cout << (p == q) << (p != q) << (p < q) << (p > q) << (p <= q) << (p >= q) << endl;
 
   // LOGICAL OPERATORS
-  cout << (1 && 0) << (1 && 1) << (1 || 0) << (0 || 0) << (!0) << (!1);
+  cout << (1 && 0) << (1 && 1) << (1 || 0) << (0 || 0) << (!0) << (!1) << endl;
+
+  // BITWISE OPERATOR
+  cout << "AND:" << (1 & 0) << " OR:" << (1 | 0) << " X-OR:" << (1 ^ 0) << " NOT:" << (~1) << " LEFT SHIFT:" << (1 << 2) << " RIGHT SHIFT:" << (1 >> 2) << endl;
 
   return 0;
 }
