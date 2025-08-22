@@ -613,17 +613,23 @@ pair a special container inside the utility library of c++. used to create a pai
 
 <br>
 
-## 🐦‍🔥 Stack
+## 🐦‍🔥 STACK
 
-It is a non-sequential container adapter which means that it itself is not a container but uses another container as for its implementation. It uses deque as its underlying container. It follows Last In First Out (LIFO) Principle.
+It is a non-sequential container adapter which means that it itself is not a container but uses another container as for its implementation.
+It uses `deque` as its underlying container.
+It follows Last In First Out (LIFO) Principle.
 
 ```cpp
 #include <stack>  // Preprocessor directive
 ```
 
 ```cpp
-  stack <int> st = {1, 5, 9, 4}  // initialization
+stack <int> st = {1, 5, 9, 4};  // ❌ can not initialize like this
+stack <int> st;  // ✅ declared and then pushed
 ```
+
+> 📝 NOTE : Non sequential container adapter cannot have direct initialisation.
+
 Stack methods
 
 🔸 `st.push()`
@@ -634,6 +640,163 @@ Stack methods
 🔸 `st.empty()`
 🔸 `st.swap()`
 
+> 📝 NOTE : Direct random access in stack is not possible
+
+<br>
+
+## 🐦‍🔥 QUEUE
+
+It is also a non-sequential container adapter, it uses the `deque` for its implementation.
+It follows the principle of FIFO (First In First Out).
+
+```cpp
+#include <queue>  // Preprocessor directive
+```
+
+```cpp
+queue <int> que = {1, 5, 9, 4};  // ❌ can not initialize like this
+queue <int> que;  // ✅ declared and then pushed
+```
+
+Stack methods
+
+🔸 `que.push()`
+🔸 `que.emplace()`
+🔸 `que.front()`
+🔸 `que.back()`
+🔸 `que.pop()`
+🔸 `que.size()`
+🔸 `que.empty()`
+🔸 `que.swap()`
+
+<br>
+
+## 🐦‍🔥 PRIORITY QUEUE
+
+A priority queue is like a queue, but instead of FIFO, elements are retrieved according to priority (largest or smallest value first by default). It is implemented on the minHeap or MaxHeap(default).
+
+```cpp
+#include <queue>  // Preprocessor directive same as queue
+```
+
+```cpp
+vector<int> v = {1,2,3,4}
+priority_queue <int> pq(v.begin(), v.end());  // Can be constructed from an underlying container
+```
+
+Queue Methods
+
+🔸 `que.push()` // O(logn)
+🔸 `que.emplace()` // O(logn)
+🔸 `que.front()`
+🔸 `que.back()`
+🔸 `que.pop()` // O(logn)
+🔸 `que.size()`
+🔸 `que.empty()`
+🔸 `que.swap()`
+
+<br>
+
+## 🐦‍🔥 MAP
+
+It is an associative container in STL.
+Stores key–value pairs (like a dictionary in Python).
+Keys are unique and automatically sorted in ascending order (by default).
+Internally implemented as a Red-Black Tree/ self balencing Tree
+
+```cpp
+#include <map>  // Preprocess
+```
+
+```cpp
+map<string, int> mp;
+  mp["MA101"] = 92;
+  mp["CS101"] = 95;
+  mp["HS101"] = 98;
+  mp["MA101"] = 95;  // if key already exist then it is updated
+  mp.insert({"EC101", 99});
+```
+
+map Methods
+
+🔸 `mp.find(key)` // returns iterator to the key if found else mp.end() is returned
+🔸 `mp.size()`
+🔸 `mp.insert({key, value})` // O(logn)
+🔸 `mp.emplace(key, value)` // O(logn)
+🔸 `mp.count()` // O(logn)
+🔸 `mp.erase()` // O(logn)
+🔸 `que.empty()`
+🔸 `que.swap()`
+
+## 🔥 Multimap
+
+It allows multiple same keys, but we can not use [] to access the element.
+
+```cpp
+multimap<string, int> mp;
+```
+
+```cpp
+  mp.emplace("CS101", 99);
+  mp.emplace("CS101", 99);
+  mp.emplace("CS101", 99);
+  mp.size();   // 3
+  mp.erase("CS101"); // deletes all copies
+  mp.size();   // 0
+  mp.erase(mp.find("CS101")); // deletes only the first copy found
+```
+
+## 🔥 Unordered Map
+
+It has unique keys but not sorted in order
+
+```cpp
+#include <unordered_map>  // preprocessor directive
+```
+
+```cpp
+unordered_map<string, int> mp;
+```
+
+Unordered Map Method
+
+🔸 `mp.find(key)`
+🔸 `mp.size()`
+🔸 `mp.insert({key, value})` // O(1)
+🔸 `mp.emplace(key, value)` // O(1)
+🔸 `mp.count()` // O(1)
+🔸 `mp.erase()` // O(1)
+🔸 `que.empty()`
+🔸 `que.swap()`
+
+<br>
+
+## 🐦‍🔥 SET
+
+It is a container which store unique value in sorted order.
+All methods have O(log(n)) complexity
+It is implemented using red-black tree
+```cpp
+#include <set>  // preprocessor directive
+```
+
+```cpp
+  set<int> s;   // ascending order
+  set<int, greater<int>> s2; // descending order
+```
+Set Methods
+
+🔸 `s.insert(val)`
+🔸 `s.emplace(val)`
+🔸 `s.erase()`
+🔸 `s.size()`
+🔸 `s.empty()`
+🔸 `s.find()`
+🔸 `s.count(x)` returns one if element present else 0
+🔸 `s.begin()`
+🔸 `s.end()`
+🔸 `s.lower_bound(x)` First lower_bound(x), “first element not less than x (≥ x)
+🔸 `s.lower_bound(x)`  First element > x upper_bound(x), “first element greater than x (> x)
 
 
 
