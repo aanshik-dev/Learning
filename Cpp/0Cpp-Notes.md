@@ -516,6 +516,7 @@ vector<int>::iterator itr;
 ```
 
 ♦️ Miscellaneous
+🔸`vector.data()` pointer to underlying raw array, safe even array is empty.
 🔸 `vector.clear()` It clears all the elements and size become 0.
 🔸 `vector.erase(Iter)` It clears the element or a range pointed by iter
 ▫️ `vector.erase(IterSt, IterEnd)`
@@ -776,6 +777,7 @@ Unordered Map Method
 It is a container which store unique value in sorted order.
 All methods have O(log(n)) complexity
 It is implemented using red-black tree
+
 ```cpp
 #include <set>  // preprocessor directive
 ```
@@ -784,6 +786,7 @@ It is implemented using red-black tree
   set<int> s;   // ascending order
   set<int, greater<int>> s2; // descending order
 ```
+
 Set Methods
 
 🔸 `s.insert(val)`
@@ -796,9 +799,7 @@ Set Methods
 🔸 `s.begin()`
 🔸 `s.end()`
 🔸 `s.lower_bound(x)` First lower_bound(x), “first element not less than x (≥ x)
-🔸 `s.lower_bound(x)`  First element > x upper_bound(x), “first element greater than x (> x)
-
-
+🔸 `s.lower_bound(x)` First element > x upper_bound(x), “first element greater than x (> x)
 
 </div>
 </div>
