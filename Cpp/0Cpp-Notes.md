@@ -113,6 +113,78 @@ int main(){
 
 <br>
 
+## 🐦‍🔥 STRING
+
+## 🔥 string literals
+
+`"string"` is called string literals and stored in read-only memory and hence are immutable
+
+```cpp
+
+  char *str = "Hello";       // ❌ Deprecated
+  const char *str = "Hello"; // ✅ Read-only
+  str[0] = 'M';              // ❌ Undefined behavior
+```
+
+## 🔥 C type Strings
+
+strings formed using character array are mutable
+
+```cpp
+
+  char str1[] = "Hallo";
+  char str2[] = {'H', 'e', 'l', 'l', 'o', '\0'};
+  str1[1] = 'e';
+  str2[0] = 'M'
+  cout << str << str2 << endl;
+
+  char str[100];
+  scanf("%[^\n]", str);   // read until newline
+```
+
+## 🔥 Character array in Cpp
+
+```cpp
+  char str[100];
+  cin >> str;  // takes only word
+  cin.getline(str, size, delimiter) // takes line
+  cin.getline(str, 100)
+  cin.getline(str, 100, '$') // takes line till $
+```
+
+## 🔥 Cpp style strings
+
+```cpp
+  string s = "Hello";
+  s[0] = 'M';     // ✅ changes to "Mello"
+  s += " World";  // ✅ now "Mello World"
+  cout << s;
+```
+
+> 📝 NOTE : Taking string as input we use the `getline(str,size,delim)` method, otherwise it take only one word
+
+♦️ String Methods & Operations
+🔸 `str1 + str2` concatenates two strings
+🔸 `str1 == str2` true if equal
+🔸 `"Aanshik" < "Singh"` true as S comes after A
+🔸 `str.length()` or `str.size()` returns length of string
+🔸 `str.empty()` true if empty  
+🔸 `str.clear()`  
+🔸 `str.push_back()`  
+🔸 `str.pop_back()`  
+🔸 `str.append()`  
+🔸 `str.insert(index, "string")`  
+🔸 `str.erase(2,5)`
+🔸 `str.find("word")`
+🔸 `str.rfind("word")`
+🔸 `stoi(str)`
+🔸 `to_string(145)`
+🔸 `str.replace(start, size, "word")`
+🔸 `str.substr(6,10)`
+🔸 `str.substr(6)` from 6 till last
+
+<br>
+
 ## 🐦‍🔥 VARIABLES & IDENTIFIERS
 
 ## 🔥 Identifiers
@@ -767,8 +839,8 @@ Unordered Map Method
 🔸 `mp.emplace(key, value)` // O(1)
 🔸 `mp.count()` // O(1)
 🔸 `mp.erase()` // O(1)
-🔸 `que.empty()`
-🔸 `que.swap()`
+🔸 `mp.empty()`
+🔸 `mp.swap()`
 
 <br>
 
@@ -800,6 +872,86 @@ Set Methods
 🔸 `s.end()`
 🔸 `s.lower_bound(x)` First lower_bound(x), “first element not less than x (≥ x)
 🔸 `s.lower_bound(x)` First element > x upper_bound(x), “first element greater than x (> x)
+
+## 🔥 MultiSet
+
+It allows storing same element multiple time.
+
+```cpp
+multiset<int> ms;
+```
+
+## 🔥 Unordered Set
+
+It allow storing unique values but not in sorted order.
+Implementation is done using the tree so can not access through the index.
+
+```cpp
+#include <unordered_set>  // preprocessor directive
+```
+
+```cpp
+unordered_ser<int> us;
+```
+
+Searching, inserting, deleting take `O(1)` complexity.
+No lower bound or upper bound.
+
+<br>
+
+## 🐦‍🔥 SORTING
+
+Sorting Method
+
+🔸 `sort(arr, arr + n)` // sort the n elements of the array
+🔸 `sort(vect.begin(), vect.end())` // sort the vector
+🔸 `sort(arr, arr + n, greater<int>())` // sort the array in descending order
+
+```cpp
+bool comparator(pair<int, int> p1, pair<int, int> p2) {
+  if (p1.second < p2.second) return true;
+  else return false;
+}
+
+int main() {
+  vector<pair<int, int>> v = { {2, 3}, {5, 6}, {1, 9}, {10, 1} };
+
+  sort(v.start(), v.end()); // sorts on the basis of first element
+  sort(v.start(), v.end(), comparator); // sorts on the basis of custom logic
+}
+```
+
+<br>
+
+## 🐦‍🔥 REVERSE
+
+Sorting Method
+
+🔸 `reverse(arr, arr + n)` // reverse the n elements of the array
+🔸 `sort(vect.begin(), vect.end())` // reverse the vector
+🔸 `sort(vect.begin() + 2, vect.begin() + 5)` // reverse the subvector of a vector
+
+<br>
+
+## 🐦‍🔥 OTHER ALGORITHMS
+
+## 🔥 max and min
+
+🔸 `max(4,5)` // return max = 5
+🔸 `min(4,5)` // return min = 4
+
+## 🔥 swap
+
+🔸 `min(arr[i], arr[ i + 1])` // swaps the value
+
+## 🔥 max_element and min_element
+
+🔸 `max_element(vect.begin(), vect.end())` // returns iterator to the max element of the vector
+🔸 `*(min_element(vect.begin(), vect.end()))` // return min element of the vector
+
+## 🔥 max_element and min_element
+
+🔸 `binary_search(vect.begin(), vect.end(), target)` // returns bool for search result
 
 </div>
 </div>
