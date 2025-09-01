@@ -60,7 +60,7 @@ string difString(string s1, string s2) {
   return res;
 }
 
-string karastuba(string s1, string s2) {
+string karatsuba(string s1, string s2) {
   s1 = trimZero(s1);
   s2 = trimZero(s2);
   if (s1 == "0" || s2 == "0")
@@ -88,11 +88,11 @@ string karastuba(string s1, string s2) {
   string c = s2.substr(0, m);
   string d = s2.substr(m);
 
-  string ac = karastuba(a, c);
-  string bd = karastuba(b, d);
+  string ac = karatsuba(a, c);
+  string bd = karatsuba(b, d);
   string sumAB = addString(a, b);
   string sumCD = addString(c, d);
-  string bracket = karastuba(sumAB, sumCD);
+  string bracket = karatsuba(sumAB, sumCD);
   string adbc = difString(bracket, addString(ac, bd));
 
   for (int i = 0; i < 2 * half; i++)
@@ -107,7 +107,7 @@ string karastuba(string s1, string s2) {
 
 int main() {
   string s1 = "12345678", s2 = "87654321";
-  string res = karastuba(s1, s2);
+  string res = karatsuba(s1, s2);
   cout
       << "\nProduct: " << s1 << " X " << s2 << " = " << res << "\n\n";
   return 0;
