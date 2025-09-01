@@ -70,7 +70,7 @@ public class carParking {
           if (pos > 0) {
             System.out.print("Parked Cars: ");
             for (int i = 0; i < pos; i++) {
-              System.out.print(lot[i] + " ");
+              System.out.print(lot[i] + " ,");
             }
           } else {
             System.out.println("Parking lot is empty");

@@ -23,7 +23,7 @@ int main() {
   // TYPE CASTING AND CONVERSION
   double value = price;     // Conversion - implicit - small to big
   int percent = (int)price; // Casting - Explicit - big to small
-  cout << value << " & " << percent << "\n\n";
+  cout << value << " & " << percent << "\n\n ";
 
   // USER INPUT
   cout << "Enter New Price: ";
