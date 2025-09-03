@@ -1,6 +1,3 @@
-// P9: Counting Inversion I/P: Given an array A of distinct integers.
-// O/P: The number of inversions of A is the number of pairs (i,j) of array A with i<j and A[i] > A[j].
-
 #include <iostream>
 #include <vector>
 using namespace std;
