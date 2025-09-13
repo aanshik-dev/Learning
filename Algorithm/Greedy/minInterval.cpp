@@ -25,7 +25,7 @@ vector<vector<pair<int, int>>> minGroup(vector<pair<int, int>> &gaps) {
 }
 
 int main() {
-  vector<pair<int, int>> intervals = {{1, 10}, {2, 7}, {3, 6}, {8, 9}};
+  vector<pair<int, int>> intervals = {{1, 4}, {6, 9}, {10, 12}, {14, 16}, {3, 7}, {3, 7}, {8, 11}, {11, 15}, {11, 15}};
 
   vector<vector<pair<int, int>>> res = minGroup(intervals);
   cout << endl;
