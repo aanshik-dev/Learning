@@ -47,7 +47,7 @@ class Player {
   private double battingAverage;
   private Coach coach;
   private String role;
-  private static int teamCode = 718;
+  // private static int teamCode = 718;
 
   public Player() {
   }
