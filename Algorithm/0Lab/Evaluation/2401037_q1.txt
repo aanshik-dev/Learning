@@ -14,8 +14,8 @@ vector<pair<int, int>> merged(vector<pair<int, int>> &pairs, int st, int end) {
   vector<pair<int, int>> right = merged(pairs, mid + 1, end);
 
   vector<pair<int, int>> result = left;
-  if (result.back().second > right.front().first) {
-    result.back().second = right.front().second;
+  if (result.back().second >= right.front().first) {
+    result.back().second = max(result.back().second, right.front().second);
     for (int i = 1; i < right.size(); i++) {
       result.push_back(right[i]);
     }
@@ -24,6 +24,7 @@ vector<pair<int, int>> merged(vector<pair<int, int>> &pairs, int st, int end) {
       result.push_back(right[i]);
     }
   }
+  return result;
 }
 
 int main() {
