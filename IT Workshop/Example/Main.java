@@ -18,7 +18,7 @@ class Child extends SuperParent {
   static {
     System.out.print("S2");
   }
-  { 
+  {
     System.out.print("I" + x);
   }
 

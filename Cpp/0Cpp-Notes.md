@@ -509,6 +509,8 @@ int main() {
   vector<char> vect(5);          // by default value \0
   vector<string> vect(5);          // by default value ""
   vector<int> temp(Iterator1, Iterator2);
+  vector<vector<int>> nums = {{2, 5, 1}, {1, 2, 3}, {3, 6}, {1, 2, 1, 2, 1}};   // create a jagged 2d vector
+  vector<vector<int>> nums = {3, vector<int>(4, 0)}  // vector with 3 rows and 4 column with value 0
   // Gives temp Sub vector, iterators are like pointers
   return 0;
 }

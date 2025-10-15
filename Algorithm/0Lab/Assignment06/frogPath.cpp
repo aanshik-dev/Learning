@@ -1,3 +1,8 @@
+// LOGIC : start from 2 element and maintain dp and path array:
+// dp[i] = min(dp[i-1] + nums[i], dp[i-2] + nums[i]);
+// path[i] = path[i-1] + path[i-2]; if dp[i-1] == dp[i-2]
+// else path[i] = path[i-1] || path[i-2]; whichever smaller
+
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -34,7 +39,7 @@ pair<int, int> path(vector<int> &nums) {
 
 int main() {
 
-  vector<int> nums = {1,1,4,2,0,0,0,0,2,3};
+  vector<int> nums = {1, 1, 4, 2, 0, 0, 0, 0, 2, 3};
   pair<int, int> res = path(nums);
   cout << "The min cost required is: " << res.first << endl;
   cout << "The number of ways are: " << res.second << endl;
