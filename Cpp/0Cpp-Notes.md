@@ -180,8 +180,10 @@ strings formed using character array are mutable
 🔸 `stoi(str)`
 🔸 `to_string(145)`
 🔸 `str.replace(start, size, "word")`
-🔸 `str.substr(6,10)`
+🔸 `str.substr(start, length)`
 🔸 `str.substr(6)` from 6 till last
+
+nasty decide dream stool cash ugly rather orange furnace impact library sponsor hen seminar frown bicycle impose mean few scheme extra master hair member ostrich
 
 <br>
 
