@@ -92,6 +92,8 @@ public class BillingSys {
         case 3:
           customers[index++] = new CorporateCustomer(name, amount);
           break;
+        default:
+          System.out.println("Invalid customer type !!");
       }
     }
 
@@ -101,7 +103,7 @@ public class BillingSys {
       System.out.println("Name: " + customers[i].name);
       System.out.println("Purchase Amount: " + customers[i].purchaseAmount);
       System.out.println("Discounted Bill: " + customers[i].calculateBill());
-      System.out.println("Final Bill: " +((Taxable)customers[i]).addTax(customers[i].calculateBill()));
+      System.out.println("Final Bill: " + ((Taxable) customers[i]).addTax(customers[i].calculateBill()));
       System.out.println("");
     }
   }
