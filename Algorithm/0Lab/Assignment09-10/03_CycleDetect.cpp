@@ -1,18 +1,23 @@
-// Implementation of dfs algorithm for the Undirected graph
 #include <bits/stdc++.h>
 using namespace std;
 
-void dfs(int node, vector<int> &vis, vector<vector<int>> &adj) {
+bool isCycle(int node, int parent, vector<int> &vis, vector<vector<int>> &adj) {
   vis[node] = 1;
+  bool res = false;
   for (auto i : adj[node]) {
     if (!vis[i]) {
-      cout << i << " ";
-      dfs(i, vis, adj);
+      res = isCycle(i, node, vis, adj);
+    } else if (i != parent) {
+      res = true;
     }
+    if (res)
+      break;
   }
+  return res;
 }
 
 int main() {
+
   int n, e;
   cout << "Enter the number of nodes: ";
   cin >> n;
@@ -26,8 +31,18 @@ int main() {
     adj[u].push_back(v);
     adj[v].push_back(u);
   }
+
   vector<int> vis(n + 1, 0);
-  cout << "1 ";
-  dfs(1, vis, adj);
+
+  bool cycle = false;
+  for (int i = 1; i <= n; i++) {
+    if (!vis[i]) {
+      if (isCycle(i, -1, vis, adj)) {
+        cycle = true;
+        break;
+      }
+    }
+  }
+  cout << (cycle ? "Cyclic Graph" : "Acyclic Graph");
   return 0;
 }

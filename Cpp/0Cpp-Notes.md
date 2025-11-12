@@ -399,7 +399,7 @@ int sum(int x, int y) {    // function definition
 
 > 📝 NOTE : funtion declaration can be skipped if it is written before call. `int x, int y` are parameters and the values passed `a,b` are the arguments.
 
-## 🔥 Recursion
+## 🔥 RECURSION
 
 ```cpp
 int fibo(int num) {
@@ -472,7 +472,7 @@ array<int, 5> arr = {1, 2, 3, 4, 5};
 
 ♦️ Capacity
 🔸`arr.size()` number of elements.
-🔸`arr.max_size()` maximum size (same as size() since fixed).
+🔸`arr.max_size()` maximum size (same as size() for array since size is fixed).
 🔸`arr.empty()` checks if array is empty.
 
 ♦️ Iterators
@@ -522,6 +522,7 @@ int main() {
 
 ♦️ Capacity
 🔸 `vector.size()` returns number of element in vector
+🔸 `vector.max_size()` maximum size that can be occupied in memory (It is a huge number).
 🔸 `vector.capacity()` returns the total capacity of vector before new memory allocation
 🔸 `vector.shrink_to_fit();` It is used to reduce the capacity to the size of vector.
 
@@ -594,6 +595,8 @@ vector<int>::iterator itr;
 ♦️ Miscellaneous
 🔸`vector.data()` pointer to underlying raw array, safe even array is empty.
 🔸 `vector.clear()` It clears all the elements and size become 0.
+🔸 `vector.resize(n, 0)` It changes the size of the vector.
+
 🔸 `vector.erase(Iter)` It clears the element or a range pointed by iter
 ▫️ `vector.erase(IterSt, IterEnd)`
 🔸 `vector.empty()` It tells if vector is empty or not.
@@ -845,7 +848,6 @@ Unordered Map Method
 🔸 `mp.erase()` // O(1)
 🔸 `mp.empty()`
 🔸 `mp.swap()`
-
 <br>
 
 ## 🐦‍🔥 SET
@@ -956,6 +958,10 @@ Sorting Method
 ## 🔥 max_element and min_element
 
 🔸 `binary_search(vect.begin(), vect.end(), target)` // returns bool for search result
+
+## 🔥 fill
+
+🔸 `fill(vis.begin(), vis.end(), 0)` // it fill same value in a range
 
 </div>
 </div>

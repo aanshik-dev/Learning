@@ -1,19 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-void dfs(int node, vector<vector<int>> &adj, vector<int> &vis) {
-  stack<int> st;
-  st.push(node);
+void dfs(int node, vector<int> &vis, vector<vector<int>> &adj) {
   vis[node] = 1;
-  while (!st.empty()) {
-    int curr = st.top();
-    st.pop();
-    cout << curr << " ";
-    for (auto i : adj[curr]) {
-      if (!vis[i]) {
-        st.push(i);
-        vis[i] = 1;
-      }
+  for (auto it : adj[node]) {
+    if (!vis[it]) {
+      dfs(it, vis, adj);
     }
   }
 }
@@ -32,8 +24,23 @@ int main() {
     adj[u].push_back(v);
     adj[v].push_back(u);
   }
-
   vector<int> vis(n + 1, 0);
-  dfs(1, adj, vis);
+
+  int res = 0;
+  while (1) {
+    int flag = 0;
+    for (int i = 1; i <= n; i++) {
+      if (!vis[i]) {
+        res++;
+        dfs(i, vis, adj);
+        flag = 1;
+      }
+    }
+    if (flag == 0)
+      break;
+  }
+
+  cout << "Number of connected components: " << res << endl;
+
   return 0;
 }

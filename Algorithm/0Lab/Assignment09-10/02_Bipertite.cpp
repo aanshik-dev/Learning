@@ -1,21 +1,25 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-void bfs(int node, vector<vector<int>> &adj, vector<int> &vis) {
+bool bfs(int node, vector<vector<int>> &adj, vector<int> &vis) {
+  int color = 1;
   queue<int> q;
   q.push(node);
-  vis[node] = 1;
+  vis[node] = color;
   while (!q.empty()) {
     int curr = q.front();
     q.pop();
-    cout << curr << " ";
+    color = -vis[curr];
     for (auto i : adj[curr]) {
       if (!vis[i]) {
         q.push(i);
-        vis[i] = 1;
+        vis[i] = color;
+      } else if (vis[i] == vis[curr]) {
+        return false;
       }
     }
   }
+  return true;
 }
 
 int main() {
@@ -34,7 +38,22 @@ int main() {
   }
 
   vector<int> vis(n + 1, 0);
-  bfs(1, adj, vis);
-
+  bool res;
+  while (1) {
+    int flag = 0;
+    for (int i = 1; i <= n; i++) {
+      if (!vis[i]) {
+        flag = 1;
+        res = bfs(i, adj, vis);
+        if (!res) {
+          flag = 0;
+          break;
+        }
+      }
+    }
+    if (flag == 0)
+      break;
+  }
+  cout << (res ? "Bipartite" : "Not Bipartite");
   return 0;
 }
