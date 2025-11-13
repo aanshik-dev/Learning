@@ -3,17 +3,15 @@ using namespace std;
 
 bool isCycle(int node, int parent, vector<int> &vis, vector<vector<int>> &adj) {
   vis[node] = 1;
-  bool res = false;
   for (auto i : adj[node]) {
     if (!vis[i]) {
-      res = isCycle(i, node, vis, adj);
+      if (isCycle(i, node, vis, adj))
+        return true;
     } else if (i != parent) {
-      res = true;
+      return true;
     }
-    if (res)
-      break;
   }
-  return res;
+  return false;
 }
 
 int main() {
