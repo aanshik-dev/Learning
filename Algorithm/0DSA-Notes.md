@@ -33,7 +33,7 @@
 
 <br>
 
-## 🐦‍🔥 DYNAMIC PROGRAMMING
+# 🐦‍🔥 **DYNAMIC PROGRAMMING**
 
 ## 🔥 What is Dynamic Programming ?
 
@@ -103,6 +103,44 @@ int fib(int n) {
     return dp[n];
 }
 ```
+
+<br>
+
+# 🐦‍🔥 **GRAPH**
+
+## 🔥 Traversal
+
+### 🔥 Breadth-First-Search
+
+### 🔥 Depth-First-Search
+
+## 🔥 TOPOLOGICAL SORT
+
+- Applicable for Directed Acyclic Graph (DAG) only.
+- Topological Sort or Topo sort is a linear ordering of vertices in a Directed Acyclic Graph (DAG) such that for every directed edge u → v, vertex u comes before v in the ordering.
+
+## ♦️ Using DFS
+
+Recursively visit each node and push it into a stack after visiting all its neighbors, Then you pop from the stack to get the topological order.
+
+> Just do the simple DFS and store the current node after the recursive call.
+
+```cpp
+void dfs(int node, vector<int> &vis, vector<vector<int>> &adj, vector<int> &collect) {
+  vis[node] = 1;
+  for (auto i : adj[node]) {
+    if (!vis[i]) {
+      dfs(i, vis, adj, collect);
+    }
+  }
+  collect.push_back(node);
+}
+```
+
+## ♦️ Using BFS - Kahn's Algorithm
+
+**STEPS**
+* Make an array of In-degree
 
 </div>
 </div>
