@@ -868,11 +868,14 @@ It is implemented using red-black tree
 Set Methods
 
 🔸 `s.insert(val)`
+🔸 `s.insert({x,y,z})`
 🔸 `s.emplace(val)`
-🔸 `s.erase()`
+🔸 `s.erase(x)`
+🔸 `s.erase(it)`
 🔸 `s.size()`
 🔸 `s.empty()`
-🔸 `s.find()`
+🔸 `s.clear()` deletes all values
+🔸 `s.find(x)` returns iterator (end if not found)
 🔸 `s.count(x)` returns one if element present else 0
 🔸 `s.begin()`
 🔸 `s.end()`
@@ -897,7 +900,7 @@ Implementation is done using the tree so can not access through the index.
 ```
 
 ```cpp
-unordered_ser<int> us;
+unordered_set<int> us;
 ```
 
 Searching, inserting, deleting take `O(1)` complexity.
