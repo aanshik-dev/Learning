@@ -1,16 +1,18 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-bool isCycleDfs(int node, int parent, vector<int> &vis, vector<vector<int>> &adj) {
+bool isCycleDfs(int node, vector<int> &vis, vector<int> &pathVis, vector<vector<int>> &adj) {
   vis[node] = 1;
+  pathVis[node] = 1;
   for (auto i : adj[node]) {
     if (!vis[i]) {
-      if (isCycleDfs(i, node, vis, adj))
+      if (isCycleDfs(i, vis, pathVis, adj))
         return true;
-    } else if (i != parent) {
+    } else if (pathVis[i]) {
       return true;
     }
   }
+  pathVis[node] = 0;
   return false;
 }
 
@@ -30,12 +32,12 @@ int main() {
   }
 
   vector<int> vis(n, 0);
-  vector<int> pathVis(n,)
+  vector<int> pathVis(n, 0);
 
   bool cycle = false;
   for (int i = 1; i <= n; i++) {
     if (!vis[i]) {
-      if (isCycleDfs(i, -1, vis, adj)) {
+      if (isCycleDfs(i, vis, pathVis, adj)) {
         cycle = true;
         break;
       }
