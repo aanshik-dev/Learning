@@ -6,7 +6,7 @@ class DSU {
 
   public:
   DSU(int n) {
-    rank.resize(n, 0);
+    rank.resize(n, 1);
     parent.resize(n, 0);
     size.resize(n, 1);
     for (int i = 0; i < n; i++) {
@@ -55,18 +55,23 @@ class DSU {
 };
 
 int main() {
-
-  vector<pair<int, pair<int, int>>> edges = {{2, {0, 1}}, {4, {1, 2}}, {5, {2, 3}}, {2, {3, 4}}, {6, {4, 0}}, {3, {0, 3}}, {1, {1, 3}}};
-  sort(edges.begin(), edges.end());
-  int sum = 0;
-  DSU dsu(5);
-  for (auto p : edges) {
-    if (dsu.fParent(p.second.first) != dsu.fParent(p.second.second)) {
-      sum += p.first;
-      dsu.rankUnion(p.second.first, p.second.second);
-    }
+  vector<pair<int, int>> edges = {{0, 1}, {1, 2}, {3, 4}, {5, 6}, {4, 5}, {2, 6}};
+  DSU ds(7);
+  ds.rankUnion(0, 1);
+  ds.rankUnion(1, 2);
+  ds.rankUnion(3, 4);
+  ds.rankUnion(5, 6);
+  ds.rankUnion(4, 5);
+  if (ds.fParent(3) == ds.fParent(2)) {
+    cout << "true";
+  } else {
+    cout << "false";
   }
-
-  cout << sum;
+  ds.rankUnion(2, 6);
+  if (ds.fParent(3) == ds.fParent(2)) {
+    cout << "true";
+  } else {
+    cout << "false";
+  }
   return 0;
 }
