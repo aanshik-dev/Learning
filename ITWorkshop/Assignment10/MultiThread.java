@@ -111,7 +111,7 @@ public class MultiThread {
         }
       }
     } else {
-      dir.mkdirs(); // Create if not exists
+      dir.mkdirs();
     }
     for (int i = 0; i < files; i++) {
       String fileName = "class" + (char) ('A' + i) + ".txt";
