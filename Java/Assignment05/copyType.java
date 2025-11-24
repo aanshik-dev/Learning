@@ -235,7 +235,7 @@ public class copyType {
         if (pptr > 0) {
           System.out.print("Enter New Team Code : ");
           int code = sc.nextInt();
-          player[0].updateTC(code);
+          Player.teamCode = code;
           System.out.println("Team Code Updated Successfully !!");
         } else {
           System.out.println("Player Database is Empty !!");

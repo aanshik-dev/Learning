@@ -7,6 +7,7 @@ class Calculator {
     double a = sc.nextDouble();
     System.out.print("Enter second number: ");
     double b = sc.nextDouble();
+    sc.close();
     return a * b;
   }
 
