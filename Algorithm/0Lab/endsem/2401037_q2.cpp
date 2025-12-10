@@ -55,10 +55,7 @@ int path(vector<vector<int>> &mat) {
 
 int main() {
   vector<vector<int>> mat = {
-      {1, 3, 2, 4},
-      {6, 5, 7, 8},
-      {9, 10, 1, 11},
-      {12, 13, 14, 15}};
+      {1, 100, 2}, {3, 4, 5}, {6, 7, 8}};
 
   int res = path(mat);
   if (res != -1) {

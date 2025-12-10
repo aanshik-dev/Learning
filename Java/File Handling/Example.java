@@ -9,7 +9,7 @@ public class Example {
   public static void main(String[] args) throws IOException {
     // Creating a file
 
-    File f = new File("C:\\FilesList\\CS202.txt");
+    File f = new File("CS202.txt");
     f.createNewFile();
 
     System.out.println(f.exists());
@@ -23,7 +23,7 @@ public class Example {
     // FileWriter is a character-oriented stream
 
     try {
-      FileWriter f1 = new FileWriter("C:\\FilesList\\CS202.txt");
+      FileWriter f1 = new FileWriter("CS202.txt");
       f1.write("Writing the first line\nSecond line\nThird line");
       f1.flush();
       f1.close();
@@ -34,11 +34,9 @@ public class Example {
     }
 
     // Reading lines from the created file
-
-    File f2 = new File("C:\\FilesList\\CS202.txt");
+    File f2 = new File("CS202.txt");
     Scanner sc1 = new Scanner(f2);
     // Scanner sc2 = new Scanner(f2);
-
     while (sc1.hasNextLine()) {
       System.out.println(sc1.nextLine());
     }
@@ -57,5 +55,4 @@ public class Example {
     // }
 
   }
-
 }

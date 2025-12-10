@@ -7,7 +7,7 @@ class fileThread extends Thread {
   String output;
   private static Object lock = new Object();
   int students = 0;
-  int highest = 0;abdul.nawaz24b
+  int highest = 0;
   int lowest = 100;
   float average = 0;
 

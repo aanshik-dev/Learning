@@ -1,32 +1,44 @@
-import java.util.ArrayList;
-
 class MyThread extends Thread {
+  public static int count = 1;
+  public static int MAX = 20;
+  public static Object lock = new Object();
+
+  int remainder;
+
+  MyThread(int remainder, String name) {
+    this.remainder = remainder;
+    this.setName(name);
+  }
 
   public void run() {
-    for (int i = 0; i < 10; i++) {
-      System.out.println(Thread.currentThread().getName() + " : " + i);
+    synchronized (lock) {
+      while (true) {
+        if (count > MAX)
+          break;
+        if (count % 3 == remainder) {
+          System.out.println(this.getName() + " : " + count);
+          count++;
+          lock.notifyAll();
+        } else {
+          try {
+            lock.wait();
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
+        }
+      }
     }
-
-    try {
-      Thread.sleep(1000);
-    } catch (InterruptedException e) {
-      System.err.println(e);
-    }
-
   }
 }
 
 public class NumThread {
-
   public static void main(String[] args) {
-    ArrayList<MyThread> th = new ArrayList<MyThread>(4);
-    for (int i = 0; i < 4; i++) {
-      th.add(new MyThread());
-    }
-
-    for (int i = 0; i < 4; i++) {
-      th.get(i).start();
-    }
-
+    MyThread t1 = new MyThread(1, "A");
+    MyThread t2 = new MyThread(2, "B");
+    MyThread t3 = new MyThread(0, "C");
+    t1.start();
+    t2.start();
+    t3.start();
   }
+
 }

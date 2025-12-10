@@ -17,8 +17,6 @@ public class JavaStreamExample3 {
 			System.out.print(bf.readLine()+"\n");
 			System.out.print(bf.readLine()+"\n");
 			
-			
-		
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}catch (IOException e)
