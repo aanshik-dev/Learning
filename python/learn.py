@@ -1,3 +1,6 @@
+print("Hello World")
+print("I'm Jarvis", "Your AI Assistant", sep=" - ")
+
 name = "Aanshik"
 age = 20
 height = 5.6
