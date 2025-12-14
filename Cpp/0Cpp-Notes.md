@@ -951,14 +951,14 @@ Sorting Method
 
 ## 🔥 swap
 
-🔸 `min(arr[i], arr[ i + 1])` // swaps the value
+🔸 `swap(arr[i], arr[ i + 1])` // swaps the value
 
 ## 🔥 max_element and min_element
 
 🔸 `max_element(vect.begin(), vect.end())` // returns iterator to the max element of the vector
 🔸 `*(min_element(vect.begin(), vect.end()))` // return min element of the vector
 
-## 🔥 max_element and min_element
+## 🔥 Binary Search
 
 🔸 `binary_search(vect.begin(), vect.end(), target)` // returns bool for search result
 
