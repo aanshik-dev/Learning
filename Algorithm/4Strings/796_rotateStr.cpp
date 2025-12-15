@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// S + S must contain the goal
+// S + S must contain the goal, otherwise return false
 class Solution {
   public:
   bool rotateString(string s, string goal) {
