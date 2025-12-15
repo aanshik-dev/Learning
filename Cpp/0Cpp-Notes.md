@@ -810,7 +810,7 @@ map Methods
 
 ## 🔥 Multimap
 
-It allows multiple same keys, but we can not use [] to access the element.
+It allows multiple same keys, but we can not use [ ] to access the element.
 
 ```cpp
 multimap<string, int> mp;
@@ -828,7 +828,10 @@ multimap<string, int> mp;
 
 ## 🔥 Unordered Map
 
-It has unique keys but not sorted in order
+It has `unique keys` but not sorted in order
+unordered_map is an associative container that stores data in key–value pairs, just like map, but `without any order`.
+
+- It is the Hash Table in STL
 
 ```cpp
 #include <unordered_map>  // preprocessor directive
@@ -838,16 +841,41 @@ It has unique keys but not sorted in order
 unordered_map<string, int> mp;
 ```
 
-Unordered Map Method
+Unordered Map Methods
 
-🔸 `mp.find(key)`
-🔸 `mp.size()`
+INSERT
 🔸 `mp.insert({key, value})` // O(1)
 🔸 `mp.emplace(key, value)` // O(1)
-🔸 `mp.count()` // O(1)
+
+```cpp
+mp[1] = "One";
+mp.insert({2, "Two"});
+mp.emplace(3, "Three");
+```
+
+SEARCH
+🔸 `mp.find(key)` // returns iterator to the key if found else mp.end() is returned
+
+```cpp
+cout << it->first;   // key
+cout << it->second;  // value
+```
+
+🔸 `mp.count()` // count how many time key exist, here 0/1 - O(1)
+
+DELETE
 🔸 `mp.erase()` // O(1)
-🔸 `mp.empty()`
+
+```cpp
+mp.erase(1);      // erase by key
+mp.erase(it);     // erase by iterator
+```
+
+🔸 `mp.clear()` // remove all
+🔸 `mp.empty()` // Bool is empty
+🔸 `mp.size()`
 🔸 `mp.swap()`
+
 <br>
 
 ## 🐦‍🔥 SET
