@@ -18,6 +18,7 @@ class Solution {
 };
 
 int main() {
+  // Given Sorted Array
   vector<int> nums = {1, 1, 2, 3, 4, 5};
   Solution sol;
   int res = sol.removeDuplicates(nums);
