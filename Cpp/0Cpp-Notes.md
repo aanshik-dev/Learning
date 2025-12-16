@@ -173,6 +173,12 @@ strings formed using character array are mutable
 🔸 `str.push_back()`  
 🔸 `str.pop_back()`  
 🔸 `str.append()`  
+```cpp
+std::string s = "File_";
+// Append 5 copies of the character '0'
+s.append(5, '0');
+// s is now "File_00000"
+```
 🔸 `str.insert(index, "string")`  
 🔸 `str.erase(2,5)`
 🔸 `str.find("word")`
