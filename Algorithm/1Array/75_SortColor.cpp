@@ -30,7 +30,7 @@ class Solution {
 };
 
 int main() {
-  vector<int> nums = {10, 1};
+  vector<int> nums = {1,0, 1};
   Solution sol;
   sol.sortColors(nums);
 

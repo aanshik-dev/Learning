@@ -13,7 +13,6 @@ class Solution {
         triangle[x][j] += min(triangle[x + 1][j], triangle[x + 1][j + 1]);
       }
     }
-
     return triangle[0][0];
   }
 };
