@@ -1,3 +1,4 @@
+// Single element in a sorted array
 #include <bits/stdc++.h>
 using namespace std;
 
