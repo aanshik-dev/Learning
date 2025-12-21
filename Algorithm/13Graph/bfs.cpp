@@ -1,0 +1,40 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+void bfs(int node, vector<vector<int>> &adj, vector<int> &vis) {
+  queue<int> q;
+  q.push(node);
+  vis[node] = 1;
+  while (!q.empty()) {
+    int curr = q.front();
+    q.pop();
+    cout << curr << " ";
+    for (auto i : adj[curr]) {
+      if (!vis[i]) {
+        q.push(i);
+        vis[i] = 1;
+      }
+    }
+  }
+}
+
+int main() {
+  int n, e;
+  cout << "Enter the number of nodes: ";
+  cin >> n;
+  cout << "Enter the number of Edges: ";
+  cin >> e;
+
+  vector<vector<int>> adj(n + 1, vector<int>());
+  for (int i = 0; i < e; i++) {
+    int u, v;
+    cin >> u >> v;
+    adj[u].push_back(v);
+    adj[v].push_back(u);
+  }
+
+  vector<int> vis(n + 1, 0);
+  bfs(1, adj, vis);
+
+  return 0;
+}

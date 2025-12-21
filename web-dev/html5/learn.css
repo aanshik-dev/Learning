@@ -1,0 +1,350 @@
+/* Ways to use css with html
+
+1. Inline CSS
+   <tag style="property: value;"></tag>
+
+2. Internal CSS
+   <style>
+      tag{
+         property: value;
+      }
+   </style>
+
+3. External CSS
+   linked with html file
+   <link rel="stylesheet" href="style.css">
+ */
+
+/* Selectors in CSS
+
+tag{
+      property: value;
+} 
+.class{
+   Property: Value;
+}
+#id{
+   Property: Value;
+} 
+tag.class{
+   Property: Value;
+}
+tag#id{
+   Property: Value;
+}
+.class1.class2{
+   Property: Value;
+}
+.class1 .class2{
+   Property: Value;
+}
+.class1>.class2{
+   Property: Value;
+}
+.class1~.class2{
+   Property: Value;
+}
+.class1[class="value"]{
+   Property: Value;
+}
+.class1[class^="value"]{
+   Property: Value;
+}
+.class1[class$="value"]{
+   Property: Value;
+}
+.class1[class*="value"]{
+   Property: Value;
+}
+.class1[class|="value"]{
+   Property: Value;
+}
+.class1[class~="value"]{
+   Property: Value;
+}
+.class1[class="value1 value2"]{
+   Property: Value;
+}
+
+*/
+
+/* Position Property in CSS */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.display,
+.position,
+.images,
+.flex-box {
+  width: 85%;
+  margin: auto;
+  background-color: rgb(255, 243, 235);
+  padding: 1em;
+  align-content: center;
+  font-size: 0px;
+}
+
+.dis {
+  background-color: rgb(216, 145, 145);
+  padding: 5px;
+  border-radius: 10px;
+}
+
+.dis>div {
+  background-color: bisque;
+  border: 2px solid rgb(171, 0, 0);
+  margin: 10px;
+  padding: 10px;
+  text-align: center;
+  align-content: center;
+  font: 800 16px "Arial";
+  color: rgb(171, 0, 0);
+}
+
+.in-block {
+  height: 50px;
+  width: 50px;
+  display: inline-block;
+}
+
+.d-inline {
+  height: 10px;
+  width: 10px;
+  /* Height and width has no effect on inline elements */
+  display: inline;
+}
+
+.d-block {
+  display: block;
+}
+
+.post {
+  background-color: rgb(216, 145, 145);
+  height: 250px;
+  width: 80%;
+  align-content: center;
+  overflow: auto;
+  position: relative;
+  margin: auto;
+  padding: 20px;
+  border-radius: 10px;
+  font: 14px "Arial";
+}
+
+.post>div {
+  background-color: bisque;
+  border: 2px solid rgb(171, 0, 0);
+  margin: 10px;
+  padding: 10px;
+  text-align: center;
+  align-content: center;
+  font: 800 16px "Arial";
+  color: rgb(171, 0, 0);
+  display: inline-block;
+}
+
+#stat {
+  position: static;
+  top: 20px;
+  right: 20px;
+}
+
+#rel {
+  position: relative;
+  top: 50px;
+}
+
+#absol {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#fix {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+}
+
+#stic {
+  position: sticky;
+  right: 10px;
+  top: 0px;
+}
+
+.images {
+  align-content: center;
+  font-size: 0px;
+}
+
+.img {
+  height: 170px;
+  width: 150px;
+  display: inline-block;
+  margin: 10px;
+  border: 2px solid rgb(171, 0, 0);
+}
+
+#img1 {
+  background-image: url(/learning/assets/rust_bg.webp);
+  background-size: contain;
+}
+
+#img2 {
+  background-image: url(/learning/assets/girl_bg.jpg);
+  background-size: cover;
+}
+
+#img3 {
+  background-image: url(/learning/assets/brown_bg.webp);
+  background-size: auto;
+}
+
+#img4 {
+  background-image: url(/learning/assets/light_bg.jpg);
+  background-size: 75px;
+  background-repeat: repeat;
+}
+
+.flex {
+  background-color: rgb(216, 145, 145);
+  height: 130px;
+  width: 50%;
+  display: inline-flex;
+  border: 2px solid rgb(171, 0, 0);
+}
+
+#flex1 {
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+#flex2 {
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  align-content: center;
+}
+
+#flex3 {
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+#flex4 {
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex>div {
+  background-color: bisque;
+  border: 2px solid rgb(171, 0, 0);
+  text-align: center;
+  align-content: center;
+  font: 800 16px "Arial";
+  color: rgb(171, 0, 0);
+  height: 30px;
+  width: 100px;
+}
+
+#item33,
+#item34 {
+  align-self: flex-end;
+}
+
+#item42 {
+  flex-shrink: 2;
+}
+
+#item43,
+#item44 {
+  flex-grow: 3;
+}
+
+@media (max-width: 480px) {
+
+  .display,
+  .position,
+  .images,
+  .flex-box {
+    width: 98%;
+    transition: all 1s;
+  }
+}
+
+@media (min-width: 480px) and (max-width: 960px) {
+
+  .display,
+  .position,
+  .images,
+  .flex-box {
+    transition: width 1s;
+    width: 90%;
+  }
+}
+
+@media (min-width: 960px) {
+
+  .display,
+  .position,
+  .images,
+  .flex-box {
+    transition: width 1s;
+    width: 80%;
+  }
+}
+
+/* CSS Transform Property
+rotate(30deg);
+rotateX(30deg);
+rotateY(30deg);
+rotateZ(30deg);
+scale(1.5);
+skew(30deg, 20deg);
+translate(50px, 100px);
+matrix(1, 0, 0, 1, 50, 100); */
+
+/* Animation  */
+@keyframes animation {
+  0% {
+    property: value;
+  }
+
+  50% {
+    property: value;
+  }
+
+  100% {
+    property: value;
+  }
+}
+
+@keyframes anime {
+  from {
+    background-color: rgb(216, 145, 145);
+  }
+
+  to {
+    background-color: rgb(171, 0, 0);
+  }
+}
+
+.anime {
+  height: 100px;
+  background-color: rgb(216, 145, 145);
+  animation-name: anime;
+  animation-duration: 2s;
+  animation-direction: alternate;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  animation-delay: 5s;
+}
