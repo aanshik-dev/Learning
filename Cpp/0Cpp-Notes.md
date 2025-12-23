@@ -1013,10 +1013,13 @@ Sorting Method
 - `fill(vis.begin(), vis.end(), 0)` // it fill same value in a range
 
 <br>
+<br>
 
 # 🐦‍🔥 OBJECT ORIENTED PROGRAMMING
 
-## 🔥 What is OOPS?
+<br>
+
+## 🐦‍🔥 What is OOPS?
 
 Object Oriented Programming (OOPS) is a programming paradigm based on **objects** that contain:
 
@@ -1030,7 +1033,7 @@ C++ supports OOPS to make programs:
 - Secure
 - Easy to maintain
 
-## 🔥 Key Concepts of OOPS
+## 🐦‍🔥 Key Concepts of OOPS
 
 1. Class
 2. Object
@@ -1041,7 +1044,9 @@ C++ supports OOPS to make programs:
 7. Dynamic Binding
 8. Message Passing
 
-## 🔥 Class
+<br>
+
+## 🐦‍🔥 Class
 
 A **class** is a user-defined data type that acts as a blueprint for creating objects.
 
