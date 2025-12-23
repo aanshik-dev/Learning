@@ -1006,6 +1006,86 @@ Sorting Method
 
 # 🐦‍🔥 OBJECT ORIENTED PROGRAMMING
 
+## 🔥 What is OOPS?
+
+Object Oriented Programming (OOPS) is a programming paradigm based on **objects** that contain:
+
+- **Data** (variables)
+- **Behavior** (functions)
+
+C++ supports OOPS to make programs:
+
+- Modular
+- Reusable
+- Secure
+- Easy to maintain
+
+## 🔥 Key Concepts of OOPS
+
+1. Class
+2. Object
+3. Encapsulation
+4. Abstraction
+5. Inheritance
+6. Polymorphism
+7. Dynamic Binding
+8. Message Passing
+
+## 🔥 Class
+
+A **class** is a user-defined data type that acts as a blueprint for creating objects.
+
+It defines the data members (variables) and member functions (methods) that represent the properties and behavior of an entity.
+
+A class does not occupy memory until an object of the class is created.
+
+```cpp
+class Student {
+  // Properties or attributes
+  string name;
+  int roll;
+
+  // methods
+  void display() {
+    cout << roll << " " << name << endl;
+  }
+};
+```
+
+## 🔥 Objects
+
+An object is a real-world entity and an instance of a class.
+
+It represents the actual implementation of a class and occupies memory.
+
+```cpp
+int main(){
+  Student s1();
+  Student s2();
+  return 0;
+}
+```
+
+## 🔥 Access Modifiers
+
+C++ has three access modifiers:
+
+- public
+- private
+- protected
+
+1️⃣ **public** : Members declared as public are accessible from anywhere
+
+- Inside the class
+- Outside the class
+- Inside the derived class
+
+2️⃣ **private (DEFAULT)** : Members are accessible only inside the samse class.
+- If access modifier defined then, private by default.
+- we use public getter and setter to access.
+
+3️⃣ **protected**: Members are accessible in same class and derived(child) class.
+
 
 
 </div>
