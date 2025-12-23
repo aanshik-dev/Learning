@@ -460,16 +460,7 @@ bool truth[] = {true, false, false, true};
 ```cpp
 #include <array>
 std::array<int, 5> arr = {1, 2, 3, 4, 5};
-
-// or
-
-#include <array>
-use namespace std;
-array<int, 5> arr = {1, 2, 3, 4, 5};
-
 ```
-
-<br>
 
 ## 🐦‍🔥 Array Methods
 
@@ -477,24 +468,27 @@ array<int, 5> arr = {1, 2, 3, 4, 5};
 
 - `arr.at(i)` bounds-checked access (throws exception if out of range).
 - `arr[i]` direct access.
-  🔸`arr.front()` first element.
-  🔸`arr.back()` last element.
-  🔸`arr.data()` pointer to underlying raw array, safe even array is empty.
-  &nbsp;&nbsp;&nbsp; ▫️ `&arr[0]` also give the same thing but undefined behaviour of pointer when empty array.
+- `arr.front()` first element.
+- `arr.back()` last element.
+- `arr.data()` pointer to underlying raw array, safe even array is empty.
+  > 📝 NOTE : `&arr[0]` also give the same thing but undefined behaviour of pointer when empty array.
 
 ♦️ Capacity
-🔸`arr.size()` number of elements.
-🔸`arr.max_size()` maximum size (same as size() for array since size is fixed).
-🔸`arr.empty()` checks if array is empty.
+
+- `arr.size()` number of elements.
+- `arr.max_size()` maximum size (same as size() for array since size is fixed).
+- `arr.empty()` checks if array is empty.
 
 ♦️ Iterators
-🔸`arr.begin()`, `arr.end()` forward iteration.
-🔸`arr.rbegin()`, `arr.rend()` reverse iteration.
-🔸`arr.cbegin()`, `arr.cend()` const iterators
+
+- `arr.begin()`, `arr.end()` forward iteration.
+- `arr.rbegin()`, `arr.rend()` reverse iteration.
+- `arr.cbegin()`, `arr.cend()` const iterators
 
 ♦️ Modefiers
-🔸`arr.fill(value)` fills entire array with a value.
-🔸`arr.swap(other)` swaps contents with another array
+
+- `arr.fill(value)` fills entire array with a value.
+- `arr.swap(other)` swaps contents with another array
 
 <br>
 
@@ -610,7 +604,8 @@ vector<int>::iterator itr;
 ```
 
 ♦️ Miscellaneous
-🔸`vector.data()` pointer to underlying raw array, safe even array is empty.
+
+- `vector.data()` pointer to underlying raw array, safe even array is empty.
 
 - `vector.clear()` It clears all the elements and size become 0.
 - `vector.resize(n, 0)` It changes the size of the vector.
