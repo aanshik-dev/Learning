@@ -1104,5 +1104,16 @@ C++ has three access modifiers:
 > - Access through external file is not possible like in java
 > - For private members we define the public getter and setter functions to access them
 
+## 🔥 Encapsulation
+
+Encapsulation is wrapping up of data (variables) and methods (member functions) into a single unit (class) and restricts direct access to the data using access modifiers.
+
+`Data hiding + Abstraction = Encapsulation`
+
+|      Encapsulation      |       Data Hiding       |
+| :---------------------: | :---------------------: |
+| Wrapping data + methods | Restricting data access |
+|      Broader Scope      |     Narrower Scope      |
+
 </div>
 </div>
