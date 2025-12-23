@@ -1017,8 +1017,6 @@ Sorting Method
 
 # 🐦‍🔥 OBJECT ORIENTED PROGRAMMING
 
-<br>
-
 ## 🐦‍🔥 What is OOPS?
 
 Object Oriented Programming (OOPS) is a programming paradigm based on **objects** that contain:
@@ -1046,7 +1044,7 @@ C++ supports OOPS to make programs:
 
 <br>
 
-## 🐦‍🔥 Class
+## 🐦‍🔥 CLASS
 
 A **class** is a user-defined data type that acts as a blueprint for creating objects.
 
@@ -1068,7 +1066,9 @@ class Student {
 };
 ```
 
-## 🔥 Objects
+<br>
+
+## 🐦‍🔥 OBJECTS
 
 An object is a real-world entity and an instance of a class.
 
@@ -1082,7 +1082,9 @@ int main(){
 }
 ```
 
-## 🔥 Access Modifiers
+<br>
+
+## 🐦‍🔥 ACCESS MODIFIERS
 
 C++ has three access modifiers:
 
@@ -1104,7 +1106,9 @@ C++ has three access modifiers:
 > - Access through external file is not possible like in java
 > - For private members we define the public getter and setter functions to access them
 
-## 🔥 Encapsulation
+<br>
+
+## 🐦‍🔥 ENCAPSULATION
 
 Encapsulation is wrapping up of data (variables) and methods (member functions) into a single unit (class) and restricts direct access to the data using access modifiers.
 
@@ -1146,6 +1150,11 @@ int main() {
     cout << acc.getBalance();
 }
 ```
+
+<br>
+
+## 🐦‍🔥 CONSTRUCTOR FUNCTION
+
 
 </div>
 </div>
