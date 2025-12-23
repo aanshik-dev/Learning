@@ -1115,5 +1115,37 @@ Encapsulation is wrapping up of data (variables) and methods (member functions) 
 | Wrapping data + methods | Restricting data access |
 |      Broader Scope      |     Narrower Scope      |
 
+♦️ Real Life Analogy
+Think of a capsule (medicine) 💊
+
+- Inside → chemicals (data)
+- Outside → coating (methods)
+- You cannot access chemicals directly
+  <br>
+
+```cpp
+class BankAccount {
+private:
+    double balance;   // hidden data
+
+public:
+    double getBalance() {
+        return balance;
+    } // getter
+
+    void setBalance(double b) {
+        if (b >= 0)
+            balance = b;
+    } // setter
+
+};
+
+int main() {
+    BankAccount acc;
+    acc.setBalance(5000);
+    cout << acc.getBalance();
+}
+```
+
 </div>
 </div>
