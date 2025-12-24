@@ -13,6 +13,12 @@ struct TreeNode {
 class Solution {
   public:
   int maxDepth(TreeNode *root) {
+    if (root == nullptr) {
+      return 0;
+    }
+    static int maxmm = 0;
+    static int height = 0;
+    
   }
 };
 
