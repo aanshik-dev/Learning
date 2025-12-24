@@ -12,18 +12,38 @@ struct TreeNode {
 
 class Solution {
   public:
+  void traverse(TreeNode *l, TreeNode *r, bool &res) {
+    if (l == nullptr && r == nullptr) {
+      return;
+    }
+    if (l == nullptr || r == nullptr) {
+      res = false;
+      return;
+    }
+    if (!res) {
+      return;
+    }
+    traverse(l->left, r->right, res);
+    if (l->val != r->val) {
+      res = false;
+      return;
+    }
+    traverse(l->right, r->left, res);
+  }
+
   bool isSymmetric(TreeNode *root) {
+    bool res = true;
+    traverse(root->left, root->right, res);
+    return res;
   }
 };
 
 int main() {
-  TreeNode *n8 = new TreeNode(9);
-  TreeNode *n7 = new TreeNode(8, n8, nullptr);
-  TreeNode *n6 = new TreeNode(7);
-  TreeNode *n5 = new TreeNode(6);
-  TreeNode *n4 = new TreeNode(5, n5, n6);
-  TreeNode *n3 = new TreeNode(4);
-  TreeNode *n2 = new TreeNode(3, nullptr, n7);
+  TreeNode *n6 = new TreeNode(3);
+  TreeNode *n5 = new TreeNode(4);
+  TreeNode *n4 = new TreeNode(4);
+  TreeNode *n3 = new TreeNode(3);
+  TreeNode *n2 = new TreeNode(2, n5, n6);
   TreeNode *n1 = new TreeNode(2, n3, n4);
   TreeNode *root = new TreeNode(1, n1, n2);
 

@@ -27,10 +27,11 @@ struct TreeNode {
 class Solution {
   public:
   void inorder(TreeNode *rootM, TreeNode *rootN, bool &res) {
-    if ((rootM == nullptr && rootN != nullptr) || (rootM != nullptr && rootN == nullptr)) {
-      res = false;
+    if (rootM == nullptr && rootN == nullptr) {
       return;
-    } else if (rootM == nullptr && rootN == nullptr) {
+    }
+    if (rootM == nullptr || rootN == nullptr) {
+      res = false;
       return;
     }
     if (!res) {
