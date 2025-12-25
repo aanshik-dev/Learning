@@ -5,6 +5,145 @@
 
 <br>
 
+## 🐦‍🔥 WHAT IS DSA?
+
+Data Structures → Way to store and organize data
+Algorithms → Step-by-step procedures to solve problems efficiently
+
+### 🔥 Why do we need Data Structures?
+
+- To handle large data efficiently
+- To reduce time complexity
+- To optimize memory usage
+- To make programs scalable
+
+<br>
+
+## 🐦‍🔥 TIME & SPACE COMPLEXITY
+
+### 🔥 Time complexity
+
+It tells how execution time grows with input size (n).
+
+> 📝 NOTE : We always consider worst case complexity
+
+| Notation | Name        | Example                 |
+| :------- | ----------- | ----------------------- |
+| O(1)     | Constant    | Access array element    |
+| O(logn)  | Logarithmic | Binary Search           |
+| O(n)     | Linear      | Linear Search           |
+| O(nlogn) | Linear Log  | Merge Sort              |
+| O(n²)    | Quadratic   | Bubble / Selection Sort |
+| O(2ⁿ)    | Exponential | Recursive Fibonacci     |
+
+### 🔥 Space Complexity
+
+Extra memory used by algorithm.
+
+```cpp
+int arr[100];   // O(1) space
+int arr[n];     // O(n) space
+```
+
+### 🔥 Asymptotic Notations
+
+| Symbol | Name  | Meaning      |
+| :----: | ----- | ------------ |
+|   O    | Big-O | Worst case   |
+|   Ω    | Omega | Best case    |
+|   Θ    | Theta | Average case |
+
+<br>
+
+## 🐦‍🔥 TYPES OF DATA STRUCTURES
+
+## 🔥 Linear Data Structures
+
+Data stored sequentially
+
+- Array
+- Linked List
+- Stack
+- Queue
+- Deque
+
+## 🔥 Non-Linear Data Structures
+
+Hierarchical or network based
+
+- Tree
+- Graph
+- Heap
+- Hash Table
+
+<br>
+
+## 🐦‍🔥 ARRAY
+
+### 🔥 What is an Array?
+
+An Array is a collection of elements of same data type stored in contiguous memory locations.
+
+```cpp
+int arr[5] = {10, 20, 30, 40, 50};
+```
+
+- Fixed size
+- Same data type
+- Index-based access
+- Stored in contiguous memory
+
+| Operation | Time |
+| --------- | ---- |
+| Access    | O(1) |
+| Traversal | O(n) |
+| Search    | O(n) |
+| Insertion | O(n) |
+| Deletion  | O(n) |
+
+### 🔥 Searching In Array
+
+- Linear Search
+- Binary Search
+
+```cpp
+int l = 0, r = n-1;
+while(l <= r){
+  int mid = l + (r-l)/2;
+  if(arr[mid] == key) return mid;
+  else if(arr[mid] < key) l = mid + 1;
+  else r = mid - 1;
+}
+```
+
+<br>
+
+## 🐦‍🔥 Sorting In Array
+
+### 🔥 Bubble Sort
+
+```cpp
+for(int i=0;i<n;i++){
+  for(int j=0;j<n-i-1;j++){
+    if(arr[j] > arr[j+1])
+      swap(arr[j], arr[j+1]);
+  }
+}  // O(n²)
+```
+
+### 🔥 Selection Sort
+
+```cpp
+for(int i=0;i<n-1;i++){
+  int minIdx = i;
+  for(int j=i+1;j<n;j++){
+    if(arr[j] < arr[minIdx])
+      minIdx = j;
+  }
+  swap(arr[i], arr[minIdx]);
+}
+```
+
 ## 🐦‍🔥 KADANE'S ALGORITHM
 
 > Kadane's Algorithm: It says that, if the sum of Sub Array becomes negative then adding it to further elements will decrease the Max possible sum, so it is better to reset it to 0.
