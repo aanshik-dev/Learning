@@ -106,12 +106,48 @@ class TreePrinter {
   }
 };
 
-int main() {
-  vector<int> treeData = {1, 2, 3, -1, 4, 5, 6, 8, 9};
-  TreeNode *root = buildTree(treeData);
+class Solution {
+  public:
+  vector<vector<int>> levelOrder(TreeNode *root) {
+    vector<vector<int>> res;
+    if (!root)
+      return res;
+    queue<TreeNode *> q;
+    q.push(root);
+    while (!q.empty()) {
+      int s = q.size();
+      vector<int> lvl;
+      for (int i = 0; i < s; i++) {
+        TreeNode *cur = q.front();
+        q.pop();
+        lvl.push_back(cur->val);
+        if (cur->left != nullptr) {
+          q.push(cur->left);
+        }
+        if (cur->right != nullptr) {
+          q.push(cur->right);
+        }
+      }
+      res.push_back(lvl);
+    }
+    return res;
+  }
+};
 
+int main() {
+  vector<int> tree = {1, 2, 3, -1, 4, 5, 6, 8, 9};
+  TreeNode *root = buildTree(tree);
+  Solution sol;
+  vector<vector<int>> res = sol.levelOrder(root);
+  for (auto v : res) {
+    for (int i : v) {
+      cout << i << " ";
+    }
+    cout << endl;
+  }
+  cout << "\n";
   TreePrinter::print(root, false);
-  cout << "\n\n\n";
+  cout << "\n";
 
   return 0;
 }
