@@ -253,6 +253,71 @@ void heapSort(int arr[], int n){
 } // O(nlogn)  // O(1) // Not Stable
 ```
 
+### 🔥 Counting Sort
+
+Idea: Count frequency of each element.
+
+```cpp
+void countingSort(int arr[], int n){
+  int mx = *max_element(arr, arr+n);
+  vector<int> count(mx+1, 0);
+
+  for(int i=0;i<n;i++) count[arr[i]]++;
+  int idx = 0;
+
+  for(int i=0;i<=mx;i++){
+    while(count[i]--)
+      arr[idx++] = i;
+  }
+} // O(n + k)  // O(k) // Stable
+```
+
+### 🔥 Redix Sort
+
+Idea: Sort digit by digit using counting sort.
+
+```cpp
+void bucketSort(float arr[], int n){
+  vector<float> buckets[n];
+
+  for(int i=0;i<n;i++){
+    int idx = n * arr[i];
+    buckets[idx].push_back(arr[i]);
+  }
+
+  for(int i=0;i<n;i++)
+    sort(buckets[i].begin(), buckets[i].end());
+
+  int k = 0;
+  for(int i=0;i<n;i++)
+    for(float x : buckets[i])
+      arr[k++] = x;
+} // O(d(n + k))  // O(n+k) // Stable
+```
+
+### 🔥 Bucket Sort
+
+Idea: Distribute elements into buckets, sort individually.
+
+```cpp
+void bucketSort(float arr[], int n){
+  vector<float> buckets[n];
+
+  for(int i=0;i<n;i++){
+    int idx = n * arr[i];
+    buckets[idx].push_back(arr[i]);
+  }
+
+  for(int i=0;i<n;i++)
+    sort(buckets[i].begin(), buckets[i].end());
+
+  int k = 0;
+  for(int i=0;i<n;i++)
+    for(float x : buckets[i])
+      arr[k++] = x;
+} // O(n)  // O(n) // Stable
+```
+
 ## 🐦‍🔥 KADANE'S ALGORITHM
 
 > Kadane's Algorithm: It says that, if the sum of Sub Array becomes negative then adding it to further elements will decrease the Max possible sum, so it is better to reset it to 0.
