@@ -109,6 +109,8 @@ class TreePrinter {
 class Solution {
   public:
   int minDepth(TreeNode *root) {
+    if (!root)
+      return 0;
     queue<TreeNode *> q;
     q.push(root);
     int depth = 0;
@@ -134,7 +136,7 @@ class Solution {
 };
 
 int main() {
-  vector<int> tree = {1, 2, 3, -1, 4, 5, 6, 8, 9};
+  vector<int> tree = {3, 9, 20, -1, -1, 15, 7};
   TreeNode *root = buildTree(tree);
   TreePrinter::print(root, false);
   cout << "\n";
