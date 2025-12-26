@@ -45,11 +45,16 @@ class Solution {
     preOrder(root->right, res);
   }
 
+  void iterPreOrder(TreeNode* root){
+    
+  }
+
   vector<int> preorderTraversal(TreeNode *root) {
     vector<int> res;
     preOrder(root, res);
     return res;
   }
+
 };
 
 int main() {
@@ -62,11 +67,3 @@ int main() {
   }
   return 0;
 }
-
-//          1
-//      2      3
-//       4    5  6
-//      8 9
-
-// 5 6 8 9
-// 1,2, 3, -1, 4, 5, 6, 8, 9, -1, -1, -1, -1 , -1,-1,-1,-1};
