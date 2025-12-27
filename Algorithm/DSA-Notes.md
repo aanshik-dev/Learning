@@ -277,21 +277,25 @@ void countingSort(int arr[], int n){
 Idea: Sort digit by digit using counting sort.
 
 ```cpp
-void bucketSort(float arr[], int n){
-  vector<float> buckets[n];
+void radixSort(int arr[], int n){
+  int mx = *max_element(arr, arr+n);
 
-  for(int i=0;i<n;i++){
-    int idx = n * arr[i];
-    buckets[idx].push_back(arr[i]);
+  for(int exp = 1; mx/exp > 0; exp *= 10){
+    vector<int> output(n), count(10, 0);
+
+    for(int i=0;i<n;i++)
+      count[(arr[i]/exp)%10]++;
+
+    for(int i=1;i<10;i++)
+      count[i] += count[i-1];
+
+    for(int i=n-1;i>=0;i--){
+      output[--count[(arr[i]/exp)%10]] = arr[i];
+    }
+
+    for(int i=0;i<n;i++)
+      arr[i] = output[i];
   }
-
-  for(int i=0;i<n;i++)
-    sort(buckets[i].begin(), buckets[i].end());
-
-  int k = 0;
-  for(int i=0;i<n;i++)
-    for(float x : buckets[i])
-      arr[k++] = x;
 } // O(d(n + k))  // O(n+k) // Stable
 ```
 
