@@ -10,12 +10,13 @@ struct ListNode {
 class Solution {
   public:
   void deleteNode(ListNode *node) {
-    while(!node){
-      
-    }
+    node->val = node->next->val;
+    node->next = node->next->next;
   }
 };
 
+// <- 1 -> <- 2 -><- 3 -><- 4 ->
+//             <- 2 -> <- 1 ->
 int main() {
   ListNode *root = new ListNode(2);
   ListNode *n1 = new ListNode(5);
@@ -28,7 +29,7 @@ int main() {
   n3->next = n4;
 
   Solution sol;
-  sol.deleteNode(root);
+  sol.deleteNode(n3);
   cout << root->val << root->next->val << root->next->next->val << root->next->next->next->val << endl;
   return 0;
 }
