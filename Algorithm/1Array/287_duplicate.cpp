@@ -4,13 +4,14 @@ using namespace std;
 class Solution {
   public:
   int findDuplicate(vector<int> &nums) {
-    int size = nums.size() - 1;
-    int sum = 0;
-    for (int i = 0; i <= size; i++) {
-      sum += nums[i];
+    int size = nums.size();
+    unordered_map<int, int> mp;
+    for (int i = 0; i < size; i++) {
+      mp[nums[i]]++;
+      if (mp[nums[i]] > 1)
+        return nums[i];
     }
-    int total = size * (size + 1) / 2;
-    return sum - total;
+    return -1;
   }
 };
 
