@@ -12,15 +12,28 @@ struct ListNode {
 class Solution {
   public:
   ListNode *reverseKGroup(ListNode *head, int k) {
-    ListNode *join = nullptr;
     ListNode *tail = nullptr;
     ListNode *res = nullptr;
     while (head != nullptr) {
-      join = head;
       ListNode *prev = nullptr;
       ListNode *curr = head;
       ListNode *nxt = nullptr;
-      for (int i = 0; i < k && curr != nullptr; i++) {
+      int t = 0;
+      for (int i = 0; i < k; i++) {
+        if (curr == nullptr) {
+          break;
+        }
+        t = i + 1;
+        curr = curr->next;
+      }
+      curr = head;
+      if (t != k) {
+        if (tail != nullptr) {
+          tail->next = curr;
+        }
+        break;
+      }
+      for (int i = 0; i < k; i++) {
         nxt = curr->next;
         curr->next = prev;
         prev = curr;
@@ -32,15 +45,14 @@ class Solution {
       if (tail != nullptr) {
         tail->next = prev;
       }
-      tail = join;
+      tail = head;
       head = curr;
     }
     return res;
   }
 };
-// 1 -> 2 -> 3 -> 4 -> 5 -> 6
+// 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 // 3 -> 2 -> 1 n  6 -> 5 -> 4
-// p              c
 int main() {
 
   ListNode *n5 = new ListNode(6);
