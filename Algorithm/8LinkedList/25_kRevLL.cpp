@@ -14,6 +14,7 @@ class Solution {
   ListNode *reverseKGroup(ListNode *head, int k) {
     ListNode *join = nullptr;
     ListNode *tail = nullptr;
+    ListNode *res = nullptr;
     while (head != nullptr) {
       join = head;
       ListNode *prev = nullptr;
@@ -25,12 +26,16 @@ class Solution {
         prev = curr;
         curr = nxt;
       }
+      if (!res) {
+        res = prev;
+      }
       if (tail != nullptr) {
         tail->next = prev;
       }
       tail = join;
       head = curr;
     }
+    return res;
   }
 };
 // 1 -> 2 -> 3 -> 4 -> 5 -> 6
@@ -45,7 +50,7 @@ int main() {
   ListNode *n1 = new ListNode(2, n2);
   ListNode *n0 = new ListNode(1, n1);
   Solution sol;
-  ListNode *res = sol.reverseKGroup(n0, 2);
+  ListNode *res = sol.reverseKGroup(n0, 3);
   while (res != nullptr) {
     cout << res->val << " ";
     res = res->next;
