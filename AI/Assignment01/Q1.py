@@ -12,7 +12,7 @@ print(sub)
 print(mul)
 print(div)
 
-str = "Aanshik"
+str = "25"
 print(len(str))
 
 str = int(str)
