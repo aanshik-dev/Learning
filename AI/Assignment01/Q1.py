@@ -12,8 +12,9 @@ print(sub)
 print(mul)
 print(div)
 
-str = "25"
+str = "Aanshik"
 print(len(str))
 
+str = "25"
 str = int(str)
 print(type(str))
