@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 a = np.array([[[1,2,3,4],[5,6,7,8]],[[1,2,3,4],[5,6,7,8]],[[1,2,3,4],[5,6,7,8]]])
 print(a.shape)
@@ -53,7 +54,6 @@ std = np.std(data)
 z = (data - mean) / std
 print(z)
 
-import matplotlib.pyplot as plt
 x = np.linspace(0, 10, 50)
 y = x ** 2
 plt.plot(x, y)
