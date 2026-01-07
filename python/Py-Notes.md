@@ -212,20 +212,5 @@ else:
 
 > 📝 NOTE : Python can have indentation error
 
-## 🔥 List Functions
-
-- `append()`
-- `insert()`
-- `extend()`
-- `pop()`
-- `remove()`
-- `sort()`
-- `reverse()`
-- `copy()`
-- `clear()`
-- `index()`
-- `count()`
-- `len()`
-
 </div>
 </div>
