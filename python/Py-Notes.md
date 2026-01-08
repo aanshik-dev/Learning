@@ -78,7 +78,7 @@ print(" Done.")
 - `file=sys.stdout` # it tells where the output should be written, by default sys.stdout i.e. console
 - `flush=false` # It forces output buffer to be written immediately, by default false, allowing OS to manage
 
-## 🔥 F-Strings
+### 🔥 F-Strings
 
 While print() handles basic output, a cleaner and more powerful way to format and print complex strings is using f-strings (Formatted String Literals)
 
@@ -126,7 +126,7 @@ print(f"The {item} costs ${price:.2f}.")
 
 <br>
 
-## 🐦‍🔥 User Input
+## 🐦‍🔥 USER INPUT
 
 ```py
 num = input("Enter a number: ")
@@ -138,7 +138,69 @@ num = int(input("Enter a number: "))
 
 <br>
 
-## 🐦‍🔥 PYTHON STRINGS
+## 🐦‍🔥 CONDITIONAL STATEMENTS
+
+Conditional Statements are used to decide to do something based on some condition.
+
+```py
+if condition:
+    # code
+elif condition:
+    # code
+else:
+    # code
+```
+
+> 📝 NOTE : Python can have indentation error
+
+<br>
+
+## 🐦‍🔥 LOOPS
+
+- Loops are used to iterate through a block of code multiple times.
+- `Break` statement is used to break out of the loop.
+- `Continue` statement is used to skip the current iteration of the loop.
+- `pass` statement is used to do nothing.
+
+```py
+while condition:
+    # code
+```
+
+```py
+for item in list:
+    # code
+```
+
+```py
+for item in range(start, end, step):
+    # code
+```
+
+```py
+str = "Aanshik"
+for char in str:
+    if (char == 'i'):
+      print("Found")
+      break
+else:
+  print("Not Found") # code runs when loop runs completely
+```
+
+- `range(start = 0, end, step = 1)` // creates a sequence of numbers from start to end-1 with step
+
+```py
+print(range(5)) # range(0,5)
+seq = range(1,10,2)
+print(seq) # range(1,10,2)
+print(seq[1]) # 3
+print(list(seq)) # [1,3,5,7,9]
+range(5, 0 , -1) # [5,4,3,2,1]
+```
+
+<br>
+
+## 🐦‍🔥 STRINGS
 
 Strings can be created by wrapping with `''` or `""` or `''' '''` or `""" """`
 
@@ -148,7 +210,7 @@ name = "Aanshik's Phone" # Right
 # different ways are to distinguish between single and double quotes
 ```
 
-## 🔥 String Methods
+### 🔥 String Methods
 
 - `Concatenation`// can be done useing `+`
 - `len()` // gives length of the string
@@ -165,6 +227,7 @@ name = "Aanshik's Phone" # Right
 - `str[i:]` // gives substring from i to end
 - `str[:j]` // gives substring from start to j-1
 - `str[-i:-j]` // gives substring from -i to -j-1, minus indexing is allowed and starts from end with -1
+- `str[::-1]` // gives reversed string
 
 ---
 
@@ -197,20 +260,176 @@ name = "Aanshik's Phone" # Right
 
 <br>
 
-## 🐦‍🔥 Conditional Statements
+## 🐦‍🔥 LISTS and TOUPLE
 
-Conditional Statements are used to decide to do something based on some condition.
+- Lists are similar to arrays, but they are mutable while Tuples are immutable, once created cannot be changed.
+
+- There can be different data types in a list
+
+- Lists are enclosed in square brackets `[]` and Tuples are enclosed in round brackets `()`
 
 ```py
-if condition:
-    # code
-elif condition:
-    # code
-else:
-    # code
+list = [1,"Python", 3]
+tuple = (1, 2, "CPP")
+print(list) # [1, "Python", 3]
+print(tuple) # (1, 2, 3)
 ```
 
-> 📝 NOTE : Python can have indentation error
+- we can access the elements of the list and tuple using index
+
+```py
+print(list[0]) # 1
+print(list[1]) # "Python"
+print(tuple[2]) # CPP
+```
+
+```Py
+tup = (1,) # Tuple with single element
+tup = (1) # Integer
+tup = () # Empty tuple is also valid
+```
+
+### 🔥 List Methods
+
+- `append()` // adds element to the end of the list
+- `pop()` // removes last element
+- `remove(element)` // removes first occurence of element
+
+---
+
+- `sort()` // sorts the list
+- `sort(reverse=True)` // sorts the list in reverse order, Sorting is not only done with numbers but with strings as well
+
+```py
+list = ["S", "V", "A", "b", "z"]
+list.sort() # ['A', 'S', 'V', 'b', 'z']
+list.sort(reverse=True) # ['z', 'V', 'S', 'b', 'A']
+```
+
+---
+
+- `insert(index, element)` // inserts element at index
+- `clear()` // removes all elements
+- `index(element)` // returns index of first occurence of element
+- `count(element)` // returns count of element
+- `reverse()` // reverses the list
+
+---
+
+- `list.copy()` // returns a shallow copy of the list, not avaliable for the Tuple
+
+```py
+ls = [1, 2, 3]
+list2 = ls.copy() # shallow copy created, a new list is created but the element objects are shared
+print(list2) # [1, 2, 3] both list point to the same object
+ls[0] = 4 # it does not affect the other list, only first pointer points to new integer object 4
+print(ls) # [4, 2, 3]
+```
+
+---
+
+Slicing in list is similar to the strings
+
+```py
+list = [1,2,3,4,5]
+print(list[1:]) # [2, 3, 4, 5]
+print(list[:3]) # [1, 2, 3]
+print(list[1:3]) # [2, 3]
+print(list[::2]) # [1, 3, 5]
+print(list[::-1]) # [5, 4, 3, 2, 1]
+```
+
+### 🔥 Tuple Methods
+
+- `count(element)` // returns count of element
+- `index(element)` // returns index of first occurence of element
+
+<br>
+
+## 🐦‍🔥 DICTIONARY
+
+- A dictionary is a collection of key-value pairs.
+- They are enclosed in curly braces `{}`
+- They are unordered, mutabe, and do not allow duplicate keys.
+- They are indexed by keys, which can be of any immutable type.
+- keys cannot be list or dictionary, but values can be any data type
+
+```py
+dict = {
+  "name": "Aanshik",
+  "marks": {
+    "Physics": 98,
+    "Chemistry": 95,
+    "Maths": 96
+    },
+  18 : true
+  }
+print(dict) # {'name': 'Aanshik', 'marks': {'Physics': 98, 'Chemistry': 95, 'Maths': 96}, 18: True}
+dict["name"] = "Vinay"
+print(dict["name"]) # Vinay
+```
+
+### 🔥 Dictionary Methods
+
+- `keys()` // returns a list of keys
+- `values()` // returns a list of values
+- `items()` // returns a list of tuples of key-value pairs
+
+```py
+dict = {
+  "name": "Aanshik",
+  18 : true
+  }
+print(dict.keys()) # dict_keys(['name', 18])
+print(dict.values()) # dict_values(['Aanshik', True])
+print(dict.items()) # dict_items([('name', 'Aanshik'), (18, True)])
+print(list(dict.keys())) # ['name', 18] dict keys type casted to list
+```
+
+- `dict["key"]` returns value, error when does not exist
+- `get(key, default=None)` // returns the value of the key if it exists, otherwise none
+- `pop(key, default=None)` // removes and returns the value of the key if it exists
+- `update(dict)` // updates the dictionary with the key-value pairs from another dictionary
+- `popitem()` // removes and returns last key-value pair
+
+<br>
+
+## 🐦‍🔥 SET
+
+- Set is a mutable collection of unordered, unique and immutable objects
+- we cannot have list, and dictionary in set as they are mutable
+- Set is enclosed in curly braces `{}`
+
+```py
+set = {1, 2, 3, 4, 5}
+print(set) # {1, 3, 2 , 5 , 4} ordered is not maintained
+```
+
+### 🔥 Set Methods
+
+- `add(element)` // adds element to set
+- `remove(element)` // removes element from set, error if not present
+- `discard(element)` // removes element from set if present
+- `pop()` // removes and returns an arbitrary element from the set
+- `clear()` // removes all elements from the set
+- `copy()` // returns a shallow copy of the set
+- `set1.union(set2)` // returns a union of sets
+- `set1.intersection(set2)` // returns an intersection of sets
+
+```py
+set = {1, 2, 3, 4, 5}
+print(set) # {1, 3, 2 , 5 , 4}
+set.add(6)
+print(set) # {1, 3, 2 , 5 , 4, 6}
+set.remove(6)
+print(set) # {1, 3, 2 , 5 , 4}
+set.discard(6)
+print(set) # {1, 3, 2 , 5 , 4}
+set.pop()
+print(set) # {1, 3, 4 , 5 }
+set.clear()
+print(set) # set()
+```
 
 </div>
 </div>
