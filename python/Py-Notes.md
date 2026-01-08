@@ -456,5 +456,47 @@ set.clear()
 print(set) # set()
 ```
 
+<br>
+
+## 🐦‍🔥 FILE HANDLING
+
+File handling is a process of creating, reading, updating and deleting files in a computer system.
+
+- `open(file, mode = 'r')` // creates a file object
+
+```py
+f = open("file.txt", "r")
+# MODES
+# 'r' - read mode (default)
+# 'W' - write mode(overwrites)
+# 'a' - append mode
+# 'x' - create mode
+# 't' - text mode (default)
+# 'b' - binary mode
+# '+' - update mode (read/write)
+# 'w+' - write and read mode
+# 'a+' - append and read mode
+```
+
+> if a non existing file is opened in `a` or `w` mode then it is created
+
+---
+
+- `close()` // closes the file object
+- `read()` // reads the entire content of the file
+- `readline()` // reads a single line from the file
+- `write(string)` // writes a string to the file
+- `seek(offset, from)` // moves the cursor to a specific position in the file
+
+```py
+f = open("file.txt", "r")
+print(f.read()) # prints entire content
+f.close()
+
+f = open("file.txt", "r")
+print(f.readline()) # prints 1st line
+f.close()
+```
+
 </div>
 </div>
