@@ -279,7 +279,7 @@ name = "Aanshik's Phone" # Right
 - `title()` // capitalizes first letter of each word
 - `swapcase()` // converts lowercase to uppercase and vice versa
 - `strip()` // removes leading and trailing spaces
-- `split()` // splits string into list of words`
+- `split("separator" = " ")` // splits string into list of words`
 - `join()` // joins list of words into string
 - `join(separator)` // joins list of words into string with separator
 
@@ -496,7 +496,20 @@ f.close()
 f = open("file.txt", "r")
 print(f.readline()) # prints 1st line
 f.close()
+
+with open("file.txt", "r") as f:
+    print(f.read())
+# with closes the file automatically
 ```
+
+**OS MODULE**
+
+- `os.remove(file)` // deletes a file
+- `os.rename(old_file, new_file)` // renames a file
+- `os.mkdir(directory)` // creates a directory
+- `os.rmdir(directory)` // removes a directory
+- `os.chdir(directory)` // changes the current working directory
+- `os.getcwd()` // returns the current working directory
 
 </div>
 </div>

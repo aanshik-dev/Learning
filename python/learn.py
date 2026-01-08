@@ -40,3 +40,6 @@ print(type(set))
 
 ls = [1,2,3,4]
 print(sum(ls))
+
+str = "Hi i am learning python"
+print(str.split(" "))
