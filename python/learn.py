@@ -37,3 +37,6 @@ x = set.pop()
 print(x)
 print(set)
 print(type(set))
+
+ls = [1,2,3,4]
+print(sum(ls))

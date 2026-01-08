@@ -200,6 +200,31 @@ range(5, 0 , -1) # [5,4,3,2,1]
 
 <br>
 
+## 🐦‍🔥 FUNCTIONS
+
+Functions are blocks of code that perform a specific task which can be reused multiple times in a program, hence reducing redundancy.
+
+- we can return multiple values from a function
+
+```py
+def prodSum(a, b):
+    return a + b, a * b
+
+print(prodSum(3, 2)) # (5, 6)
+```
+
+- we can set the default values for the parameters
+
+```py
+# def sum(a = 2, b): # Error
+def Sum(a, b = 2):
+    return a + b
+print(Sum(3)) # (5, 6)
+print(Sum(5,3)) # (8,15)
+```
+
+<br>
+
 ## 🐦‍🔥 STRINGS
 
 Strings can be created by wrapping with `''` or `""` or `''' '''` or `""" """`
