@@ -651,7 +651,29 @@ class Student:
 >    cls.college = new
 > ```
 
-> 📝 NOTE : `decorators` allow us to wrap another function in order to extend the behaviour of the wrapped function Without permanently modifying it
+> 📝 NOTE : `decorators` allow us to wrap another function in order to extend the behaviour of the wrapped function Without permanently modifying it, Ex - @propery, @getter, @setter, @classmethod
+
+---
+
+**@property Decorator**
+
+```py
+class Result:
+  def __init__(self, Ph, Ch, Ma):
+    self.Ph = Ph
+    self.Ch = Ch
+    self.Ma = Ma
+    # percent = (Ph + Ch + Ma) / 300 * 100
+    # Not updated when marks change
+  @property
+  def percent(self):
+    return (self.Ph + self.Ch + self.Ma) / 300 * 100
+
+r = Result(98, 97, 99)
+print(r.percent) # 98
+r.Ma = 96
+print(r.percent) # 97
+```
 
 ---
 
@@ -715,6 +737,75 @@ ch.display() # CC: 1000
 
 - `super()` is used to access the parent class
 - `super().__init__(name)` is used to call the parent class constructor
+
+### 🔥 Polymorphism
+
+Polymorphism is the ability of objects to take on many forms
+
+- `Method Overloading`: same method name with different parameters
+
+```py
+class Student:
+  def display(self, name, roll):
+    print("Name:", name)
+    print("Roll:", roll)
+
+  def display(self, name):
+    print("Name:", name)
+
+s = Student()
+s.display("Aanshik", 20) # Name: Aanshik, Roll: 20
+s.display("Aanshik") # Name: Aanshik
+```
+
+- `Method Overriding`: same method name with same parameters
+
+```py
+class Parent:
+  def display(self):
+    print("Parent's display method")
+
+class Child(Parent):
+  def display(self):
+    print("Child's display method")
+
+p = Parent()
+c = Child()
+p.display() # Parent's display method
+c.display() # Child's display method
+```
+
+**OPERATORS OVERLOADING**
+
+- Dunder methods are methods starting with `__` and ending with `__`
+- `__add__` is used to overload the `+` operator
+- similarly,
+  - `__sub__` for `-`
+  - `__mul__` for `*`
+  - `__truediv__` for `/`
+  - `__mod__` for `%`
+  - `__pow__` for `**`
+
+```py
+st = "Py" + "thon"
+n = 2 + 3
+ls = [1, 2] + [3, 4]
+# same `+` operator work differently
+```
+
+```py
+class pairSum:
+  def __init__(self, a, b):
+    self.a = a
+    self.b = b
+
+  def __add__(self, other):
+    return self.a + other.a, self.b + other.b
+
+p1 = pairSum(1, 2)
+p2 = pairSum(3, 4)
+print(p1 + p2) # (4, 6)
+```
 
 ### 🔥 Destructor
 
