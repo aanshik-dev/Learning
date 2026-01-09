@@ -511,5 +511,170 @@ with open("file.txt", "r") as f:
 - `os.chdir(directory)` // changes the current working directory
 - `os.getcwd()` // returns the current working directory
 
+<br>
+
+## 🐦‍🔥 OOPS
+
+OOPs is a programming model that provides a way to structure programs by grouping related data and behavior into objects.
+
+- `class` // It is the blueprint of an object
+- `object` // It is a real instance of the blueprint
+- `self` // refers to the current object
+
+```py
+class Person:
+    def __init__(self, fullname, age):
+        self.name = fullname
+        self.age = age
+
+    def display(self):
+        print("Name:", self.name)
+        print("Age:", self.age)
+
+person = Person("Aanshik", 20)  # object
+person.display()
+```
+
+---
+
+### 🔥 Constructor
+
+- all classes have a default constructor called `__init__` We can write custom cunstructors by redefining it
+- Constructor method takes a compulsory parameter `self` as its first argument
+- `self.var` creates the instance variables
+
+> 📝 NOTE : Self is just a variable name of first parameter, we can change it to some other name
+
+```py
+# default constructor
+def __init__(self):
+  pass
+
+# parameterized constructor
+def __init__(self, name):
+  self.name = name
+
+# Same class can have multiple constructors, this is called method overloading
+```
+
+---
+
+### 🔥 Variables
+
+- Instance variables are those that are unique to each instance of a class
+- Instance variables are created at object creation using `self` parameter
+- Class variables are those that are shared by all instances of a class
+
+```py
+class Student:
+  College = "IIITG" # class variable
+  def __init__(self, name, roll):
+    # instance variable
+    self.name = name
+    self.roll = roll
+```
+
+---
+
+### 🔥 Methods
+
+Methods are functions defined inside a class
+
+```py
+class Student:
+  def __init__(self, name, roll):
+    self.name = name
+    self.roll = roll
+
+  # self is the compulsory parameter
+  def display(self):
+    print("Name:", self.name)
+    print("Roll:", self.roll)
+```
+
+**STATIC METHODS**
+
+- A static method is a method that is bound to a class rather than an instance of a class
+- They are defined using the `@staticmethod` decorator
+- They are accessed using the class name and the method name
+
+```py
+class Student:
+  @staticmethod
+  def info():
+    print("This is a static method")
+```
+
+> 📝 NOTE : `decorators` allow us to wrap another function in order to extend the behaviour of the wrapped function Without permanently modifying it
+
+---
+
+### 🔥 Abstraction
+
+Abstraction is the process of hiding the implementation details and showing only the essential features of an object to the user.
+
+### 🔥 Encapsulation
+
+Encapsulation is the process of wrapping data and the methods that work on data within a single unit.
+
+### 🔥 Del Keyword
+
+- `del` keyword is used to delete an object or its properties
+
+```py
+class Student:
+  def __init__(self, name, roll):
+    self.name = name
+    self.roll = roll
+
+  def display(self):
+    print("Name:", self.name)
+    print("Roll:", self.roll)
+
+s = Student("Aanshik", 20)
+del s.display() # deletes display method
+del s # deletes object
+```
+
+### 🔥 Access Modifiers
+
+| Modifier  | Syntax   | Meaning                              |
+| --------- | -------- | ------------------------------------ |
+| Public    | `name`   | Accessible everywhere                |
+| Protected | `_name`  | Accessible within the class or child |
+| Private   | `__name` | Accessible within the class          |
+
+---
+
+### 🔥 Inheritance
+
+Inheritance is the process of creating a new class from an existing class.
+
+```py
+class Parent:
+  def __init__(self, name):
+    self.name = name
+
+  def display(self):
+    print("Name:", self.name)
+
+class Child(Parent):
+  def __init__(self, name, age):
+    super().__init__(name)
+    self.age = age
+
+ch = Child("Aanshik", 20)
+ch.display() # Aanshik
+```
+
+- `super()` is used to access the parent class
+- `super().__init__(name)` is used to call the parent class constructor
+
+> 📝 NOTE : `super()` is used to access the parent class
+
+### 🔥 Destructor
+
+- `Destructor`: all classes have a default destructor called `__del__`
+
 </div>
 </div>
