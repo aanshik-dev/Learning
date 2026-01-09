@@ -580,6 +580,13 @@ class Student:
 
 Methods are functions defined inside a class
 
+- They are of three types
+  - Instance methods
+  - Static methods
+  - Class methods
+
+**INSTANCE METHODS**
+
 ```py
 class Student:
   def __init__(self, name, roll):
@@ -594,16 +601,55 @@ class Student:
 
 **STATIC METHODS**
 
-- A static method is a method that is bound to a class rather than an instance of a class
-- They are defined using the `@staticmethod` decorator
-- They are accessed using the class name and the method name
+Static method is:
+
+- Just a normal function inside a class
+- Has no access to class or instance (self, cls)
+- Used for utility logic related to the class
+- Defined using the `@staticmethod` decorator
+
+```py
+class Math:
+  @staticmethod
+  def add(a, b):
+    return a + b
+```
+
+**CLASS METHODS**
+
+Class method is a method that:
+
+- Works with the class itself
+- Has access to class variables directly
+- Uses `cls` as the first parameter
+- Defined using the `@classmethod` decorator
 
 ```py
 class Student:
-  @staticmethod
-  def info():
-    print("This is a static method")
+  college = "IIITG"
+
+  @classmethod
+  def change_college(cls, new):
+    cls.college = new
 ```
+
+> 📝 NOTE
+>
+> ```py
+> class student:
+>  college = "NONE"
+>
+>  def __init__(self, name, college):
+>   self.name = name
+>    # Accessing class variable indirectly
+>    student.college = college
+>    self.__class__.college = college
+>
+>  # Accessing class variable directly
+>  @classmethod
+>  def change_college(cls, new):
+>    cls.college = new
+> ```
 
 > 📝 NOTE : `decorators` allow us to wrap another function in order to extend the behaviour of the wrapped function Without permanently modifying it
 
@@ -651,26 +697,24 @@ del s # deletes object
 Inheritance is the process of creating a new class from an existing class.
 
 ```py
-class Parent:
-  def __init__(self, name):
-    self.name = name
+class Engine:
+  def __init__(self, cc):
+    self.cc = cc
 
   def display(self):
-    print("Name:", self.name)
+    print("CC:", self.cc)
 
-class Child(Parent):
-  def __init__(self, name, age):
-    super().__init__(name)
-    self.age = age
+class Car(Engine):
+  def __init__(self, cc, name):
+    super().__init__(cc)
+    self.name = name
 
-ch = Child("Aanshik", 20)
-ch.display() # Aanshik
+ch = Car(1000, "Lamborghini")
+ch.display() # CC: 1000
 ```
 
 - `super()` is used to access the parent class
 - `super().__init__(name)` is used to call the parent class constructor
-
-> 📝 NOTE : `super()` is used to access the parent class
 
 ### 🔥 Destructor
 
