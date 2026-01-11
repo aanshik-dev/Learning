@@ -672,5 +672,60 @@ DROP INDEX idx_name ON Students;
 - Frequently updated columns
 - Columns with few unique values
 
+<br>
+
+## 🐦‍🔥 NORMALIZATION
+
+### 🔥 Normalization
+
+⚡ 1NF (First Normal Form)
+
+- Atomic values (no multi-valued attributes)
+- Each column has unique name
+- Order doesn't matter
+
+⚡ 2NF (Second Normal Form)
+
+- Must be in 1NF
+- No partial dependency (all non-key attributes depend on entire primary key)
+
+⚡ 3NF (Third Normal Form)
+
+- Must be in 2NF
+- No transitive dependency (non-key attributes shouldn't depend on other non-key attributes)
+
+⚡ BCNF (Boyce-Codd Normal Form)
+
+- Stronger than 3NF
+- Every determinant must be candidate key
+
+⚡ 4NF (Fourth Normal Form)
+
+- No multi-valued dependencies
+
+⚡ 5NF (Fifth Normal Form)
+
+- No join dependency
+
+```sql
+-- Unnormalized Table
+Student (ID, Name, {Course1, Course2}, Phone)
+
+-- 1NF (Remove multi-valued)
+Student (ID, Name, Phone)
+Courses (StudentID, CourseName)
+
+-- 2NF (Remove partial dependencies)
+Students (ID, Name, DeptID)        -- DeptID is foreign key
+Departments (DeptID, DeptName)
+StudentCourses (StudentID, CourseID)
+Courses (CourseID, CourseName)
+
+-- 3NF (Remove transitive dependencies)
+Students (ID, Name, DeptID)
+Departments (DeptID, DeptName, HOD_ID)  -- HOD_ID references Teachers
+Teachers (TeacherID, Name, Department)
+```
+
 </div>
 </div>
