@@ -45,10 +45,10 @@ A Database Management System (DBMS) is software that allows users to define, cre
 
 ### 🔥 Database Schema
 
-`Schema`: Overall design/blueprint of database
-`Instance`: Actual data at a particular moment
+- `Schema`: Overall design/blueprint of database
+- `Instance`: Actual data at a particular moment
 
-Types of Schema:
+⚡ Types of Schema:
 
 - Physical Schema - Physical storage
 - Logical Schema - Logical structure
@@ -133,44 +133,11 @@ Types of Schema:
    - GRANT, REVOKE
 
 4. TCL (Transaction Control Language)
+
    - COMMIT, ROLLBACK, SAVEPOINT
 
----
-
-### 🔥 DDL Commands
-
-⚡ **Create Database** - Creates a Database
-
-```sql
-CREATE DATABASE University;
-USE University;
-```
-
-⚡ **Create Table** - Defines the schema of database
-
-```sql
-CREATE TABLE Students (
-    StudentID INT PRIMARY KEY,
-    Name VARCHAR(50) NOT NULL,
-    Age INT CHECK (Age >= 18),
-    Email VARCHAR(100) UNIQUE,
-    DepartmentID INT,
-    FOREIGN KEY (DepartmentID) REFERENCES Departments(DeptID)
-);
-```
-
-⚡ **Alter Table** - used to make changes
-
-```sql
-ALTER TABLE Students
-ADD Phone VARCHAR(20);
-```
-
-⚡ **Drop Table** - deletes a table
-
-```sql
-DROP TABLE Students;
-```
+5. DQL (Data Query Language)
+   - SELECT
 
 ---
 
@@ -207,9 +174,9 @@ DROP TABLE Students;
 - `BOOLEAN` True/ False
 - `BLOB` Binary Large Object
 
-<br>
+---
 
-## 🐦‍🔥 TYPES OF CONSTRAINTS
+### 🔥 Types of Constraints
 
 - `NOT NULL` -- Column cannot be NULL
 - `UNIQUE` -- All values must be unique
@@ -217,8 +184,6 @@ DROP TABLE Students;
 - `FOREIGN KEY` -- References another table
 - `CHECK` -- Validates condition
 - `DEFAULT` -- Default value if not specified
-
-### 🔥 Adding Constraints
 
 ```sql
  -- Column Level
@@ -248,9 +213,165 @@ ALTER TABLE Employees
 DROP CONSTRAINT CHK_Salary;
 ```
 
+---
+
+<br>
+
+## 🐦‍🔥 DDL Commands
+
+Commands used for data definition
+
+⚡ **Create Database** - Creates a Database
+
+```sql
+CREATE DATABASE University;
+USE University;
+```
+
+⚡ **Create Table** - Defines the schema of database
+
+```sql
+CREATE TABLE Students (
+    StudentID INT PRIMARY KEY,
+    Name VARCHAR(50) NOT NULL,
+    Age INT CHECK (Age >= 18),
+    Email VARCHAR(100) UNIQUE,
+    DepartmentID INT,
+    FOREIGN KEY (DepartmentID) REFERENCES Departments(DeptID)
+);
+```
+
+⚡ **Alter Table** - used to make changes
+
+```sql
+ALTER TABLE Students
+ADD Phone VARCHAR(20);
+```
+
+⚡ **Drop Table** - deletes a table
+
+```sql
+DROP TABLE Students;
+```
+
+⚡ **Truncate Table** - deletes all data in a table
+
+```sql
+TRUNCATE TABLE Students;
+```
+
+⚡ **Rename Table** - renames a table
+
+```sql
+ALTER TABLE Students
+RENAME TO StudentsInfo;
+```
+
+---
+
 <br>
 
 ## 🐦‍🔥 DML COMMANDS
+
+Commands used to manipulate data
+
+⚡ **Insert** - Insert data into a table
+
+```sql
+-- Insert multiple rows
+INSERT INTO Students VALUES
+(3, 'Bob', 22, 'bob@email.com'),
+(4, 'Charlie', 23, 'charlie@email.com');
+
+-- Insert specific columns
+INSERT INTO Students (StudentID, Name, Age)
+VALUES (2, 'Alice', 21);
+```
+
+⚡ **Select** - Retrieve data from a table
+
+```sql
+-- Select all columns
+SELECT * FROM Students;
+
+-- Select specific columns
+SELECT Name, Age FROM Students;
+
+-- Select with alias
+SELECT Name AS StudentName, Age AS StudentAge FROM Students;
+
+-- Select distinct values
+SELECT DISTINCT Department FROM Students;
+
+-- Select with conditions
+SELECT * FROM Students WHERE Age > 20;
+```
+
+⚡ **Update** - Update data in a table
+
+```sql
+-- Update single record
+UPDATE Students
+SET Age = 22
+WHERE StudentID = 1;
+
+-- Update multiple columns
+UPDATE Students
+SET Age = 23, Email = 'new@email.com'
+WHERE StudentID = 2;
+
+-- Update all records (BE CAREFUL!)
+UPDATE Students
+SET Status = 'Active';
+```
+
+⚡ **Delete** - Delete data from a table
+
+```sql
+-- Delete specific records
+DELETE FROM Students
+WHERE Age < 18;
+
+-- Delete all records (BE CAREFUL!)
+DELETE FROM Students;
+
+-- TRUNCATE (faster, cannot rollback)
+TRUNCATE TABLE Students;
+```
+
+---
+
+<br>
+
+## 🐦‍🔥 OPERATORS IN SQL
+
+### 🔥 Comparison Operators
+
+`=`, `!=` or `<>`, `<`, `>`, `<=`, `>=`
+
+### 🔥 Logical Operators
+
+`AND`, `OR`, `NOT`
+
+### 🔥 Special Operators
+
+`IS NULL`, `IS NOT NULL`, `LIKE`, `NOT LIKE`, `BETWEEN`, `IN`, `NOT IN`
+
+```sql
+-- IN (matches any value in list)
+SELECT * FROM Students WHERE Age IN (20, 21, 22);
+
+-- BETWEEN (range inclusive)
+SELECT * FROM Students WHERE Age BETWEEN 18 AND 25;
+
+-- LIKE (pattern matching)
+SELECT * FROM Students WHERE Name LIKE 'A%';   -- Starts with A
+SELECT * FROM Students WHERE Name LIKE '%a%';  -- Contains 'a'
+SELECT * FROM Students WHERE Name LIKE '_a%';  -- Second letter is 'a'
+
+-- IS NULL / IS NOT NULL
+SELECT * FROM Students WHERE Email IS NULL;
+```
 
 </div>
 </div>
