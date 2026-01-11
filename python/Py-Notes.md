@@ -102,7 +102,7 @@ print(f"The {item} costs ${price:.2f}.")
 
 ### 🔥 Arithematic Operators
 
-`+`, `-`, `*`, `/`, `%`, `**`(power)
+`+`, `-`, `*`, `/`, `%`, `**`(power), `//`(floor division)
 
 ### 🔥 Relational Operators
 
@@ -114,11 +114,11 @@ print(f"The {item} costs ${price:.2f}.")
 
 ### 🔥 Unary Operators
 
-`i++`, `++i`, `i--`, `--i`
+Python does not support any unary operators
 
 ### 🔥 Bitwise Operators
 
-`&`, `|`, `<<`, `>>`, `^`
+`&`, `|`, `<<`, `>>`, `^`, `~`
 
 ### 🔥 Assignment Operators
 
