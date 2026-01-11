@@ -213,8 +213,6 @@ ALTER TABLE Employees
 DROP CONSTRAINT CHK_Salary;
 ```
 
----
-
 <br>
 
 ## 🐦‍🔥 DDL Commands
@@ -372,6 +370,307 @@ SELECT * FROM Students WHERE Name LIKE '_a%';  -- Second letter is 'a'
 -- IS NULL / IS NOT NULL
 SELECT * FROM Students WHERE Email IS NULL;
 ```
+
+<br>
+
+## 🐦‍🔥 FUNCTIONS IN SQL
+
+### 🔥 Aggregate Functions
+
+Return single value from multiple rows
+
+- `COUNT()` - Returns the number of rows
+- `SUM()` - Returns the sum of all values
+- `AVG()` - Returns the average of all values
+- `MIN()` - Returns the smallest value
+- `MAX()` - Returns the largest value
+
+```sql
+SELECT COUNT(*) FROM Students;
+SELECT AVG(Age) FROM Students;
+SELECT MAX(Salary), MIN(Salary) FROM Employees;
+```
+
+### 🔥 String Functions
+
+- `LENGTH()` `- Returns the length of a string
+- `UPPER()` - Converts a string to uppercase
+- `LOWER()` - Converts a string to lowercase
+- `TRIM()` - Removes leading and trailing spaces
+- `CONCAT()` - Concatenates two or more strings
+- `SUBSTRING()` - Returns a substring from a string
+- `REPLACE()` - Replaces a substring with another substring
+
+```sql
+SELECT CONCAT(Name, ' - ', Department) FROM Students;
+SELECT UPPER(Name) FROM Students;
+SELECT SUBSTRING(Name, 1, 3) FROM Students;
+```
+
+### 🔥 Date Functions
+
+- `NOW()`- Returns the current date and time
+- `CURDATE()` - Returns the current date
+- `CURTIME()` - Returns the current time
+- `YEAR()` - Returns the year
+- `MONTH()` - Returns the month
+- `DAY()` - Returns the day
+- `DATE_ADD()` - Adds a date or time to a date or time
+- `DATE_SUB()` - Subtracts a date or time from a date or time
+- `DATEDIFF()` - Returns the number of days between two dates
+
+<br>
+
+## 🐦‍🔥 CLAUSES IN SQL
+
+### 🔥 WHERE clause
+
+```sql
+SELECT * FROM Students
+WHERE Age > 20 AND Department = 'CS';
+```
+
+### 🔥 GROUP BY Clause
+
+```sql
+-- Group rows with same values
+SELECT Department, COUNT(*) as Total
+FROM Students
+GROUP BY Department;
+
+-- With HAVING clause (filter groups)
+SELECT Department, AVG(Age) as AvgAge
+FROM Students
+GROUP BY Department
+HAVING AVG(Age) > 20;
+```
+
+### 🔥 ORDER BY Clause
+
+```sql
+-- Sort results
+SELECT * FROM Students
+ORDER BY Name ASC;  -- Ascending (default)
+
+SELECT * FROM Students
+ORDER BY Age DESC;  -- Descending
+
+-- Multiple columns
+SELECT * FROM Students
+ORDER BY Department ASC, Age DESC;
+```
+
+### 🔥 LIMIT Clause
+
+```sql
+-- Limit number of rows returned
+SELECT * FROM Students
+LIMIT 10;
+
+-- With offset (pagination)
+SELECT * FROM Students
+LIMIT 10 OFFSET 20;  -- Skip 20, return next 10
+```
+
+<br>
+
+## 🐦‍🔥 JOINS
+
+### 🔥 Types of Joins
+
+- `INNER JOIN` - Returns matching records from both tables
+- `LEFT (OUTER) JOIN` - All records from left table + matching from right
+- `RIGHT (OUTER) JOIN` - All records from right table + matching from left
+- `FULL (OUTER) JOIN` - All records when there's match in either table
+- `CROSS JOIN` - Cartesian product of both tables
+- `SELF JOIN` - Join table with itself
+
+```sql
+-- INNER JOIN
+SELECT s.Name, d.DepartmentName
+FROM Students s
+INNER JOIN Departments d ON s.DeptID = d.DeptID;
+
+-- LEFT JOIN
+SELECT s.Name, d.DepartmentName
+FROM Students s
+LEFT JOIN Departments d ON s.DeptID = d.DeptID;
+
+-- SELF JOIN
+SELECT e1.Name AS Employee, e2.Name AS Manager
+FROM Employees e1
+LEFT JOIN Employees e2 ON e1.ManagerID = e2.EmpID;
+
+-- MULTIPLE JOINS
+SELECT s.Name, d.DepartmentName, c.CourseName
+FROM Students s
+JOIN Departments d ON s.DeptID = d.DeptID
+JOIN Courses c ON d.DeptID = c.DeptID;
+```
+
+### 🔥 SUBQUERIES
+
+### 🔥 Types of Subqueries
+
+- `Single-row subquery` (returns one row)
+- `Multi-row subquery` (returns multiple rows)
+- `Correlated subquery` (references outer query)
+- `Nested subquery` (subquery within subquery)
+
+```sql
+-- Single-row subquery
+SELECT Name, Salary
+FROM Employees
+WHERE Salary > (SELECT AVG(Salary) FROM Employees);
+
+-- Multi-row subquery with IN
+SELECT Name
+FROM Students
+WHERE DeptID IN (SELECT DeptID FROM Departments WHERE Location = 'Building A');
+
+-- Correlated subquery
+SELECT Name, Salary
+FROM Employees e1
+WHERE Salary > (SELECT AVG(Salary)
+                FROM Employees e2
+                WHERE e1.DeptID = e2.DeptID);
+
+-- EXISTS operator
+SELECT DeptName
+FROM Departments d
+WHERE EXISTS (SELECT 1 FROM Students s
+              WHERE s.DeptID = d.DeptID);
+```
+
+<br>
+
+## 🐦‍🔥 SET OPERATIONS
+
+### 🔥 Union
+
+```sql
+-- Combine results, remove duplicates
+SELECT Name FROM Students
+UNION
+SELECT Name FROM Alumni;
+
+-- UNION ALL (keep duplicates)
+SELECT Name FROM Students
+UNION ALL
+SELECT Name FROM Alumni;
+```
+
+### 🔥 Intersect
+
+```sql
+-- Common records in both queries
+SELECT StudentID FROM CS_Students
+INTERSECT
+SELECT StudentID FROM Scholarship_Students;
+```
+
+### 🔥 Except/Minus
+
+```sql
+-- Records in first but not in second
+SELECT StudentID FROM Students
+EXCEPT
+SELECT StudentID FROM Graduated_Students;
+```
+
+<br>
+
+## 🐦‍🔥 VIEWS
+
+### 🔥 Creating Views
+
+```sql
+-- Virtual table based on query
+CREATE VIEW StudentDetails AS
+SELECT s.StudentID, s.Name, d.DepartmentName, c.CourseName
+FROM Students s
+JOIN Departments d ON s.DeptID = d.DeptID
+JOIN Courses c ON s.CourseID = c.CourseID;
+
+-- Using the view
+SELECT * FROM StudentDetails
+WHERE DepartmentName = 'Computer Science';
+
+-- Updatable view (with certain conditions)
+CREATE VIEW ActiveStudents AS
+SELECT * FROM Students
+WHERE Status = 'Active';
+
+-- WITH CHECK OPTION (prevents updates violating view condition)
+CREATE VIEW CS_Students AS
+SELECT * FROM Students
+WHERE Department = 'CS'
+WITH CHECK OPTION;
+```
+
+### 🔥 Modifing Views
+
+```sql
+-- Alter view
+CREATE OR REPLACE VIEW StudentDetails AS
+SELECT s.StudentID, s.Name, s.Email, d.DepartmentName
+FROM Students s
+JOIN Departments d ON s.DeptID = d.DeptID;
+
+-- Drop view
+DROP VIEW StudentDetails;
+```
+
+<br>
+
+## 🐦‍🔥 INDEXES
+
+### 🔥 Types of Indexes
+
+```sql
+1. Clustered Index
+   - Defines physical order of data
+   - Only one per table (usually Primary Key)
+
+2. Non-clustered Index
+   - Separate structure with pointers to data
+   - Multiple per table
+```
+
+### 🔥 Creating Indexes
+
+```sql
+-- Single column index
+CREATE INDEX idx_name ON Students(Name);
+
+-- Composite index
+CREATE INDEX idx_dept_age ON Students(Department, Age);
+
+-- Unique index
+CREATE UNIQUE INDEX idx_email ON Students(Email);
+
+-- Clustered index (usually on Primary Key)
+CREATE CLUSTERED INDEX idx_studentid ON Students(StudentID);
+
+-- Drop index
+DROP INDEX idx_name ON Students;
+```
+
+### 🔥 When to use Indexes
+
+✅ DO Index:
+
+- Primary and Foreign Keys
+- Columns frequently in WHERE clause
+- Columns used in JOIN conditions
+- Columns used in ORDER BY/GROUP BY
+
+❌ DON'T Index:
+
+- Small tables
+- Columns with many NULLs
+- Frequently updated columns
+- Columns with few unique values
 
 </div>
 </div>
