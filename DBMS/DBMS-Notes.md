@@ -124,20 +124,21 @@ A Database Management System (DBMS) is software that allows users to define, cre
 
    - CREATE, ALTER, DROP, TRUNCATE, RENAME
 
-2. DML (Data Manipulation Language)
+2. DQL (Data Query Language)
 
-   - SELECT, INSERT, UPDATE, DELETE
+   - SELECT
 
-3. DCL (Data Control Language)
+3. DML (Data Manipulation Language)
+
+   - INSERT, UPDATE, DELETE
+
+4. DCL (Data Control Language)
 
    - GRANT, REVOKE
 
-4. TCL (Transaction Control Language)
+5. TCL (Transaction Control Language)
 
    - COMMIT, ROLLBACK, SAVEPOINT
-
-5. DQL (Data Query Language)
-   - SELECT
 
 ---
 
@@ -153,14 +154,17 @@ A Database Management System (DBMS) is software that allows users to define, cre
 - `NUMERIC(p,s)` variable
   P (Precision): total number of digits
   S (Scale) number of digits after decimal
-- `FLOAT`8 Bytes
+- `FLOAT`8 Bytes with precision of 23 digits
+- `DOUBLE`8 Bytes with precision of 53 digits
 - `REAL`4 Bytes
 
 ⚡ Character Types
 
 - `CHAR(n)` Fixed
 - `VARCHAR(n)` Variable
+  n : 0 to 255 characters
 - `TEXT` Large text
+- `CLOB` Stores large Text Data
 
 ⚡ Date/Time Types
 
@@ -168,11 +172,14 @@ A Database Management System (DBMS) is software that allows users to define, cre
 - `TIME` HH:MM:SS
 - `DATETIME` YYYY-MM-DD HH:MM:SS
 - `TIMESTAMP` Automatic timestamp
+- `YEAR` 1-4 digits
 
 ⚡ Other Types
 
 - `BOOLEAN` True/ False
-- `BLOB` Binary Large Object
+- `BLOB` Binary Large Object, like images or pdf
+
+> 📝 NOTE : We can use `SIGNED` AND `UNSIGNED` keywords with the data types
 
 ---
 
@@ -246,10 +253,11 @@ ALTER TABLE Students
 ADD Phone VARCHAR(20);
 ```
 
-⚡ **Drop Table** - deletes a table
+⚡ **Drop Table** - deletes a table or Database
 
 ```sql
 DROP TABLE Students;
+DROP DATABASE University;
 ```
 
 ⚡ **Truncate Table** - deletes all data in a table
@@ -263,6 +271,12 @@ TRUNCATE TABLE Students;
 ```sql
 ALTER TABLE Students
 RENAME TO StudentsInfo;
+```
+
+⚡ **SHOW DATABASE** - displays all databases
+
+```sql
+SHOW DATABASES;
 ```
 
 ---
@@ -353,7 +367,7 @@ TRUNCATE TABLE Students;
 
 ### 🔥 Special Operators
 
-`IS NULL`, `IS NOT NULL`, `LIKE`, `NOT LIKE`, `BETWEEN`, `IN`, `NOT IN`
+`IS NULL`, `IS NOT NULL`, `LIKE`, `NOT LIKE`, `BETWEEN`, `IN`, `NOT IN`, `EXISTS`, `NOT EXISTS`, `CASE`, `WHEN`, `THEN`, `ELSE`, `END`, `IF`
 
 ```sql
 -- IN (matches any value in list)
