@@ -747,7 +747,7 @@ SELECT
     employee_id,
     salary,
     AVG(salary) OVER (PARTITION BY department) as dept_avg_salary,
-    salary - AVG(salary) OVER (PARTITION BY department) as diff_from_avg
+    salary - AVG(salary) OVER() as diff_from_avg
 FROM employees;
 ```
 
