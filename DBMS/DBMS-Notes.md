@@ -222,6 +222,52 @@ DROP CONSTRAINT CHK_Salary;
 
 <br>
 
+## 🐦‍🔥 OPERATORS IN SQL
+
+### 🔥 Arithmetic Operators
+
+`+`, `-`, `*`, `/`, `%`
+
+### 🔥 Comparison Operators
+
+`=`, `!=` or `<>`, `<`, `>`, `<=`, `>=`
+
+### 🔥 Compound Operators
+
+`+=`, `-=`, `*=`, `/=`, `%=`
+
+### 🔥 Bitwise Operator
+
+`&`, `|`, `^`
+
+### 🔥 Logical Operators
+
+`AND`, `OR`, `NOT`
+
+### 🔥 Special Operators
+
+`IS NULL`, `IS NOT NULL`, `ALL`, `SOME`, `ANY`, `EXISTS`, `BETWEEN`, `IN`, `LIKE`, `CASE`, `WHEN`, `THEN`, `ELSE`, `END`, `IF`
+
+```sql
+-- IN (matches any value in list)
+SELECT * FROM Students WHERE Age IN (20, 21, 22);
+
+-- BETWEEN (range inclusive)
+SELECT * FROM Students WHERE Age BETWEEN 18 AND 25;
+
+-- LIKE (pattern matching)
+SELECT * FROM Students WHERE Name LIKE 'A%';
+-- '%a%' - Contains a
+-- 'A%' - Starts with A
+-- '%A' - Ends with A
+-- '_a%' - Second letter is a
+
+-- IS NULL / IS NOT NULL
+SELECT * FROM Students WHERE Email IS NULL;
+```
+
+<br>
+
 ## 🐦‍🔥 DDL Commands
 
 Commands used for data definition
@@ -246,13 +292,6 @@ CREATE TABLE Students (
 );
 ```
 
-⚡ **Alter Table** - used to make changes
-
-```sql
-ALTER TABLE Students
-ADD Phone VARCHAR(20);
-```
-
 ⚡ **Drop Table** - deletes a table or Database
 
 ```sql
@@ -266,6 +305,17 @@ DROP DATABASE University;
 TRUNCATE TABLE Students;
 ```
 
+⚡ **Alter Table** - used to make changes
+
+```sql
+ALTER TABLE Students
+ADD COLUMN Phone VARCHAR(20) FIRST;
+-- FIRST places column at beginning of table
+
+ALTER TABLE Students
+DROP COLUMN Phone;
+```
+
 ⚡ **Rename Table** - renames a table
 
 ```sql
@@ -273,13 +323,25 @@ ALTER TABLE Students
 RENAME TO StudentsInfo;
 ```
 
-⚡ **SHOW DATABASE** - displays all databases
+⚡ **Change Column** - changes name, data type and constraints of column
+
+```sql
+ALTER TABLE Students
+CHANGE COLUMN old_name new_name data_type constraints;
+```
+
+⚡ **Modify Column** - changes data type & constraints of column
+
+```sql
+ALTER TABLE Students
+MODIFY COLUMN Age INT NOT NULL;
+```
+
+⚡ **Show database** - displays all databases
 
 ```sql
 SHOW DATABASES;
 ```
-
----
 
 <br>
 
@@ -324,7 +386,7 @@ SELECT * FROM Students WHERE Age > 20;
 ```sql
 -- Update single record
 UPDATE Students
-SET Age = 22
+SET Age = 22, marks = marks + 5;
 WHERE StudentID = 1;
 
 -- Update multiple columns
@@ -349,40 +411,6 @@ DELETE FROM Students;
 
 -- TRUNCATE (faster, cannot rollback)
 TRUNCATE TABLE Students;
-```
-
----
-
-<br>
-
-## 🐦‍🔥 OPERATORS IN SQL
-
-### 🔥 Comparison Operators
-
-`=`, `!=` or `<>`, `<`, `>`, `<=`, `>=`
-
-### 🔥 Logical Operators
-
-`AND`, `OR`, `NOT`
-
-### 🔥 Special Operators
-
-`IS NULL`, `IS NOT NULL`, `LIKE`, `NOT LIKE`, `BETWEEN`, `IN`, `NOT IN`, `EXISTS`, `NOT EXISTS`, `CASE`, `WHEN`, `THEN`, `ELSE`, `END`, `IF`
-
-```sql
--- IN (matches any value in list)
-SELECT * FROM Students WHERE Age IN (20, 21, 22);
-
--- BETWEEN (range inclusive)
-SELECT * FROM Students WHERE Age BETWEEN 18 AND 25;
-
--- LIKE (pattern matching)
-SELECT * FROM Students WHERE Name LIKE 'A%';   -- Starts with A
-SELECT * FROM Students WHERE Name LIKE '%a%';  -- Contains 'a'
-SELECT * FROM Students WHERE Name LIKE '_a%';  -- Second letter is 'a'
-
--- IS NULL / IS NOT NULL
-SELECT * FROM Students WHERE Email IS NULL;
 ```
 
 <br>
@@ -451,12 +479,6 @@ WHERE Age > 20 AND Department = 'CS';
 SELECT Department, COUNT(*) as Total
 FROM Students
 GROUP BY Department;
-
--- With HAVING clause (filter groups)
-SELECT Department, AVG(Age) as AvgAge
-FROM Students
-GROUP BY Department
-HAVING AVG(Age) > 20;
 ```
 
 ### 🔥 ORDER BY Clause
@@ -486,9 +508,67 @@ SELECT * FROM Students
 LIMIT 10 OFFSET 20;  -- Skip 20, return next 10
 ```
 
+### 🔥 HAVING Clause
+
+```sql
+-- With HAVING clause (filter groups)
+SELECT Department, AVG(Age) as AvgAge
+FROM Students
+GROUP BY Department
+HAVING AVG(Age) > 20;
+```
+
+> 📝 NOTE : `HAVING` clause is used with the grouped/Aggregate data i.e. after the GROPUP BY, So we can not use `HAVING Age > 20`
+
+| Name  | Department | Age |
+| ----- | ---------- | --- |
+| Alice | Math       | 19  |
+| Bob   | Math       | 22  |
+| Carol | Science    | 18  |
+| Dave  | Science    | 21  |
+
+- Math group: Ages = [19, 22] → MAX = 22 → KEEP (22 > 20)
+- Science group: Ages = [18, 21] → MAX = 21 → KEEP (21 > 20)
+- Result: Both departments shown
+
+---
+
+### 🔥 General Order
+
+- SELECT columns(s)
+- FROM table_name
+- WHERE condition
+- GROUP BY column(s)
+- HAVING condition
+- ORDER BY column(s) ASC/DESC;
+- LIMIT number_of_rows
+
 <br>
 
+## 🐦‍🔥 Foreign Keys
+
+- Foreign keys are used to link two tables together. They are used to enforce referential integrity, ensuring that the data in one table is consistent with the data in another table.
+
+- Foreign keys are those keys which are primary keys in another table.
+
+```sql
+CREATE TABLE Students (
+  StudentID INT PRIMARY KEY,
+  Name VARCHAR(50),
+  DepartmentID INT,
+  FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID)
+  ON UPDATE CASCADE
+  ON DELETE CASCADE
+);
+```
+
+- `ON UPDATE CASCADE` - If a record in the parent table is updated, the corresponding record in the child table will be updated as well.
+- `ON DELETE SET NULL` - If a record in the parent table is deleted, the corresponding record in the child table will be set to NULL.
+- `ON DELETE CASCADE` - If a record in the parent table is deleted, the corresponding record in the child table will be deleted as well.
+
 ## 🐦‍🔥 JOINS
+
+Joins are used to combine rows from two or more tables based on a related column between them.
 
 ### 🔥 Types of Joins
 
@@ -499,16 +579,24 @@ LIMIT 10 OFFSET 20;  -- Skip 20, return next 10
 - `CROSS JOIN` - Cartesian product of both tables
 - `SELF JOIN` - Join table with itself
 
+> 📝 NOTE : `FULL JOIN` is not present in mySQl, so we use the `UNION`
+
 ```sql
 -- INNER JOIN
 SELECT s.Name, d.DepartmentName
-FROM Students s
+FROM Students as s
 INNER JOIN Departments d ON s.DeptID = d.DeptID;
 
--- LEFT JOIN
+-- LEFT JOIN/ RIGHT JOIN
 SELECT s.Name, d.DepartmentName
 FROM Students s
 LEFT JOIN Departments d ON s.DeptID = d.DeptID;
+
+-- FULL JOIN
+SELECT * FROM Students as s
+LEFT JOIN Departments d ON s.DeptID = d.DeptID
+UNION
+RIGHT JOIN Departments d ON s.DeptID = d.DeptID
 
 -- SELF JOIN
 SELECT e1.Name AS Employee, e2.Name AS Manager
@@ -520,9 +608,20 @@ SELECT s.Name, d.DepartmentName, c.CourseName
 FROM Students s
 JOIN Departments d ON s.DeptID = d.DeptID
 JOIN Courses c ON d.DeptID = c.DeptID;
+-- JOIN is by default INNER JOIN
 ```
 
-### 🔥 SUBQUERIES
+```sql
+-- LEFT EXTERNAL JOIN - ONLY LEFT
+SELECT *
+FROM Student as a
+LEFT JOIN course as b ON a.cid = b.id
+WHERE b.id IS NULL;
+```
+
+<br>
+
+## 🐦‍🔥 SUBQUERIES
 
 ### 🔥 Types of Subqueries
 
@@ -641,15 +740,12 @@ DROP VIEW StudentDetails;
 
 ### 🔥 Types of Indexes
 
-```sql
-1. Clustered Index
-   - Defines physical order of data
-   - Only one per table (usually Primary Key)
-
-2. Non-clustered Index
-   - Separate structure with pointers to data
-   - Multiple per table
-```
+- Clustered Index
+  - Defines physical order of data
+  - Only one per table (usually Primary Key)
+- Non-clustered Index
+  - Separate structure with pointers to data
+  - Multiple per table
 
 ### 🔥 Creating Indexes
 
@@ -740,6 +836,108 @@ Students (ID, Name, DeptID)
 Departments (DeptID, DeptName, HOD_ID)  -- HOD_ID references Teachers
 Teachers (TeacherID, Name, Department)
 ```
+
+<br>
+
+## 🐦‍🔥 TRANSACTIONS
+
+### 🔥 ACID properties
+
+- `Atomicity` - Either all operations complete or none
+- `Consistency` - Database remains consistent before and after
+- `Isolation` - Concurrent transactions don't interfere
+- `Durability` - Committed changes persist even after system failure
+
+```sql
+-- Start transaction
+BEGIN TRANSACTION;
+
+-- Operations
+UPDATE Accounts SET Balance = Balance - 100 WHERE AccNo = 1;
+UPDATE Accounts SET Balance = Balance + 100 WHERE AccNo = 2;
+
+-- Savepoint
+SAVEPOINT before_final;
+
+-- More operations
+UPDATE Accounts SET Balance = Balance - 50 WHERE AccNo = 1;
+
+-- Rollback to savepoint
+ROLLBACK TO before_final;
+
+-- Commit transaction
+COMMIT;
+
+-- Rollback entire transaction
+ROLLBACK;
+```
+
+### 🔥 Concurrency Control
+
+⚡ Problems with concurrent Transactions
+
+- `Dirty Read` - Read uncommitted data
+- `Lost Update` - Overwrite by another transaction
+- `Unrepeatable Read` - Different values in same read
+- `Phantom Read` - New rows appear in second read
+
+⚡ Isolation Levels
+
+- READ UNCOMMITTED
+  - Allows dirty reads
+  - Lowest isolation, highest performance
+- READ COMMITTED
+  - Prevents dirty reads
+  - Default in many databases
+- REPEATABLE READ
+  - Prevents dirty and non-repeatable reads
+  - Default in MySQL InnoDB
+- SERIALIZABLE
+  - Highest isolation
+  - Transactions execute serially
+
+⚡ Setting Isolation Level
+
+```sql
+-- Set for current session
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+
+-- Set for all transactions
+ALTER DATABASE University
+SET READ_COMMITTED_SNAPSHOT ON;
+```
+
+<br>
+
+## 🐦‍🔥 LOCKS
+
+### 🔥Types of Locks
+
+- Shared Lock (S Lock)
+  - For reading operations
+  - Multiple transactions can hold
+- Exclusive Lock (X Lock)
+  - For writing operations
+  - Only one transaction can hold
+- Intention Locks
+
+  - Indicate intention to lock at finer granularity
+  - IS (Intention Shared), IX (Intention Exclusive)
+
+### 🔥Lock granularity
+
+`Database Level → Table Level → Page Level → Row Level`
+
+### 🔥 Lock Compatibility matrix
+
+|     | NL  | IS  | IX  | S   | SIX | X   |
+| --- | --- | --- | --- | --- | --- | --- |
+| NL  | ✓   | ✓   | ✓   | ✓   | ✓   | ✓   |
+| IS  | ✓   | ✓   | ✓   | ✓   | ✓   | ✗   |
+| IX  | ✓   | ✓   | ✗   | ✗   | ✗   | ✗   |
+| S   | ✓   | ✓   | ✗   | ✓   | ✗   | ✗   |
+| SIX | ✓   | ✓   | ✗   | ✗   | ✗   | ✗   |
+| X   | ✓   | ✗   | ✗   | ✗   | ✗   | ✗   |
 
 </div>
 </div>
