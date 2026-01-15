@@ -7,13 +7,17 @@ A Database Management System (DBMS) is software that allows users to define, cre
 
 <br>
 
+## 🐦‍🔥 What is Data?
+
+Data is a collection of raw, unorganized facts, symbols, or observations that represent quantities, characters, or signals.
+
+On its own, data is often "meaningless" until it is processed and put into context. Once data is organized, analyzed, and interpreted, it becomes information.
+
 ## 🐦‍🔥 What is Database?
 
 - Organized collection of structured information or data
 - Typically stored electronically in a computer system
 - Managed by a DBMS
-
-<br>
 
 ## 🐦‍🔥 Types of Databases
 
@@ -23,6 +27,11 @@ A Database Management System (DBMS) is software that allows users to define, cre
 - `Hierarchical Databases`
 - `Network Databases`
 - `Object-oriented Databses`
+
+## 🐦‍🔥 What is DBMS?
+
+- Database Management System (DBMS) is software that allows users to define, create, maintain, and control access to databases.
+- DBMS is a collection of tools and procedures that manage and control the data in a database.
 
 <br>
 
@@ -449,6 +458,20 @@ SELECT UPPER(Name) FROM Students;
 SELECT SUBSTRING(Name, 1, 3) FROM Students;
 ```
 
+### 🔥 Numeric Functions
+
+- `ROUND()` - Rounds a number to a specified number of decimal places
+- `FLOOR()` - Returns the largest integer less than or equal to a number
+- `CEILING()` - Returns the smallest integer greater than or equal to a number
+- `ABS()` - Returns the absolute value of a number
+
+```sql
+SELECT ROUND(AvgMarks, 2) FROM Students;
+SELECT FLOOR(AvgMarks) FROM Students;
+SELECT CEILING(AvgMarks) FROM Students;
+SELECT ABS(AvgMarks) FROM Students;
+```
+
 ### 🔥 Date Functions
 
 - `NOW()`- Returns the current date and time
@@ -692,6 +715,107 @@ SELECT StudentID FROM Graduated_Students;
 ```
 
 <br>
+
+## 🐦‍🔥 WINDOW FUNCTIONS
+
+Window functions perform calculations across a set of table rows that are somehow related to the current row.
+Unlike regular aggregate functions, window functions do not collapse rows - they maintain the original rows while adding computed values
+
+- Operate on a window of rows related to current row
+- Use `OVER()` clause to define the window
+- Can be used with `ORDER BY`, `PARTITION BY`, `ROWS/RANGE` clauses
+
+### 🔥 Aggregate Window Functions
+
+- `SUM()`, `AVG()`, `COUNT()`, `MIN()`, `MAX()`
+
+```sql
+SELECT
+    date,
+    sales,
+    SUM(sales) OVER (ORDER BY date) as total_sales,
+    AVG(sales) OVER (ORDER BY date) as avg_sales,
+    COUNT(sales) OVER (ORDER BY date) as num_days,
+    MIN(sales) OVER (ORDER BY date) as min_sales,
+    MAX(sales) OVER (ORDER BY date) as max_sales
+FROM daily_sales;
+```
+
+```sql
+SELECT
+    department,
+    employee_id,
+    salary,
+    AVG(salary) OVER (PARTITION BY department) as dept_avg_salary,
+    salary - AVG(salary) OVER (PARTITION BY department) as diff_from_avg
+FROM employees;
+```
+
+### 🔥 RANKING FUNCTIONS
+
+- `ROW_NUMBER()` - Assigns unique sequential integer to rows (1,2,3,4...)
+- `RANK()` - Same as row number but leaves gap for ties (1,2,2,4...)
+- `DENSE_RANK()` - rank without gaps for ties(1,2,2,3...)
+- `NTILE()` - Divide rows into n approx equal groups (1,1,2,2,3,3...)
+
+```sql
+SELECT
+    Student, Marks,
+    ROW_NUMBER() OVER (ORDER BY Marks DESC) as RowNum,
+    RANK() OVER (ORDER BY marks DESC) as rank,
+    DENSE_RANK() OVER (ORDER BY Marks DESC) as DenseRank,
+    NTILE(4) OVER (ORDER BY Marks) as quartile
+FROM employees;
+```
+
+| Student | Marks | RowNum | Rank | DenseRank | Quartile |
+| ------- | :---: | :----: | :--: | :-------: | :------: |
+| Alice   |  95   |   1    |  1   |     1     |    1     |
+| Bob     |  92   |   2    |  2   |     2     |    1     |
+| Charlie |  92   |   3    |  2   |     2     |    2     |
+| Dave    |  88   |   4    |  4   |     3     |    2     |
+| Eve     |  85   |   5    |  5   |     4     |    3     |
+
+### 🔥 ANALYTICAL/VALUE FUNCTIONS
+
+- `LAG(column, offset, default)` - Returns value from previous row
+- `LEAD(column, offset, default)` - Returns value from next row
+- `FIRST_VALUE(column)` - Returns value from first row
+- `LAST_VALUE(column)` - Returns value from last row
+- `NTH_VALUE(column, n)` - Returns value from nth row
+
+```sql
+SELECT
+    date, sales,
+    LEAD(sales,1,0) OVER (ORDER BY date) as Next_day_sales,
+    LAG(sales,1,0) OVER (ORDER BY date) as Prev_day_sales,
+    NTH_VALUE(sales,2) OVER (ORDER BY date) as Second_day_sales
+From daily_sales;
+```
+
+```sql
+SELECT
+    department,
+    employee_id,
+    salary,
+    FIRST_VALUE(salary) OVER (PARTITION BY department ORDER BY salary DESC) as highest_in_dept,
+    LAST_VALUE(salary) OVER (PARTITION BY department ORDER BY salary DESC) as lowest_in_dept
+FROM employees;
+```
+
+### 🔥 Window Frames
+
+```sql
+-- Default frame (when ORDER BY is present):
+RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+
+-- Common frames:
+ROWS BETWEEN 2 PRECEDING AND CURRENT ROW  -- Last 3 rows including current
+ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING  -- Previous, current, next
+ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW -- All rows up to current
+ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING -- Current to end
+ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING -- Entire partition
+```
 
 ## 🐦‍🔥 VIEWS
 
