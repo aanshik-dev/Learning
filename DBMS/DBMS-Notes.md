@@ -939,5 +939,41 @@ SET READ_COMMITTED_SNAPSHOT ON;
 | SIX | ✓   | ✓   | ✗   | ✗   | ✗   | ✗   |
 | X   | ✓   | ✗   | ✗   | ✗   | ✗   | ✗   |
 
+<br>
+
+## 🐦‍🔥 DEADLOCKS
+
+### 🔥 What is a `deadlock`?
+
+Transaction T1 holds lock on Resource R1, waits for R2
+Transaction T2 holds lock on Resource R2, waits for R1
+→ Both wait indefinitely
+
+### 🔥 Deadlock Handling
+
+- Prevention
+  - Require all locks at beginning
+  - Use lock ordering
+- Avoidance
+  - Banker's algorithm
+  - Resource allocation graph
+- Detection & Recovery
+  - Wait-for graph
+  - Choose victim and rollback
+
+### 🔥 Deadlock Detection
+
+```sql
+-- Check for deadlocks (SQL Server)
+DBCC TRACEON (1222, -1);
+
+-- MySQL
+SHOW ENGINE INNODB STATUS;
+
+-- PostgreSQL
+SELECT * FROM pg_stat_activity
+WHERE wait_event_type IS NOT NULL;
+```
+
 </div>
 </div>
