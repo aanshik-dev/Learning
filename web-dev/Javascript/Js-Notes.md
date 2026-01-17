@@ -620,7 +620,7 @@ console.log(counter.decrement()); // 0
 
 <br>
 
-## 🐦‍🔥 This Keyword
+## 🐦‍🔥 THIS KEYWORD
 
 ```js
 // Global context
@@ -660,9 +660,38 @@ boundGreet(); // "Bob"
 
 <br>
 
-## 🐦‍🔥 PROMISES AND ASYNC/AWAIT
+## 🐦‍🔥 CALLBACK AND PROMISES
+
+### 🔥 Callback
+
+It is a function that is passed as an argument to another function, which is executed after the completion of called function.
+
+```js
+function doTask(callme) {
+  console.log("Task Initiated..");
+
+  setTimeout(() => {
+    console.log("Task Acomplished..");
+    callback(); // callback happening
+  }, 2000);
+}
+
+function callme() {
+  console.log("Task completed");
+}
+
+doTask(callme);
+```
+
+### 🔥 Callback Hell
+
+Callback hell is a situation where multiple callbacks are nested inside each other, making it difficult to manage and maintain code.
+
+To prevent this we use the promises
 
 ### 🔥 Promises
+
+Promises represent the eventual completion or failure of an asynchronous operation, and its resulting value.
 
 ```js
 const promise = new Promise((resolve, reject) => {
@@ -692,15 +721,55 @@ promise
   .finally(() => {
     console.log("Cleanup");
   });
-
-// Promise methods
-Promise.all([promise1, promise2]); // Wait for all
-Promise.race([promise1, promise2]); // First to resolve/reject
-Promise.allSettled([promise1, promise2]); // All settled
-Promise.any([promise1, promise2]); // First to resolve
 ```
 
-### 🔥 Async / Await
+⚡ Promise methods
+
+- `Promise.all([promise1, promise2]);` // Wait for all to resolve and return the array of results
+- `Promise.allSettled([promise1, promise2]);` // All settled (resolve/reject)
+- `Promise.race([promise1, promise2]);` // First to settle and its relult returned
+- `Promise.any([promise1, promise2]);` // First to resolve/fulfilled
+
+<br>
+
+## 🐦‍🔥 ASYNC / AWAIT
+
+Async/await is used when you want to pause the execution of a function until a promise is resolved, this happen majorly when the execution of function depends on some data delivered by promise.
+
+- `async` function always return a promise
+- `await` keyword waits for a promise to resolve
+- `await` can only be used inside an `async` function
+
+```js
+function getData() {
+  return new Promise((resolve) => {
+    console.log("Bundling data...");
+    if (error) {
+      reject("Error Sending Data");
+    } else {
+      setTimeout(() => {
+        resolve("Data Sent");
+      }, 2000);
+    }
+  });
+}
+
+async function fetchData() {
+  console.log("Fetching data...");
+  console.log("Performing Other operations");
+  let data = await getData(); // Waits here, promise returned
+  console.log("Processing Data");
+  console.log("End");
+}
+
+fetchData()
+  .then((data) => console.log(data))
+  .catch((error) => console.error(error));
+```
+
+> 📝 NOTE : We can use the Try catch block for error handling and remove the `.then` and `.catch`
+
+⚡ Real API example
 
 ```js
 async function fetchData() {
@@ -710,15 +779,19 @@ async function fetchData() {
     return data;
   } catch (error) {
     console.error("Error:", error);
-    throw error;
+    throw error; // Rethrow the error, Should be catched
   }
 }
-
 // Using async function
 fetchData()
   .then((data) => console.log(data))
-  .catch((error) => console.error(error));
+  .catch((error) => console.log(error));
 ```
+
+- `fetch("...")` returns promise
+- `await fetch("...")` returns resolved promise(data/error)
+- If error occur then catch block triggered
+- If no `try - catch` blocks then `.then`, `.catch` are used
 
 <br>
 
