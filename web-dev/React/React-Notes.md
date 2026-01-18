@@ -218,25 +218,6 @@ Welcome.propTypes = {
 };
 ```
 
-```js
-import { useState } from "react";
-
-export default function Counter() {
-  const [count, setCount] = useState(0); // creates a state named count with initial value 0
-
-  function increase() {
-    setCount(count + 1); // used to change the state
-  }
-
-  return (
-    <div>
-      <h1>Count: {count}</h1>
-      <button onClick={increase}>Increase</button>
-    </div>
-  );
-}
-```
-
 <br>
 
 ## 🐦‍🔥 STATE
@@ -656,7 +637,7 @@ function RefExample() {
 - It is used to memoize expensive calculations
 
 ```js
-import { useMemo} from "react";
+import { useMemo } from "react";
 
 function ExpensiveComponent({ list, filter }) {
   // This runs on every render
@@ -690,26 +671,26 @@ function ExpensiveComponent({ list, filter }) {
 ### 🔥 useCallback Hook
 
 ```js
-import { useState, useCallback, memo } from 'react';
+import { useState, useCallback, memo } from "react";
 
 // Child component
 const ChildComponent = memo(({ onClick, data }) => {
-  console.log('Child rendered');
+  console.log("Child rendered");
   return <button onClick={onClick}>{data}</button>;
 });
 
 function ParentComponent() {
   const [count, setCount] = useState(0);
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
 
   // ❌ Creates new function on every render (causes Child to re-render)
   const badHandleClick = () => {
-    console.log('Button clicked', count);
+    console.log("Button clicked", count);
   };
 
   // ✅ Memoized function (Child doesn't re-render unnecessarily)
   const goodHandleClick = useCallback(() => {
-    console.log('Button clicked', count);
+    console.log("Button clicked", count);
   }, [count]); // Only recreates when count changes
 
   return (
@@ -719,19 +700,392 @@ function ParentComponent() {
         onChange={(e) => setText(e.target.value)}
         placeholder="Type to trigger re-renders..."
       />
-      <ChildComponent 
-        onClick={goodHandleClick}
-        data={`Count: ${count}`}
-      />
-      <button onClick={() => setCount(count + 1)}>
-        Increment: {count}
-      </button>
+      <ChildComponent onClick={goodHandleClick} data={`Count: ${count}`} />
+      <button onClick={() => setCount(count + 1)}>Increment: {count}</button>
     </div>
   );
 }
 ```
 
+<br>
 
+## 🐦‍🔥 CUSTOM HOOK
+
+```js
+// useLocalStorage.js
+import { useState, useEffect } from "react";
+
+function useLocalStorage(key, initialValue) {
+  // Get from localStorage or use initial value
+  const [storedValue, setStoredValue] = useState(() => {
+    try {
+      const item = window.localStorage.getItem(key);
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      console.error(error);
+      return initialValue;
+    }
+  });
+
+  // Update localStorage when value changes
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(key, JSON.stringify(storedValue));
+    } catch (error) {
+      console.error(error);
+    }
+  }, [key, storedValue]);
+
+  return [storedValue, setStoredValue];
+}
+
+// useFetch.js
+import { useState, useEffect, useCallback } from "react";
+
+function useFetch(url, options = {}) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchData = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await fetch(url, options);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      setData(result);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }, [url, options]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  const refetch = () => {
+    fetchData();
+  };
+
+  return { data, loading, error, refetch };
+}
+
+// Using custom hooks
+function App() {
+  const [name, setName] = useLocalStorage("username", "Guest");
+  const {
+    data: users,
+    loading,
+    error,
+  } = useFetch("https://api.example.com/users");
+
+  return (
+    <div>
+      <h1>Hello, {name}!</h1>
+      <input
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Enter your name"
+      />
+
+      {loading && <p>Loading users...</p>}
+      {error && <p>Error: {error}</p>}
+      {users && (
+        <ul>
+          {users.map((user) => (
+            <li key={user.id}>{user.name}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+```
+
+<br>
+
+## 🐦‍🔥 Component Lifecycle
+
+```js
+import { useState, useEffect, useMemo, useCallback } from "react";
+
+function FunctionalLifecycle() {
+  const [count, setCount] = useState(0);
+
+  // componentDidMount + componentWillUnmount
+  useEffect(() => {
+    console.log("Component mounted");
+
+    return () => {
+      console.log("Component will unmount");
+    };
+  }, []);
+
+  // componentDidUpdate (for specific state/props)
+  useEffect(() => {
+    console.log("Count updated:", count);
+  }, [count]);
+
+  // shouldComponentUpdate equivalent (useMemo, useCallback)
+  const memoizedValue = useMemo(() => {
+    console.log("Recalculating memoized value");
+    return count * 2;
+  }, [count]);
+
+  const handleClick = useCallback(() => {
+    setCount((prev) => prev + 1);
+  }, []);
+
+  // render
+  console.log("Render");
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <p>Doubled: {memoizedValue}</p>
+      <button onClick={handleClick}>Increment</button>
+    </div>
+  );
+}
+```
+
+<br>
+
+## 🐦‍🔥 REACT ROUTER
+
+React Router is a client-side routing library for React that helps in navigating between different components without reloading the page.
+
+It enables Single Page Application (SPA) behavior.
+
+⚡ Installation
+
+```bash
+npm install react-router-dom
+```
+
+⚡ basic Setup (Main.jsx)
+
+- Wrap the `<App />` component with `<BrowserRouter>`
+
+```js
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+import App from "./App";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>,
+);
+```
+
+### 🔥 Routes & route
+
+```js
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/contact" element={<Contact />} />
+    </Routes>
+  );
+}
+
+export default App;
+```
+
+- `<Routes>` is a container for multiple `<Route>` components.
+- `<Route>` has replaced the old `Switch`
+- `path` property specifies the URL path for the route.
+- `element` property specifies the component to render when the route is matched.
+- `exact` property specifies that the route should match the exact URL path, without any trailing slashes, Routes are `exact by default`.
+
+### 🔥 Link Vs NavLink
+
+⚡ Link
+
+```js
+import { Link } from "react-router-dom";
+
+<Link to="/about">About</Link>;
+```
+
+- It prevents page reload
+- It replaced the old `<a>` tag
+
+⚡ NavLink
+
+```js
+import { NavLink } from "react-router-dom";
+
+<NavLink to="/about" className={({ isActive }) => (isActive ? "active" : "")}>
+  About
+</NavLink>;
+```
+
+- It adds the `active` class to the link when it's active
+
+### 🔥 useNavigate Hook
+
+It is used for programmatic navigation
+
+```js
+import { useNavigate } from "react-router-dom";
+
+function Login() {
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    navigate("/dashboard");
+  };
+
+  return <button onClick={handleLogin}>Login</button>;
+}
+```
+
+⚡ Navigate Options
+
+```js
+navigate(-1); // back
+navigate(1); // forward
+navigate("/", { replace: true }); // replace current history entry
+```
+
+### 🔥 Dynamic Routes (useParams)
+
+⚡ Route Definion
+
+```js
+<Route path="/user/:id" element={<User />} />
+```
+
+⚡ Access Parameter
+
+```js
+import { useParams } from "react-router-dom";
+
+function User() {
+  const { id } = useParams();
+  return <h1>User ID: {id}</h1>;
+}
+// Example: /user/101
+```
+
+### 🔥 Query Parameters (useSearchParams)
+
+```js
+import { useSearchParams } from "react-router-dom";
+
+function Products() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const category = searchParams.get("category");
+
+  return <h1>Category: {category}</h1>;
+}
+// Example: /products?category=mobile
+```
+
+### 🔥 Nested Routes
+
+⚡ Route Structure
+
+```js
+<Route path="/dashboard" element={<Dashboard />}>
+  <Route path="profile" element={<Profile />} />
+  <Route path="settings" element={<Settings />} />
+</Route>
+```
+
+⚡ Parent Component
+
+```js
+import { Outlet } from "react-router-dom";
+
+function Dashboard() {
+  return (
+    <div>
+      <h1>Dashboard</h1>
+      <Outlet />
+    </div>
+  );
+}
+```
+
+### 🔥 404 - Not Fount Route
+
+```js
+<Route path="*" element={<NotFound />} />
+```
+
+### 🔥 Protected Routes (Auth)
+
+```js
+import { Navigate } from "react-router-dom";
+
+function PrivateRoute({ children }) {
+  const isAuthenticated = false;
+
+  return isAuthenticated ? children : <Navigate to="/login" />;
+}
+```
+
+⚡ Usage
+
+```js
+<Route
+  path="/dashboard"
+  element={
+    <PrivateRoute>
+      <Dashboard />
+    </PrivateRoute>
+  }
+/>
+```
+
+### 🔥 useLocation Hook
+
+```js
+import { useLocation } from "react-router-dom";
+
+function Page() {
+  const location = useLocation();
+
+  console.log(location.pathname);
+  console.log(location.search);
+
+  return <h1>Current Page</h1>;
+}
+```
+
+### 🔥 Lazy Loading Routes
+
+```js
+import { lazy, Suspense } from "react";
+
+const About = lazy(() => import("./pages/About"));
+
+<Route
+  path="/about"
+  element={
+    <Suspense fallback={<h2>Loading...</h2>}>
+      <About />
+    </Suspense>
+  }
+/>;
+```
 
 </div>
 </div>
