@@ -32,6 +32,8 @@ npm install
 npm run dev
 ```
 
+> `npx` ( Node package execute ) is used to execute latest node packages without installing them to machine.
+
 ### 🔥 Project Structure
 
 ```text
@@ -54,9 +56,22 @@ my-app/
 └── vite.config.js
 ```
 
+<br>
+
 ## 🐦‍🔥 JSX (Javascript XML)
 
-JSX is a syntax extension that allows writing HTML-like code in JavaScript.
+- JSX is a syntax extension that allows writing HTML-like code in JavaScript.
+- The JSX is then compiled to js using babel compiler.
+- Instead of using plain `React.createElement()` calls, JSX lets you write code that looks similar to HTML.
+
+⚡ JavaScript
+
+```js
+const element = React.createElement("h1", null, "Hello, World!");
+const element = React.createElement("h1", null, "Hello, " + username + "!");
+```
+
+⚡ JSX
 
 ```js
 // JSX Example
@@ -88,7 +103,9 @@ function greet(user) {
 
 ## 🐦‍🔥 COMPONENTS
 
-Compenents are the building blocks of the React App
+- Compenents are the `building blocks` of the React App
+- React components are JavaScript functions that return markup. Their names always start with `Capital` letter.
+- React components are written in `JSX` for convenient.
 
 ⚡ Functional Components (Modern)
 
@@ -119,9 +136,42 @@ class Welcome extends Component {
 }
 ```
 
+## 🐦‍🔥 DEFAULT AND NAMED EXPORT
+
+⚡ comp.mjs
+
+```js
+const a = "Aanshik";
+const b = 2401037;
+const c = "Male";
+
+export default a; // default export only one
+export { b }; // named export
+export { c }; // can be many
+```
+
+⚡ Renderer file
+
+```js
+import data from "./comp.mjs";
+import { b, c } from "./comp.mjs";
+
+console.log(data); // 'Aanshik'
+console.log(b); // 2401037
+console.log(c); // Male
+```
+
+|    X    |     Export      |    Import     | Quantity |
+| :-----: | :-------------: | :-----------: | :------: |
+|  Named  |   Exact Name    | `{Same Name}` |   Many   |
+| Default | Default keyword |   Any Alias   |   One    |
+
 <br>
 
-## 🐦‍🔥 PROPS
+## 🐦‍🔥 PROPS (Properties)
+
+- Props are used to send data from parent to child component.
+- They are read-only, and the child element can't change them, jsut use them.
 
 ```js
 // Parent Component
@@ -147,10 +197,9 @@ function Welcome(props) {
 // Destructuring props
 function Welcome({ name, age }) {
   return (
-    <div>
-      <h1>Hello, {name}</h1>
-      <p>Age: {age}</p>
-    </div>
+    <h1>
+      Name: {name} Age: {age}
+    </h1>
   );
 }
 
@@ -169,11 +218,33 @@ Welcome.propTypes = {
 };
 ```
 
+```js
+import { useState } from "react";
+
+export default function Counter() {
+  const [count, setCount] = useState(0); // creates a state named count with initial value 0
+
+  function increase() {
+    setCount(count + 1); // used to change the state
+  }
+
+  return (
+    <div>
+      <h1>Count: {count}</h1>
+      <button onClick={increase}>Increase</button>
+    </div>
+  );
+}
+```
+
 <br>
 
 ## 🐦‍🔥 STATE
 
-State is the data changes over time within a component.
+State is a way to store data inside a component that can change over time.
+
+- State is local to the component, unlike props which come from outside.
+- When state changes, the component re-renders to reflect those changes.
 
 ### 🔥 useState Hook
 
@@ -181,15 +252,14 @@ State is the data changes over time within a component.
 import { useState } from "react";
 
 function Counter() {
-  // Declare state variable or state object
-  const [count, setCount] = useState(0);
-  const [user, setUser] = useState({ name: "John", age: 25 });
-
+  const [count, setCount] = useState(0); // creates count state, initial value 0
+  function increase() {
+    setCount(count + 1); // used to change the state
+  }
   return (
     <div>
-      <p>Count: {count}</p>
-      <button onClick={() => setCount(count + 1)}>Increment</button>
-      <button onClick={() => setCount(0)}>Reset</button>
+      <h1>Count: {count}</h1>
+      <button onClick={increase}>Increase</button>
     </div>
   );
 }
@@ -248,45 +318,117 @@ function EventExample() {
 ## 🐦‍🔥 Conditional Rendering
 
 ```js
+// If-else
 function UserGreeting(props) {
   if (props.isLoggedIn) {
-    // If-else
     return <h1>Welcome back!</h1>;
   }
-  return <h1>Please sign up.</h1>;
+  return <h1>Please Sign Up.</h1>;
 }
 
 // Ternary operator
 function Greeting({ isLoggedIn }) {
   return (
-    <div>
-      {isLoggedIn ? <h1>Welcome back!</h1> : <h1>Please sign up.</h1>}
-      The user is <b>{isLoggedIn ? "currently" : "not"}</b> logged in.
-    </div>
+    <div>{isLoggedIn ? <h1>Welcome back!</h1> : <h1>Please Sign Up.</h1>}</div>
   );
 }
 
 // Logical && operator
-function Mailbox({ unreadMessages }) {
+function Mailbox({ isLoggedIn }) {
   return (
     <div>
-      <h1>Hello!</h1>
-      {unreadMessages.length > 0 && (
-        <h2>You have {unreadMessages.length} unread messages.</h2>
-      )}
+      {isLoggedIn && <h2>Welcome Back!</h2>}
+      {!isLoggedIn && <h2>Please Sign Up.</h2>}
     </div>
   );
 }
+```
 
-// Immediately Invoked Function Expression (IIFE)
+<br>
+
+## 🐦‍🔥 LIST AND KEYS
+
+⚡ Keys should be:
+
+- Unique among siblings
+- Stable (don't change on re-renders)
+- Predictable
+
+```js
 function NumberList({ numbers }) {
+  // Always use keys for list items
+  const listItems = numbers.map((number, index) => (
+    <li key={number.id || index}>{number.value}</li>
+  ));
+  return <ul>{listItems}</ul>;
+}
+
+// Better with unique IDs
+const todoItems = todos.map((todo) => <li key={todo.id}>{todo.text}</li>);
+```
+
+<br>
+
+## 🐦‍🔥 STYLING IN REACT
+
+⚡ Inline Styles
+
+```js
+function InlineStyle() {
+  const styles = {
+    container: {
+      padding: "20px",
+      backgroundColor: "#f0f0f0",
+      borderRadius: "8px",
+    },
+  };
+
+  return <div style={styles.container}>I am the container</div>;
+}
+```
+
+⚡ CSS Modules
+
+```css
+/* Button.module.css  */
+.button {
+  background-color: blue;
+  color: white;
+  padding: 10px 20px;
+}
+```
+
+```js
+// Button.js
+import styles from "./Button.module.css";
+
+function Button() {
+  return <button className={styles.button}>Click Me</button>;
+}
+```
+
+⚡ CSS-in-JS Libraries (Styled Components)
+
+```js
+import styled from "styled-components";
+
+const StyledButton = styled.button`
+  background-color: ${(props) => (props.primary ? "blue" : "gray")};
+  color: white;
+`;
+
+function App() {
+  return <StyledButton primary>Click Me</StyledButton>;
+}
+```
+
+⚡ Tailwind CSS
+
+```js
+function TailwindComponent() {
   return (
-    <div>
-      {(() => {
-        if (numbers.length === 0) return <p>No numbers</p>;
-        if (numbers.length === 1) return <p>Only one number</p>;
-        return <p>Multiple numbers</p>;
-      })()}
+    <div className="p-6 max-w-sm mx-auto bg-white rounded-xl shadow-lg">
+      <h2 className="text-2xl font-bold text-gray-800">Tailwind CSS</h2>
     </div>
   );
 }
@@ -294,157 +436,302 @@ function NumberList({ numbers }) {
 
 <br>
 
-> 🔸 Install node.js and run the following command:
->
-> ```
-> npx create-react-app@latest my-app
-> ```
+## 🐦‍🔥 REACT HOOKS
 
-> 🔸 To install in the same folder use this command:
->
-> ```
-> npx create-react-app@latest .
-> ```
+Hooks let you use state and other React features in functional components.
 
-> 🔸 To run the react app run:
->
-> ```
-> npm run start
-> ```
+- Hooks are used only at the `top level` of functional component.
+- Hooks are not used inside `if, loop, function` etc.
+- Hooks start with the `use` word
 
- <br>
+### 🔥 useState Hook
 
-> 📝 NOTE : Make sure create-react-app is not already installed, uninstall it by cmd `uninstall -g create-react-app`
-> 🔸 `npx` ( Node package execute ) is used to execute latest node packages without installing them to machine.
-
-This creates a basic react app with required dependencies in **`node_modules`** folder, a public folder for final production and an **`src`** folder in which we are going to create owr react app.
-
-## 🔥 File System
-
-♦️ `node_modules` // Nothing to do, it contain packages
-♦️ `public` // it contain a index.html, the entry point of app
-♦️ `src` // these are the files used to develop app
-&nbsp; &nbsp; &nbsp; 🔸 `App.js`
-&nbsp; &nbsp; &nbsp; 🔸 `App.css`
-&nbsp; &nbsp; &nbsp; 🔸 `index.js`
-&nbsp; &nbsp; &nbsp; 🔸 `index.css`
-♦️ package.json // contains data about app and packages
-
-`Index.html` file contain a `div` with ID `root`, in which the `App.js` is rendered by `index.js`
-
-<br>
-
-## 🐦‍🔥 COMPONENTS BASED PROGRAMMING
-
-React apps are made out of components. A component is a piece of the UI (user interface) that has its own logic and appearance. A component can be as small as a button, or as large as an entire page.
-
-```js
-function MyButton() {
-  return <button>I'm a button</button>;
-}
-```
-
-> 📝 NOTE : 🔸 React components are JavaScript functions that return markup. Their names always start with Capital letter.
-> 🔸 React components are written in JSX for convenient.
-
-<br>
-
-## 🐦‍🔥 JSX - JAVASCRIPT XML
-
-🔸 JSX allows you to write HTML-like code inside JavaScript, and using `{}` inside JSX let us use js inside it.
-🔸 The JSX is then compiled to js using babel compiler.
-
-Instead of using plain `React.createElement()` calls, JSX lets you write code that looks similar to HTML.
-
-> Javascript:
->
-> ```js
-> const element = React.createElement("h1", null, "Hello, World!");
-> const element = React.createElement("h1", null, "Hello, " + username + "!");
-> ```
-
-> JSX:
->
-> ```jsx
-> const element = <h1>Hello, World!</h1>;
-> const element = <h1>Hello, {username}!</h1>;
-> ```
-
-<br>
-
-## 🐦‍🔥 DEFAULT AND NAMED EXPORT
-
-```js
-// comp1.mjs
-const a = "Aanshik";
-const b = 2401037;
-const c = "Male";
-
-export default a;
-export { b };
-export { c };
-```
-
-```js
-// Renderer file
-import data, {b,c} form './comp1.mjs'
-
-console.log(data);    // 'Aanshik'
-console.log(b);   //named export
-console.log(c);   //name should be the same
-
-```
-
-> 📝 NOTE : We do not write our code in `App.js` rather we create components which can be used at different places using import
-
-<br>
-
-## 🐦‍🔥 PROPS AND STATE
-
-## 🔥 Props - Properties
-
-➡️ Props are used to send data from parent to child component.
-➡️ They are read-only, and the child element can't change them, jsut use them.
-
-```js
-function Greeting(props) {
-  return <h1>Hello, {props.name}!</h1>;
-}
-
-export default function App() {
-  return <Greeting name="Anshik" />;
-}
-```
-
-## 🔥 State
-
-State is a way to store data inside a component that can change over time.
-
-➡️ State is local to the component, unlike props which come from outside.
-➡️ When state changes, the component re-renders to reflect those changes.
-
-To use them we have to import `{useState}` hook.
+Used to store and update data(state) inside component locally.
 
 ```js
 import { useState } from "react";
 
-export default function Counter() {
-  const [count, setCount] = useState(0); // creates a state named count with initial value 0
+function Example() {
+  const [count, setCount] = useState(0);
+  const [user, setUser] = useState({ name: "", age: 0 });
+  const [todos, setTodos] = useState([]);
 
-  function increase() {
-    setCount(count + 1); // used to change the state
-  }
+  // Functional updates (when new state depends on previous)
+  const increment = () => {
+    setCount((prevCount) => prevCount + 1);
+  };
+
+  // Updating object (name)
+  const updateName = (name) => {
+    setUser((prevUser) => ({
+      ...prevUser, // Spread operator copies previous state
+      name: name,
+    }));
+  };
+
+  // Updating arrays
+  const addTodo = (todo) => {
+    setTodos((prevTodos) => [...prevTodos, todo]);
+  };
+
+  const removeTodo = (id) => {
+    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+  };
+}
+```
+
+### 🔥 UseEffect Hook
+
+Handles side effects (data fetching, Event listner, Component load/update/unmount)
+
+⚡ Syntax
+
+```js
+import { useState, useEffect } from "react";
+
+useEffect(() => {
+  // side effect code
+}, [dependency Array]);
+```
+
+⚡ Runs on every render
+(componentDidMount + componentDidUpdate)
+
+```js
+useEffect(() => {
+  console.log("Runs on every render");
+}); // rarely used, performance issues
+```
+
+⚡ Runs once on mount
+(componentDidMount)
+
+- The return inside useEffect is NOT a normal return, It is a registration of a cleanup function, not execution.
+- function returns cleanup function, which is stored internally, called on unmount
+
+```js
+const [width, setWidth] = useState(window.innerWidth);
+// Window Width Resize
+useEffect(() => {
+  const handleResize = () => {
+    setWidth(window.innerWidth);
+  };
+  window.addEventListener("resize", handleResize);
+  // Cleanup Function
+  return () => {
+    window.removeEventListener("resize", handleResize);
+  };
+}, []); // Empty dependency array
+```
+
+⚡ Runs when State Changes
+
+```js
+const [count, setCount] = useState(0);
+
+useEffect(() => {
+  console.log(`Count changed to: ${count}`);
+}, [count]); // Dependency array
+```
+
+### 🔥 useContext Hook
+
+It is helpfull when data is transferred form parent to nested child components. Instead of passing to every level(prop drilling) we share context to child directly.
+
+⚡ Creating and Providing Context
+
+```js
+import { createContext, useState } from "react";
+
+// 1. Create Context
+export const ThemeContext = createContext();
+
+// 2. Create Provider Component
+function AppTheme({ children }) {
+  const data = "Theme Data";
+  const [theme, setTheme] = useState("light");
+  return (
+    <ThemeContext.Provider value={{ theme, setTheme, data }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+}
+export default AppTheme;
+```
+
+- In context provider the `{children}` is a special prop, used to render child components
+
+- Wrap the parent componet `(<App />)` with `<AppTheme />` to use the context in children of `<App />`
+
+⚡ Consuming the Context
+
+```js
+import AppTheme from "./AppTheme";
+import { useContext } from "react";
+import { ThemeContext } from "./AppTheme";
+
+function App() {
+  return (
+    // Wrapping the parent with context
+    <AppTheme>
+      <div>
+        <h1>Toolbar and Other components</h1>
+        <ThemedButton />
+      </div>
+    </AppTheme>
+  );
+}
+
+function ThemedButton() {
+  const { theme, setTheme, data } = useContext(ThemeContext);
+
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+  };
+
+  return (
+    <button
+      onClick={toggleTheme}
+      style={{
+        backgroundColor: theme === "light" ? "#fff" : "#333",
+      }}
+    >
+      {data}: Toggle Theme
+    </button>
+  );
+}
+
+export default App;
+```
+
+### 🔥 useRef Hook
+
+- It is used to access DOM elements directly
+- It Stores values that survive re-renders
+- Stores mutable things(timers, previous values, etc)
+- It return a mutable ref object called `current`
+
+```js
+import { useRef, useEffect, useState } from "react";
+
+function RefExample() {
+  // 1. Accessing DOM elements
+  const inputRef = useRef(null);
+
+  // 2. Storing mutable values that don't trigger re-renders
+  const renderCount = useRef(0);
+  const intervalRef = useRef(null);
+  const [value, setValue] = useState("");
+
+  // Focus input on mount
+  useEffect(() => {
+    inputRef.current.focus();
+    renderCount.current++;
+  }, []);
+
+  // Start/stop timer
+  const startTimer = () => {
+    intervalRef.current = setInterval(() => {
+      console.log("Timer tick");
+    }, 1000);
+  };
+  const stopTimer = () => {
+    clearInterval(intervalRef.current);
+  };
 
   return (
     <div>
-      <h1>Count: {count}</h1>
-      <button onClick={increase}>Increase</button>
+      <input
+        ref={inputRef}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
     </div>
   );
 }
 ```
 
-> 📝 NOTE : Afters every state change the component is rendered/refreshed again
+### 🔥 useMemo Hook
+
+- It is used to memoize expensive calculations
+
+```js
+import { useMemo} from "react";
+
+function ExpensiveComponent({ list, filter }) {
+  // This runs on every render
+  const filteredList = list.filter((item) => item.includes(filter));
+
+  // This only recalculates when list or filter changes
+  const memoizedList = useMemo(() => {
+    console.log("Recalculating filtered list...");
+    return list.filter((item) => item.includes(filter));
+  }, [list, filter]); // Dependency array
+
+  // Complex calculation example
+  const expensiveCal = useMemo(() => {
+    console.log("Performing expensive calculation...");
+    let sum = 0;
+    for (let i = 0; i < 10000; i++) {
+      sum += i;
+    }
+    return sum;
+  }, []); // Empty array = runs once on mount
+
+  return (
+    <div>
+      <p>Items: {memoizedList.length}</p>
+      <p>Calculation result: {expensiveCal}</p>
+    </div>
+  );
+}
+```
+
+### 🔥 useCallback Hook
+
+```js
+import { useState, useCallback, memo } from 'react';
+
+// Child component
+const ChildComponent = memo(({ onClick, data }) => {
+  console.log('Child rendered');
+  return <button onClick={onClick}>{data}</button>;
+});
+
+function ParentComponent() {
+  const [count, setCount] = useState(0);
+  const [text, setText] = useState('');
+
+  // ❌ Creates new function on every render (causes Child to re-render)
+  const badHandleClick = () => {
+    console.log('Button clicked', count);
+  };
+
+  // ✅ Memoized function (Child doesn't re-render unnecessarily)
+  const goodHandleClick = useCallback(() => {
+    console.log('Button clicked', count);
+  }, [count]); // Only recreates when count changes
+
+  return (
+    <div>
+      <input
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        placeholder="Type to trigger re-renders..."
+      />
+      <ChildComponent 
+        onClick={goodHandleClick}
+        data={`Count: ${count}`}
+      />
+      <button onClick={() => setCount(count + 1)}>
+        Increment: {count}
+      </button>
+    </div>
+  );
+}
+```
+
+
 
 </div>
 </div>
