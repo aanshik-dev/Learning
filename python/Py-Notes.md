@@ -484,6 +484,7 @@ f = open("file.txt", "r")
 
 - `close()` // closes the file object
 - `read()` // reads the entire content of the file
+- `read(size)` // reads a specific number of bytes from the file
 - `readline()` // reads a single line from the file
 - `write(string)` // writes a string to the file
 - `seek(offset, from)` // moves the cursor to a specific position in the file
