@@ -202,7 +202,7 @@ On its own, data is often "meaningless" until it is processed and put into conte
 - `DEFAULT` -- Default value if not specified
 
 ```sql
- -- Column Level
+-- Column Level
 CREATE TABLE Employees (
     EmpID INT PRIMARY KEY,
     Name VARCHAR(50) NOT NULL,
@@ -1099,5 +1099,9 @@ SELECT * FROM pg_stat_activity
 WHERE wait_event_type IS NOT NULL;
 ```
 
+```cpp
+```
+
 </div>
 </div>
+

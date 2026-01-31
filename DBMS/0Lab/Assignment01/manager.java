@@ -1,5 +1,4 @@
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -57,6 +56,7 @@ class StudentData {
         studentList.add(new Student(array[0], array[1], array[2], array[3], array[4]));
         line = br.readLine();
       }
+      br.close();
     } catch (Exception e) {
       System.out.println(e);
     }
@@ -126,6 +126,7 @@ class FacultyData {
         facultyList.add(new Factulty(array[0], array[1], array[2]));
         line = br.readLine();
       }
+      br.close();
     } catch (Exception e) {
       System.out.println(e);
     }
@@ -166,6 +167,7 @@ class Enrolled {
         }
         line = br.readLine();
       }
+      br.close();
     } catch (Exception e) {
       System.out.println(e);
     }

@@ -405,6 +405,27 @@ function App() {
 
 ⚡ Tailwind CSS
 
+```bash
+# Installation
+npm install tailwindcss @tailwindcss/vite
+```
+
+```js
+import tailwindcss from "@tailwindcss/vite";
+// Configuration in the tailwind.config.js
+export default defineConfig({
+  plugins: [tailwindcss()],
+});
+```
+
+```css
+@import "tailwindcss";
+```
+
+```bash
+npx tailwindcss init
+```
+
 ```js
 function TailwindComponent() {
   return (
