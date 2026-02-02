@@ -51,6 +51,9 @@ print(s4)
 
 ### 🔥 Series Properties and methods
 
+- Series are size immutable
+- We just remove or append the elements which return a new series
+
 ```py
 s = pd.Series([1, 2, 3, 4, 5], index=['a', 'b', 'c', 'd', 'e'])
 
@@ -285,6 +288,94 @@ print(df[df['Age'].between(30, 40)])
 # isna() / notna()
 print(df[df['Salary'].isna()])      # Rows with NaN in Salary
 print(df[df['Salary'].notna()])     # Rows without NaN
+```
+
+<br>
+
+## 🐦‍🔥 DATA MANIPULATION
+
+### 🔥 Sorting
+
+```py
+df = pd.DataFrame({
+    'Name': ['Bob', 'Alice', 'Charlie', 'David'],
+    'Age': [30, 25, 35, 28],
+    'Salary': [60000, 50000, 70000, 55000]
+})
+
+# Sort by single column
+df_sorted = df.sort_values('Age')
+df_sorted_desc = df.sort_values('Age', ascending=False)
+
+# Sort by multiple columns
+df_sorted_multi = df.sort_values(['Department', 'Salary'], ascending=[True, False])
+
+# Sort by index
+df_sorted_index = df.sort_index()
+df_sorted_index_desc = df.sort_index(ascending=False)
+```
+
+### 🔥 Handling Missing Data
+
+```py
+df = pd.DataFrame({
+    'A': [1, 2, np.nan, 4],
+    'B': [5, np.nan, np.nan, 8],
+    'C': [9, 10, 11, 12]
+})
+
+# Check for missing values
+print(df.isna())           # Boolean DataFrame
+print(df.isna().sum())     # Count of NaN per column
+print(df.notna())          # Opposite of isna()
+
+# Drop missing values
+df_drop_rows = df.dropna()                 # Drop rows with any NaN
+df_drop_cols = df.dropna(axis=1)           # Drop columns with any NaN
+df_drop_all = df.dropna(how='all')         # Drop rows where all values are NaN
+df_drop_thresh = df.dropna(thresh=2)       # Keep rows with at least 2 non-NaN
+
+# Fill missing values
+df_fill_zero = df.fillna(0)                # Fill with 0
+df_fill_mean = df.fillna(df.mean())        # Fill with column mean
+df_fill_ffill = df.fillna(method='ffill')  # Forward fill
+df_fill_bfill = df.fillna(method='bfill')  # Backward fill
+df_fill_dict = df.fillna({'A': 0, 'B': 100})  # Different values per column
+
+# Interpolation
+df_interpolated = df.interpolate()         # Linear interpolation
+```
+
+### 🔥 Data Transformation
+
+```py
+# Apply functions
+df['Age_Squared'] = df['Age'].apply(lambda x: x**2)
+df['Name_Length'] = df['Name'].apply(len)
+
+# Apply to entire DataFrame
+df_numeric = df.select_dtypes(include=[np.number])
+df_normalized = df_numeric.apply(lambda x: (x - x.mean()) / x.std())
+
+# Vectorized string operations
+df['Name_Upper'] = df['Name'].str.upper()
+df['Name_Lower'] = df['Name'].str.lower()
+df['Name_Length'] = df['Name'].str.len()
+df['Has_A'] = df['Name'].str.contains('a', case=False)
+df['First_Letter'] = df['Name'].str[0]
+df['Split_Name'] = df['Name'].str.split()
+
+# Replace values
+df['Department'] = df['Department'].replace({'IT': 'Technology', 'HR': 'Human Resources'})
+df.replace({50000: 55000, 60000: 65000}, inplace=True)
+
+# Map values
+department_map = {'IT': 1, 'HR': 2, 'Finance': 3}
+df['Dept_Code'] = df['Department'].map(department_map)
+
+# Binning / Discretization
+df['Age_Group'] = pd.cut(df['Age'], bins=[20, 30, 40, 50], labels=['20-30', '30-40', '40-50'])
+df['Salary_Category'] = pd.qcut(df['Salary'], q=3, labels=['Low', 'Medium', 'High'])
 ```
 
 </div>
