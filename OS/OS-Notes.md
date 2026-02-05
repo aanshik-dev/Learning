@@ -72,7 +72,7 @@ To protect the computer from crashing or malicious software, the CPU operates in
 A System Call is the programmatic way a program requests a service from the Kernel. It is the bridge between User Mode and Kernel Mode.
 
 - System calls provide an interface between a process and the operating system.
-- For example: `fork()`, `getpid()`, `write()`, `read()` are wrapper functions that use system calls internally.
+- For example: `fork()`, `getpid()`, `write()`, `read()` are wrapper functions (APIs) that use system calls internally.
 
 _A system call is the programmatic gateway and security boundary that allows a user-level application to request protected services from the operating system kernel._
 
@@ -102,26 +102,20 @@ syscall(SYS_write, 1, "Hello", 5);
 - Each process has its own address space, program counter, and system resources.
 - The OS manages processes through Process Control Blocks (PCB).
 
-### 🔥 Process Life Cycle
+### 🔥 Process Control Block
 
-- `NEW` : "Process is being created",
-- `READY` : "Process is waiting for CPU",
-- `RUNNING` : "Instructions are being executed",
-- `WAITING` : "Process is waiting for some event",
-- `TERMINATED` : "Process has finished execution"
+When we run a C program, the OS doesn't just "run" it. It keeps a detailed "diary" of everything that process is doing. This diary is called the Process Control Block (PCB). It is a data Structure (a massive struct in C)
 
-```txt
-               +-------interrupt-------+
-      admit    ↓                       ↑     exit
-[ NEW ] -→ [ READY ] --schedule-→ [ RUNNING ] -→ [ TERMINATED ]
-               ↑                       ↓
-               +------[ WAITING ]------+
-             😃I/O                  I/O 🙏
-```
+⚡ Information associated with each Process
 
-⚡ PROCESS CONTROLL BLOCK
-
-When we run a C program, the OS doesn't just "run" it. It keeps a detailed "diary" of everything that process is doing. This diary is called the Process Control Block (PCB).
+- `Process ID (PID)`: A unique integer (like your Roll Number).
+- `Process state`: Is it running? Waiting? Sleeping?
+- `Program counter`: The address of the next C instruction to execute.
+- `CPU registers`: A "snapshot" of the math being done when process paused.
+- `CPU scheduling information`
+- `Memory-management information`
+- `Accounting information`
+- `I/O status information`
 
 ```C
 // Process Control Block (PCB) structure
@@ -144,7 +138,7 @@ typedef struct pcb {
 } pcb_t;
 ```
 
-⚡ PROCESS CREATION (`FORK()` IMPLEMENTATION CONCEPT)
+### 🔥 Process Creation (`fork()` implementation concept)
 
 ```C
 // Simplified fork-like function
@@ -172,6 +166,43 @@ pid_t os_fork() {
 
     return child->pid;  // Parent returns child's PID
 }
+```
+
+### 🔥 Process Life Cycle
+
+- `NEW` : "Process is being created",
+- `READY` : "Process is waiting for CPU",
+- `RUNNING` : "Instructions are being executed",
+- `WAITING` : "Process is waiting for some event",
+- `TERMINATED` : "Process has finished execution"
+
+```txt
+               +-------interrupt-------+
+      admit    ↓                       ↑     exit
+[ NEW ] -→ [ READY ] --schedule-→ [ RUNNING ] -→ [ TERMINATED ]
+               ↑                       ↓
+               +------[ WAITING ]------+
+             😃I/O                  I/O 🙏
+```
+
+### 🔥 Context Switching
+
+The mechanism that allows the OS to switch the CPU from one process to another. It is the "magic" that makes multitasking possible.
+
+```txt
+   Process 0                           Process 1
+      +                                    -
+      +                                    -
+      +------→ Save state to PCB 0         -
+      -               |                    -
+      -      Reload state from PCB 1------→+
+      -                                    +
+      -                                    +
+      -        Save state to PCB 1 ←-------+
+      -               |                    -
+      +←-----Reload state from PCB 0       -
+      +                                    -
+      +                                    -
 ```
 
 </div>
