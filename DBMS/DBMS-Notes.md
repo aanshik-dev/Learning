@@ -30,20 +30,55 @@ On its own, data is often "meaningless" until it is processed and put into conte
 
 ## 🐦‍🔥 What is DBMS?
 
+- A Database Management System (DBMS) is a collection of interrelated data and a set of programs to access that data.
 - Database Management System (DBMS) is software that allows users to define, create, maintain, and control access to databases.
 - DBMS is a collection of tools and procedures that manage and control the data in a database.
+
+<br>
+
+## 🐦‍🔥 Why we need the DBMS ?
+
+⚡ Data redundancy and inconsistency in files
+
+- Same data stored in multiple files
+- Entry changed in one but not updated in another file
+
+⚡ Difficulty in accessing the data
+
+- No inbuilt functions to access data
+
+⚡Data Isolation
+
+- Data stored in multiple format files like .csv, .json, .txt etc
+- Difficult to combine
+
+⚡ Integrity Problem
+
+- To apply constraint on data, like min bank balence
+- One Id per person
+
+⚡Atomicity Problem
+
+- Either all operations complete or none
+- Like transaction in a bank account
+
+⚡ Concurrent Access Problem
+
+- Two users accessing the data at the same time
+
+⚡ Security Problem
+
+- All users should not access the entire database
 
 <br>
 
 ## 🐦‍🔥 DBMS ARCHITECTURE
 
 1. External Level (View Level)
-
    - User's view of database
    - Multiple views for different users
 
 2. Conceptual Level (Logical Level)
-
    - Global view of entire database
    - Describes what data is stored
    - Relationships between data
@@ -130,23 +165,18 @@ On its own, data is often "meaningless" until it is processed and put into conte
 ### 🔥 SQL Catagories
 
 1. DDL (Data Definition Language)
-
    - CREATE, ALTER, DROP, TRUNCATE, RENAME
 
 2. DQL (Data Query Language)
-
    - SELECT
 
 3. DML (Data Manipulation Language)
-
    - INSERT, UPDATE, DELETE
 
 4. DCL (Data Control Language)
-
    - GRANT, REVOKE
 
 5. TCL (Transaction Control Language)
-
    - COMMIT, ROLLBACK, SAVEPOINT
 
 ---
@@ -323,25 +353,16 @@ ADD COLUMN Phone VARCHAR(20) FIRST;
 
 ALTER TABLE Students
 DROP COLUMN Phone;
-```
 
-⚡ **Rename Table** - renames a table
-
-```sql
+-- renames a table
 ALTER TABLE Students
 RENAME TO StudentsInfo;
-```
 
-⚡ **Change Column** - changes name, data type and constraints of column
-
-```sql
+-- changes name, data type and constraints of column
 ALTER TABLE Students
 CHANGE COLUMN old_name new_name data_type constraints;
-```
 
-⚡ **Modify Column** - changes data type & constraints of column
-
-```sql
+-- changes data type & constraints of column
 ALTER TABLE Students
 MODIFY COLUMN Age INT NOT NULL;
 ```
@@ -350,6 +371,17 @@ MODIFY COLUMN Age INT NOT NULL;
 
 ```sql
 SHOW DATABASES;
+```
+
+⚡ **Describe Table_name** -  It displays the table schema
+```sql
+Describle table_name;
+desc Table_name;
+Show columns from Table_name;
+-- they all do the same work
+
+show create table users;
+-- This gives the entire details of internal schema
 ```
 
 <br>
@@ -888,6 +920,10 @@ CREATE CLUSTERED INDEX idx_studentid ON Students(StudentID);
 
 -- Drop index
 DROP INDEX idx_name ON Students;
+
+-- Show index
+SHOW INDEXES IN Students;
+SHOW INDEXES FROM Students;
 ```
 
 ### 🔥 When to use Indexes
@@ -1044,7 +1080,6 @@ SET READ_COMMITTED_SNAPSHOT ON;
   - For writing operations
   - Only one transaction can hold
 - Intention Locks
-
   - Indicate intention to lock at finer granularity
   - IS (Intention Shared), IX (Intention Exclusive)
 
@@ -1099,9 +1134,5 @@ SELECT * FROM pg_stat_activity
 WHERE wait_event_type IS NOT NULL;
 ```
 
-```cpp
-```
-
 </div>
 </div>
-

@@ -1,5 +1,10 @@
-Create database learning;
-use learning;
+Create database lab;
+use lab;
+select * from student;
+select * from faculty; 
+select * from enrolled;
+select * from class;
+
 create table student(
 	snum numeric(9,0) primary key,
 	sname varchar(30),

@@ -40,3 +40,12 @@ import numpy as np
 image = np.random.randint(0, 256, (100, 100, 3), dtype=np.uint8)
 print(image.shape)
 print(image)
+
+x = True
+
+print(type(x))
+
+arr = np.random.randint(1,10,(6,6))
+print(arr)
+
+print (arr[-4:-1:, -1])

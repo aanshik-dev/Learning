@@ -137,7 +137,7 @@ print(reshaped)
 #  [ 8  9 10 11]]
 
 raveled = reshaped.ravel() # Shallow Copy
-print(raveled)  # [ 0  1  2  3  4  5  6  7  8  9 10 11
+print(raveled)  # [ 0  1  2  3  4  5  6  7  8  9 10 11]
 
 # Flatten
 flattened = reshaped.flatten() # Deep Copy
