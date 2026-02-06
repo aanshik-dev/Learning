@@ -138,6 +138,36 @@ typedef struct pcb {
 } pcb_t;
 ```
 
+### 🔥 Process Creation
+
+```C
+// Simplified fork-like function
+pid_t os_fork() {
+    pcb_t* parent = current_process;
+    pcb_t* child = kmalloc(sizeof(pcb_t));
+
+    // Copy parent PCB
+    memcpy(child, parent, sizeof(pcb_t));
+
+    // Assign new PID
+    child->pid = next_pid++;
+
+    // Create new address space
+    child->page_dir = clone_page_directory(parent->page_dir);
+
+    // Allocate new kernel stack
+    child->kernel_stack = allocate_stack();
+
+    // Set up return value
+    child->eax = 0;  // Child returns 0
+
+    // Add to process table
+    add_to_ready_queue(child);
+
+    return child->pid;  // Parent returns child's PID
+}
+```
+
 ### 🔥 Process Life Cycle
 
 - `NEW` : "Process is being created",
@@ -201,35 +231,28 @@ The CPU Scheduler is the part of the OS that decides which process in the READY 
 - `NON-PREEMPTIVE` : Once a process starts, it holds the CPU until it finishes or requests I/O (e.g., FCFS).
 - `PREEMPTIVE` : The OS can interrupt a running process to give the CPU to another one (e.g., Round Robin).
 
-### 🔥 Process Creation (`fork()` implementation concept)
+<br>
 
-```C
-// Simplified fork-like function
-pid_t os_fork() {
-    pcb_t* parent = current_process;
-    pcb_t* child = kmalloc(sizeof(pcb_t));
+## 🐦‍🔥 PROCESS CREATION
 
-    // Copy parent PCB
-    memcpy(child, parent, sizeof(pcb_t));
+In Unix-like systems, process creation involves two main system calls: `fork()` and `exec()`.
 
-    // Assign new PID
-    child->pid = next_pid++;
+### 🔥 1. The `fork()` System Call
 
-    // Create new address space
-    child->page_dir = clone_page_directory(parent->page_dir);
+Creates a new exact copy process by duplicating the calling process.
 
-    // Allocate new kernel stack
-    child->kernel_stack = allocate_stack();
+- Child <- `0`
+- Parent <- `Child's Process ID`
+- Failed <- `negative value`
 
-    // Set up return value
-    child->eax = 0;  // Child returns 0
+### 🔥 2. The `exec()` Family
 
-    // Add to process table
-    add_to_ready_queue(child);
+- Once a child is born via `fork()`, it is a clone. To make it run a different program (like ls or grep), we use `exec()` family.
+- This overwrites the current process image with a new one.
 
-    return child->pid;  // Parent returns child's PID
-}
-```
+### 🔥 3. Process Synchronization (wait())
+
+A parent process often needs to wait for its child to finish before continuing. This prevents "Zombies."
 
 </div>
 </div>
