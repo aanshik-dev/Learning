@@ -245,7 +245,9 @@ In Unix-like systems, process creation involves two main system calls: `fork()` 
 pid_t pid = fork();  // returns 0 of pid_t type
 ```
 
-Creates a new exact copy process by duplicating the calling process.
+Creates a new copy process by duplicating the calling (Parent) process.
+⚡ COPIED: Code segment, Data segment, Heap, Stack, Registers, Program counter
+⚡ SHARED: Open file descriptors, Environment variables,
 
 - Child <- `0`
 - Parent <- `Child's Process ID`
@@ -253,8 +255,16 @@ Creates a new exact copy process by duplicating the calling process.
 
 ### 🔥 2. The `exec()` Family
 
+```c
+#include <unistd.h>  // exec()
+```
+
 - Once a child is born via `fork()`, it is a clone. To make it run a different program (like ls or grep), we use `exec()` family.
 - This overwrites the current process image with a new one.
+- mostly the `execvp` or the `execlp` is used
+
+⚡ RETAINED: Open file descriptors, Environment variables, pid, ppid
+⚡ DELETED: Code segment, Data segment, Heap, Stack, Registers, Program counter
 
 | Function   | Meaning                            |
 | ---------- | ---------------------------------- |
@@ -264,8 +274,6 @@ Creates a new exact copy process by duplicating the calling process.
 | `execvp()` | array + PATH                       |
 | `execle()` | list + environment                 |
 | `execve()` | array + environment (core syscall) |
-
-- mostly the execvp or the execlp is used
 
 ```c
 char *command = "ls";              // Used by KERNEL to find the file
@@ -277,7 +285,9 @@ execlp(command, "ls", "-l", NULL); // ( path is searched
 execvp(command, args);             // and args array is used )
 ```
 
-### 🔥 3. Process Synchronization (wait())
+> 📝 NOTE : We can pass any program in `ececvp()` like `execvp("./myProc", args)`
+
+### 🔥 3. Process Synchronization: `wait()`
 
 - A parent process often needs to wait for its child to finish before continuing. This prevents "Zombies"
 - We use wait() to wait for a child process to finish.
@@ -314,7 +324,67 @@ int main() {
         wait(NULL); // Parent waits for child
         printf("Parent: Child finished. Exiting\n");
     }
+
+    return 0;
+}
+```
+
+<br>
+
+## 🐦‍🔥 INTER-PROCESS COMMUNICATION (IPC)
+
+Processes can not communicate directly. We need a way to transfer data between processes.
+
+### 🔥 Shared Memory
+
+- Two processes share a specific region of RAM. It is extremely fast but dangerous.
+- Two processes read and write in the same variables
+- Can be done with finite or variable buffer
+
+### 🔥 Message Passing
+
+- Processes send packets of data to each other via the Kernel. It is slower but safer.
+
+#### ⚡ THE PIPE - A MESSAGE PASSING CLASSIC
+
+A Pipe is a one-way communication channel managed by the Kernel. In C, it is treated like a file with two ends.
+
+We use the `pipe()` system call, which gives us an array of two integers (File Descriptors).
+
+- `fd[0]`: Read end.
+- `fd[1]`: Write end.
+
+> 📝 NOTE : We create the pipe before forking, because it is inherited by the child process
+
+```c
+#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
+
+int main() {
+    char buffer[20];
+    int fd[2]; // Array of 2 integers
+    pid_t pid;
+
+    if (pipe(fd) == -1) return 1; // Pipe failed
     
+    pid = fork();  // Child Created after pipe
+
+    if (pid > 0) {
+        // --- PARENT (The Sender) ---
+        close(fd[0]); // Read end not needed
+        char msg[] = "Hello Child!";
+        write(fd[1], msg, strlen(msg) + 1); // Send data
+        close(fd[1]); // Finished writing
+    }
+    else {
+        // --- CHILD (The Receiver) ---
+        close(fd[1]); // Write end not needed
+        read(fd[0], buffer, sizeof(buffer)); // Receive data
+        printf("Child received: %s\n", buffer);
+        close(fd[0]); // Finished reading
+    }
+
     return 0;
 }
 ```
