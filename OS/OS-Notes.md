@@ -239,6 +239,12 @@ In Unix-like systems, process creation involves two main system calls: `fork()` 
 
 ### 🔥 1. The `fork()` System Call
 
+```c
+#include <unistd.h>  // fork()
+#include <sys/types.h> // contains type (pid_t)
+pid_t pid = fork();  // returns 0 of pid_t type
+```
+
 Creates a new exact copy process by duplicating the calling process.
 
 - Child <- `0`
@@ -250,9 +256,60 @@ Creates a new exact copy process by duplicating the calling process.
 - Once a child is born via `fork()`, it is a clone. To make it run a different program (like ls or grep), we use `exec()` family.
 - This overwrites the current process image with a new one.
 
+| Function   | Meaning                            |
+| ---------- | ---------------------------------- |
+| `execl()`  | arguments as list                  |
+| `execv()`  | arguments as array                 |
+| `execlp()` | search in PATH                     |
+| `execvp()` | array + PATH                       |
+| `execle()` | list + environment                 |
+| `execve()` | array + environment (core syscall) |
+
 ### 🔥 3. Process Synchronization (wait())
 
 A parent process often needs to wait for its child to finish before continuing. This prevents "Zombies."
+
+```c
+#include <stdio.h>
+#include <unistd.h>   // For fork()
+#include <sys/wait.h> // For wait()
+#include <stdlib.h>   // For exit()
+
+int main() {
+    pid_t pid;
+
+    printf("Starting main process (PID: %d)\n", getpid());
+
+    pid = fork(); // The "split" happens here
+
+    if (pid < 0) {
+        perror("Fork failed");
+        return 1;
+    }
+    else if (pid == 0) {
+        // --- CHILD PROCESS ---
+        printf("Child Process: I am born! (PID: %d)\n", getpid());
+        printf("Child Process: My parent is (PPID: %d)\n", getppid());
+
+        // Simulating work
+        sleep(2);
+
+        printf("Child Process: Work done, exiting.\n");
+        exit(0); // Tell the OS we are finished
+    }
+    else {
+        // --- PARENT PROCESS ---
+        printf("Parent Process: Created child with PID %d\n", pid);
+
+        printf("Parent Process: Waiting for child to finish...\n");
+        wait(NULL); // Blocking call: Parent stops here until child exits
+
+        printf("Parent Process: Child finished. Cleaning up and exiting.\n");
+    }
+
+    return 0;
+}
+```
 
 </div>
 </div>
