@@ -138,7 +138,7 @@ typedef struct pcb {
 } pcb_t;
 ```
 
-### 🔥 Process Creation
+### 🔥 Process Creation (`fork()` implementation)
 
 ```C
 // Simplified fork-like function
@@ -196,8 +196,8 @@ The mechanism that allows the OS to switch the CPU from one process to another. 
       +------→ Save state to PCB 0         -
       -               |                    -
       -      Reload state from PCB 1------→+
-      -                                    +
-      -                                    +
+      -                                    +      - Waiting
+      -                                    +      + Runnning
       -        Save state to PCB 1 ←-------+
       -               |                    -
       +←-----Reload state from PCB 0       -
@@ -265,9 +265,28 @@ Creates a new exact copy process by duplicating the calling process.
 | `execle()` | list + environment                 |
 | `execve()` | array + environment (core syscall) |
 
+- mostly the execvp or the execlp is used
+
+```c
+char *command = "ls";              // Used by KERNEL to find the file
+char *args[] = {"ls", "-l", NULL}; // Used by the PROGRAM as argv[]
+
+execl("/bin/ls", "ls", "-l", NULL);  // required full path
+execv("/bin/ls", args);  // required full path & args array
+execlp(command, "ls", "-l", NULL); // ( path is searched
+execvp(command, args);             // and args array is used )
+```
+
 ### 🔥 3. Process Synchronization (wait())
 
-A parent process often needs to wait for its child to finish before continuing. This prevents "Zombies."
+- A parent process often needs to wait for its child to finish before continuing. This prevents "Zombies"
+- We use wait() to wait for a child process to finish.
+
+```c
+#include <sys/wait.h>
+```
+
+### 🔥 Example demonstrating `fork()`, `exec()`, `wait()`
 
 ```c
 #include <stdio.h>
@@ -277,36 +296,25 @@ A parent process often needs to wait for its child to finish before continuing. 
 
 int main() {
     pid_t pid;
-
     printf("Starting main process (PID: %d)\n", getpid());
-
     pid = fork(); // The "split" happens here
 
-    if (pid < 0) {
-        perror("Fork failed");
-        return 1;
-    }
+    if (pid < 0) return 1;  // fork failed
     else if (pid == 0) {
-        // --- CHILD PROCESS ---
-        printf("Child Process: I am born! (PID: %d)\n", getpid());
-        printf("Child Process: My parent is (PPID: %d)\n", getppid());
-
-        // Simulating work
-        sleep(2);
-
-        printf("Child Process: Work done, exiting.\n");
-        exit(0); // Tell the OS we are finished
+      // -------- CHILD PROCESS -----------
+      printf("Child: I am born! (PID: %d)\n", getpid());
+      printf("Child: My parent is (PPID: %d)\n", getppid());
+      execl("/bin/ls", "ls", "-l", NULL);
+      printf("This will run if exec failed\n");
+      exit(0); // Tell OS, I finished
     }
     else {
-        // --- PARENT PROCESS ---
-        printf("Parent Process: Created child with PID %d\n", pid);
-
-        printf("Parent Process: Waiting for child to finish...\n");
-        wait(NULL); // Blocking call: Parent stops here until child exits
-
-        printf("Parent Process: Child finished. Cleaning up and exiting.\n");
+      // -------- PARENT PROCESS -----------
+        printf("Parent: Created child with PID %d\n", pid);
+        wait(NULL); // Parent waits for child
+        printf("Parent: Child finished. Exiting\n");
     }
-
+    
     return 0;
 }
 ```
