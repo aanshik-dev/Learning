@@ -138,36 +138,6 @@ typedef struct pcb {
 } pcb_t;
 ```
 
-### 🔥 Process Creation (`fork()` implementation concept)
-
-```C
-// Simplified fork-like function
-pid_t os_fork() {
-    pcb_t* parent = current_process;
-    pcb_t* child = kmalloc(sizeof(pcb_t));
-
-    // Copy parent PCB
-    memcpy(child, parent, sizeof(pcb_t));
-
-    // Assign new PID
-    child->pid = next_pid++;
-
-    // Create new address space
-    child->page_dir = clone_page_directory(parent->page_dir);
-
-    // Allocate new kernel stack
-    child->kernel_stack = allocate_stack();
-
-    // Set up return value
-    child->eax = 0;  // Child returns 0
-
-    // Add to process table
-    add_to_ready_queue(child);
-
-    return child->pid;  // Parent returns child's PID
-}
-```
-
 ### 🔥 Process Life Cycle
 
 - `NEW` : "Process is being created",
@@ -203,6 +173,62 @@ The mechanism that allows the OS to switch the CPU from one process to another. 
       +←-----Reload state from PCB 0       -
       +                                    -
       +                                    -
+```
+
+⚡ `Zombie Process` : A zombie process is a process that has finished execution but still has an entry in the process table.
+⚡ `Orphan Process` : An orphan process is a process whose parent process has terminated, but the child is still running.
+
+### 🔥 Process Scheduling
+
+The CPU Scheduler is the part of the OS that decides which process in the READY state gets to use the CPU (RUNNING state) and for how long.
+
+⚡ Key terms
+
+- `Arrival Time (AT)`: Time at which the process enters the ready queue.
+- `Burst Time (BT)`: Time required by the process for CPU execution.
+- `Turnaround Time (TAT)`: Completion Time - Arrival Time.
+- `Waiting Time (WT)`: Turnaround Time - Burst Time.
+
+⚡ Scheduling Criteria
+
+- `CPU Utilization` : Keep the CPU as busy as possible.
+- `Throughput` : Number of processes completed per unit of time.
+- `Turnaround Time` : Time from submission to completion.
+- `Waiting Time` : Total time spent in the READY queue.
+
+⚡ Types of Scheduling
+
+- `NON-PREEMPTIVE` : Once a process starts, it holds the CPU until it finishes or requests I/O (e.g., FCFS).
+- `PREEMPTIVE` : The OS can interrupt a running process to give the CPU to another one (e.g., Round Robin).
+
+### 🔥 Process Creation (`fork()` implementation concept)
+
+```C
+// Simplified fork-like function
+pid_t os_fork() {
+    pcb_t* parent = current_process;
+    pcb_t* child = kmalloc(sizeof(pcb_t));
+
+    // Copy parent PCB
+    memcpy(child, parent, sizeof(pcb_t));
+
+    // Assign new PID
+    child->pid = next_pid++;
+
+    // Create new address space
+    child->page_dir = clone_page_directory(parent->page_dir);
+
+    // Allocate new kernel stack
+    child->kernel_stack = allocate_stack();
+
+    // Set up return value
+    child->eax = 0;  // Child returns 0
+
+    // Add to process table
+    add_to_ready_queue(child);
+
+    return child->pid;  // Parent returns child's PID
+}
 ```
 
 </div>
