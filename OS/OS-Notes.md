@@ -3,6 +3,7 @@
 
 # 🐦‍🔥🔥 **OPERATING NOTES** 🔥🐦‍🔥
 
+⚡ BY - THE AANSHIK-DEV
 <br>
 
 ## 🐦‍🔥 WHAT IS AN OPERATING SYSTEM ?
@@ -93,6 +94,44 @@ syscall(SYS_write, 1, "Hello", 5);
 - Return value is in EAX register
 - Must preserve registers according to calling convention
 - Error codes are returned as negative values
+
+#### ⚡ READ and WRITE
+
+```c
+ssize_t read(int fd, void *buffer, size_t count);
+ssize_t write(int fd, const void *buffer, size_t count);
+```
+
+- fd → file descriptor
+- buffer → memory to read into / write from
+- count → number of bytes
+
+| FD  | Meaning |
+| --- | ------- |
+| 0   | stdin   |
+| 1   | stdout  |
+| 2   | stderr  |
+
+#### ⚡ OPEN Syscall
+
+```c
+// Signature
+int open(const char *pathname, int flags);
+int open(const char *pathname, int flags, mode_t mode);
+
+int fd = open("file.txt", O_RDONLY | O_CREAT | O_TRUNC, 0655);
+```
+
+| Flags        | Meaning                         |
+| ------------ | ------------------------------- |
+| `O_CREAT`    | Create file if it doesn’t exist |
+| `O_TRUNC`    | Clear file if it exists         |
+| `O_APPEND`   | Always write at end             |
+| `O_EXCL`     | Fail if file already exists     |
+| `O_NONBLOCK` | Non-blocking I/O                |
+
+- Flags are separated by `|` (bitwise OR), to get a combination of flags.
+- 0655 is the mode to give the permissions to the file, and used when O_CREAT is used.
 
 <br>
 
@@ -367,7 +406,7 @@ int main() {
     pid_t pid;
 
     if (pipe(fd) == -1) return 1; // Pipe failed
-    
+
     pid = fork();  // Child Created after pipe
 
     if (pid > 0) {
@@ -388,6 +427,97 @@ int main() {
     return 0;
 }
 ```
+
+### 🔥 The `dup()` and `dup2()` System Calls
+
+- `dup()` creates a copy of a file descriptor with next abailable number
+- `dup2()` allows us to copy a file descriptor to a different number, even already in use
+- We can use the `dup2()` to take input & give output data using files istead of using STDIN and STDOUT
+- `dup2(old_fd, new_fd);` this duplicates the old_fd to new_fd, auto closes the new_fd, meaning we can access file via new_fd
+
+⚡ Demonstrating PIPE duplication
+
+```bash
+> wc -l # counts the lines form input
+> wc -l file.txt # counts the lines form file
+```
+
+```c
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/wait.h>
+
+int main() {
+    int fd[2];
+    pipe(fd);
+    pid_t pid = fork();
+
+    if (pid == 0) {
+        // --- CHILD (Receiver) ---
+        //'wc' read from the pipe, not keyboard.
+        dup2(fd[0], STDIN_FILENO);
+        // fd[0] -> PIPE(READ)
+        // STDIN -> PIPE(READ)
+        close(fd[0]);  // Closing original pipe
+        close(fd[1]);  // Close Write end
+
+        char *args[] = {"wc", "-l", NULL};
+        execvp(args[0], args);
+    }
+    else {
+        // --- PARENT (Sender) ---
+        // 'ls' write to the pipe, NOT the screen.
+        dup2(fd[1], STDOUT_FILENO);
+        // fd[1] -> PIPE(WRITE)
+        // STDOUT -> PIPE(WRITE)
+        close(fd[0]);  // Close Read end
+        close(fd[1]);  // Closing original pipe
+
+        char *args[] = {"ls", NULL};
+        execvp(args[0], args);
+    }
+    return 0;
+}
+```
+
+<br>
+
+## 🐦‍🔥 THREADS
+
+A thread is a lightweight execution unit inside a process that shares memory and resources with other threads of the same process.
+
+⚡ SHARED: Code segment, Data segment, and OS Resources
+⚡ PRIVATE: Stack, Registers, Program counter, Thread ID
+
+### 🔥 Why use Threads instead of Fork?
+
+- `Responsiveness` : If one thread is waiting, another thread can keep running.
+- `Resource Sharing` : They share the same memory (no pipes).
+- `Economy` : Creating a thread is much faster than fork().
+
+## 🐦‍🔥 CODING LAB: POSIX THREADS (Pthreads)
+
+In C, we use the Pthreads library. When compiling, you must add the -lpthread flag (e.g., gcc main.c -lpthread).
+
+### 🔥 The Pattern
+
+- `pthread_t` : The variable that holds the Thread ID.
+- `pthread_create()` : The "Fork" equivalent for threads.
+- `pthread_join()` : The "Wait" equivalent for threads.
+
+### 🔥 Process vs. Thread (The Memory Split)
+
+| Aspect         | Process                    | Thread                           |
+| -------------- | -------------------------- | -------------------------------- |
+| Definition     | Independent program        | Execution inside process         |
+| Memory         | Separate address space     | Shared address space             |
+| Communication  | IPC (pipes, shm, sockets)  | Shared variables                 |
+| Creation cost  | High (`fork`)              | Low (`pthread_create`)           |
+| Context switch | Expensive                  | Cheaper                          |
+| Isolation      | Strong                     | Weak                             |
+| Failure impact | One process crash ≠ others | One thread crash = whole process |
+| Stack          | One per process            | One per thread                   |
+| Scheduling     | Scheduled by OS            | Scheduled by OS                  |
 
 </div>
 </div>
