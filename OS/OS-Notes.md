@@ -495,17 +495,7 @@ A thread is a lightweight execution unit inside a process that shares memory and
 - `Resource Sharing` : They share the same memory (no pipes).
 - `Economy` : Creating a thread is much faster than fork().
 
-## 🐦‍🔥 CODING LAB: POSIX THREADS (Pthreads)
-
-In C, we use the Pthreads library. When compiling, you must add the -lpthread flag (e.g., gcc main.c -lpthread).
-
-### 🔥 The Pattern
-
-- `pthread_t` : The variable that holds the Thread ID.
-- `pthread_create()` : The "Fork" equivalent for threads.
-- `pthread_join()` : The "Wait" equivalent for threads.
-
-### 🔥 Process vs. Thread (The Memory Split)
+### 🔥 Process vs. Thread
 
 | Aspect         | Process                    | Thread                           |
 | -------------- | -------------------------- | -------------------------------- |
@@ -518,6 +508,166 @@ In C, we use the Pthreads library. When compiling, you must add the -lpthread fl
 | Failure impact | One process crash ≠ others | One thread crash = whole process |
 | Stack          | One per process            | One per thread                   |
 | Scheduling     | Scheduled by OS            | Scheduled by OS                  |
+
+### 🔥 Demonstration: POSIX threads (pthreads)
+
+```c
+#include <pthread.h>
+```
+
+> 📝 NOTE :
+>
+> - In C, we use the Pthreads library.
+> - When compiling, you must add the -lpthread flag
+>   (example - `gcc main.c -lpthread`).
+
+- `pthread_t` : The variable that holds the Thread ID.
+- `pthread_create()` : The "Fork" equivalent for threads.
+- `pthread_join()` : The "Wait" equivalent for threads.
+
+```c
+int pthread_create(
+    pthread_t *thread, // Thread ID
+    const pthread_attr_t *attr, // Attributes, mostly NULL
+    void *(*start_routine)(void *), // The function to run
+    void *arg // Arguments
+);
+```
+
+- `start_routine` should return `void *` and take only one `void *` argument.
+
+```c
+#include <stdio.h>
+#include <pthread.h>
+#include <unistd.h>
+
+// This is the function the thread will run
+void* my_task(void* arg) {
+    char* name = (char*)arg;
+    for(int i = 0; i < 3; i++) {
+        printf("%s is working...\n", name);
+        sleep(1);
+    }
+    return NULL;
+}
+
+int main() {
+    pthread_t thread1, thread2;
+
+    // Create two threads running the same task
+    pthread_create(&thread1, NULL, my_task, "Thread A");
+    pthread_create(&thread2, NULL, my_task, "Thread B");
+
+    // Wait for them to finish
+    pthread_join(thread1, NULL);
+    pthread_join(thread2, NULL);
+
+    printf("All threads finished!\n");
+    return 0;
+}
+```
+
+<br>
+
+## 🐦‍🔥 SIGNALS: THE ASYNCHRONOUS NOTIFIER
+
+A signal is an asynchronous notification sent to a process to notify it of an event (interrupt, error, timeout, termination, etc.).
+
+- Signals are asynchronous, can arrive at any time
+- When Signals arrive, process stop execution and runs Signal handler
+
+### 🔥 Types of Signals
+
+⚡1. TERMINATION & CONTROL SIGNALS
+
+| Signal    | Name      | Meaning                       |
+| --------- | --------- | ----------------------------- |
+| `SIGINT`  | Interrupt | Ctrl + C                      |
+| `SIGTERM` | Terminate | Polite kill                   |
+| `SIGKILL` | Kill      | Force kill (cannot be caught) |
+| `SIGQUIT` | Quit      | Ctrl + \ (core dump)          |
+| `SIGHUP`  | Hangup    | Terminal closed               |
+
+⚡ 2. TIMING AND CHILD SIGNAL
+
+| Signal    | Name  | Meaning              |
+| --------- | ----- | -------------------- |
+| `SIGALRM` | Alarm | Timer expired        |
+| `SIGCHLD` | Child | Child process exited |
+
+⚡ 3. ERROR SIGNALS
+
+| Signal    | Name                     | Meaning               |
+| --------- | ------------------------ | --------------------- |
+| `SIGSEGV` | Segmentation fault       | Invalid memory access |
+| `SIGFPE`  | Floating-point exception | Divide by zero        |
+| `SIGILL`  | Illegal instruction      | Bad CPU instruction   |
+| `SIGABRT` | Abort                    | `abort()` called      |
+
+⚡ 4. JOB CONTROL SIGNALS
+| Signal | Name | Meaning |
+| --------- | ------------- | ---------------------- |
+| `SIGSTOP` | Stop | Pause |
+| `SIGTSTP` | Terminal stop | Ctrl + Z |
+| `SIGCONT` | Continue | Resume stopped process |
+
+### 🔥 Demonstration (SIGKILL)
+
+```c
+#include <signal.h>
+```
+
+```c
+#include <signal.h>
+#include <stdio.h>
+#include <unistd.h>
+
+void alarm_handler(int sig) {  // Signal handler
+  write(1, "Killing itself\n", 15);
+  kill(getpid(), SIGKILL);
+}
+
+int main() {
+  printf("My PID is: %d\n", getpid());
+  signal(SIGALRM, alarm_handler); // Signal handler
+  alarm(5);  // 5 seconds timer
+  pause(); // Freeze the process
+
+  return 0;
+}
+```
+
+<br>
+
+## 🐦‍🔥 JUMP: Breaking the Flow
+
+In C, execution happens from top to bottom. However, we can use `setjmp(env)` and `longjmp(env, 1)` to break the flow of the program.
+
+- `setjump()` saves the state of the program and return 0 firstly
+- `longjump()` is called to jumps back to the saved state
+- This time `setjump()` returns the value passed in `longjump()`
+
+```c
+#include <setjmp.h>
+```
+
+```c
+#include <setjmp.h>
+#include <stdio.h>
+
+jmp_buf env;
+
+int main() {
+    int x = setjmp(env);
+
+    if (x == 0) {
+        printf("First time\n");
+        longjmp(env, 1);
+    } else {
+        printf("After jump\n");
+    }
+}
+```
 
 </div>
 </div>

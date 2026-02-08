@@ -3,7 +3,7 @@
 #include <unistd.h>
 
 void alarm_handler(int sig) {
-  printf("\nKilling Self Process\n");
+  write(1, "Killing itself\n", 15);
   kill(getpid(), SIGKILL);
 }
 

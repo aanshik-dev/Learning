@@ -21,9 +21,9 @@ int isPrime(int n) {
 }
 
 void *threadfunc(void *arg) {
-  Interval *inter = (Interval *)arg;
+  Interval *intrvl = (Interval *)arg;
 
-  for (int i = inter->st; i <= inter->end; i++) {
+  for (int i = intrvl->st; i <= intrvl->end; i++) {
     if (isPrime(i)) {
       printf("%d\n", i);
     }
@@ -40,16 +40,16 @@ int main(int argc, char *argv[]) {
 
   int N = atoi(argv[1]);
   pthread_t threads[N];
-  Interval inter[N];
+  Interval intrvl[N];
 
   int gap = num / N;
   int start = 1;
 
   for (int i = 0; i < N; i++) {
-    inter[i].st = start;
-    inter[i].end = (i == N - 1) ? num : start + gap - 1;
+    intrvl[i].st = start;
+    intrvl[i].end = (i == N - 1) ? num : start + gap - 1;
 
-    pthread_create(&threads[i], NULL, threadfunc, &inter[i]);
+    pthread_create(&threads[i], NULL, threadfunc, &intrvl[i]);
     start += gap;
   }
 
