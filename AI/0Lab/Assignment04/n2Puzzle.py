@@ -26,11 +26,21 @@ for i in range(10):
 
   print(f"\nInitial State {i+1}: {init}")
 
-  # BFS
-  print(f"    Running BFS...")
-  status, t, path = bfs(init, n, goal)
-  print(f"    → {status}, Time: {t:.2f}s, Path Length: {path}")
+  #bfs
+  print(f" => Running BFS")
+  status, sec, path = bfs(init, n)
+  print(f"    -> {status}, Time: {sec:.2f}s, Path Length: {path}")
 
+  print(f" => Running DFS")
+  # status, sec, path = dfs(init, n)
+  print(f"    -> {status}, Time: {sec:.2f}s, Path Length: {path}")
 
-print(f"Start state: {start}")
-print(f"Goal state: {goal}")
+  print(f" => Running DLS")
+  # status, sec, path = dls(init, n)
+  print(f"    -> {status}, Time: {sec:.2f}s, Path Length: {path}")
+
+  print(f" => Running ID")
+  # status, sec, path = iterDeep(init, n)
+  print(f"    -> {status}, Time: {sec:.2f}s, Path Length: {path}")
+
+  
