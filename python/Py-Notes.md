@@ -11,12 +11,12 @@ A variable is like a container that holds a value. Python is dynamically typed, 
 
 ## 🐦‍🔥 DATA TYPES
 
-- `Integer (int)`&nbsp; // By default integeres are big
+- `Integer (int)`&nbsp; // Python integers have arbitrary precision (no fixed size)
 - `String`&nbsp; // Can be used as 'Str', "Str", '''Str'''
 - `float`&nbsp; // number with decimal point
-- `boolen (bool)` represent True/False
+- `boolean (bool)` represent True/False
 - `None`
-  // There is no double
+  // Python has no separate double; float is double-precision
 
 ```py
 name = "Aanshik"
@@ -61,7 +61,7 @@ print(object(s), sep=' ', end='\n', file=sys.stdout, flush=False)
 ```
 
 ```py
-print("Hello World", 45, true)
+print("Hello World", 45, True)
 print(10, 20, sep='-', end=' | ')
 print(30, 40, sep='+',file=sys.stdout)
 # Output: 10-20 | 30+40
@@ -72,11 +72,11 @@ time.sleep(2)
 print(" Done.")
 ```
 
-- `objects(s)` # single or multiple objects which are printed
+- `object(s)` # single or multiple objects which are printed
 - `sep=' '` # it is the connector between objects, by default ' '
 - `end='\n'` # it tell what to print after last object, by default '\n'
 - `file=sys.stdout` # it tells where the output should be written, by default sys.stdout i.e. console
-- `flush=false` # It forces output buffer to be written immediately, by default false, allowing OS to manage
+- `flush=False` # It forces output buffer to be written immediately, by default False, allowing OS to manage
 
 ### 🔥 F-Strings
 
@@ -114,7 +114,7 @@ print(f"The {item} costs ${price:.2f}.")
 
 ### 🔥 Unary Operators
 
-Python does not support any unary operators
+Python supports unary operators: `+x`, `-x`, `~x`, `not x`
 
 ### 🔥 Bitwise Operators
 
@@ -187,7 +187,7 @@ else:
   print("Not Found") # code runs when loop runs completely
 ```
 
-- `range(start = 0, end, step = 1)` // creates a sequence of numbers from start to end-1 with step
+- `range(start, stop, step)` // creates a sequence of numbers from start to end-1 with step
 
 ```py
 print(range(5)) # range(0,5)
@@ -219,8 +219,8 @@ print(prodSum(3, 2)) # (5, 6)
 # def sum(a = 2, b): # Error
 def Sum(a, b = 2):
     return a + b
-print(Sum(3)) # (5, 6)
-print(Sum(5,3)) # (8,15)
+print(Sum(3)) # 5
+print(Sum(5,3)) # 8
 ```
 
 <br>
@@ -279,8 +279,8 @@ name = "Aanshik's Phone" # Right
 - `title()` // capitalizes first letter of each word
 - `swapcase()` // converts lowercase to uppercase and vice versa
 - `strip()` // removes leading and trailing spaces
-- `split("separator" = " ")` // splits string into list of words`
-- `join()` // joins list of words into string
+- `split(separator = " ")` // splits string into list of words`
+- `'sep'.join(iterable)` // joins list of words into string
 - `join(separator)` // joins list of words into string with separator
 
 <br>
@@ -288,16 +288,14 @@ name = "Aanshik's Phone" # Right
 ## 🐦‍🔥 LISTS and TOUPLE
 
 - Lists are similar to arrays, but they are mutable while Tuples are immutable, once created cannot be changed.
-
 - There can be different data types in a list
-
 - Lists are enclosed in square brackets `[]` and Tuples are enclosed in round brackets `()`
 
 ```py
 list = [1,"Python", 3]
 tuple = (1, 2, "CPP")
 print(list) # [1, "Python", 3]
-print(tuple) # (1, 2, 3)
+print(tuple) # (1, 2, "CPP")
 ```
 
 - we can access the elements of the list and tuple using index
@@ -312,6 +310,27 @@ print(tuple[2]) # CPP
 tup = (1,) # Tuple with single element
 tup = (1) # Integer
 tup = () # Empty tuple is also valid
+```
+
+### 🔥 List Creation
+
+```py
+# 1. using list() constructor
+ls = [1, 2, "Python"]
+lst = list((1, 2, 3))
+
+# 2. works with any iterable
+list("abc")        # ['a', 'b', 'c']
+list(range(5))    # [0, 1, 2, 3, 4]
+
+# 3. List Comprehension
+lst = [x for x in range(5)]
+lst = [x for x in range(10) if x % 2 == 0]
+
+# 4. Using Repetition
+lst = [0] * 5  # [0, 0, 0, 0, 0]
+
+
 ```
 
 ### 🔥 List Methods
@@ -375,7 +394,7 @@ print(list[::-1]) # [5, 4, 3, 2, 1]
 
 - A dictionary is a collection of key-value pairs.
 - They are enclosed in curly braces `{}`
-- They are unordered, mutabe, and do not allow duplicate keys.
+- They are mutabe, and do not allow duplicate keys.
 - They are indexed by keys, which can be of any immutable type.
 - keys cannot be list or dictionary, but values can be any data type
 
@@ -387,7 +406,7 @@ dict = {
     "Chemistry": 95,
     "Maths": 96
     },
-  18 : true
+  18 : True
   }
 print(dict) # {'name': 'Aanshik', 'marks': {'Physics': 98, 'Chemistry': 95, 'Maths': 96}, 18: True}
 dict["name"] = "Vinay"
@@ -468,7 +487,7 @@ File handling is a process of creating, reading, updating and deleting files in 
 f = open("file.txt", "r")
 # MODES
 # 'r' - read mode (default)
-# 'W' - write mode(overwrites)
+# 'w' - write mode(overwrites)
 # 'a' - append mode
 # 'x' - create mode
 # 't' - text mode (default)
@@ -487,7 +506,7 @@ f = open("file.txt", "r")
 - `read(size)` // reads a specific number of bytes from the file
 - `readline()` // reads a single line from the file
 - `write(string)` // writes a string to the file
-- `seek(offset, from)` // moves the cursor to a specific position in the file
+- seek(offset, whence) // moves the cursor to a specific position in the file (whence: 0=start, 1=current, 2=end)
 
 ```py
 f = open("file.txt", "r")
@@ -556,6 +575,7 @@ def __init__(self, name):
   self.name = name
 
 # Same class can have multiple constructors, this is called method overloading
+# Python does NOT support constructor overloading directly
 ```
 
 ---
@@ -701,7 +721,7 @@ class Student:
     print("Roll:", self.roll)
 
 s = Student("Aanshik", 20)
-del s.display() # deletes display method
+del s.display # deletes display method
 del s # deletes object
 ```
 

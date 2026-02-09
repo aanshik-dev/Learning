@@ -137,6 +137,12 @@ def run_experiment(n):
         "DLS": lambda s, n: dls(s, n, DLS_LIMIT),
         "ID": iterative_deepening
     }
+    results = {
+        "BFS": [],
+        "DFS": [],
+        "DLS": [],
+        "ID": []
+    }
 
     results = {alg: [] for alg in algorithms}
 
