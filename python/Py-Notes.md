@@ -413,6 +413,31 @@ dict["name"] = "Vinay"
 print(dict["name"]) # Vinay
 ```
 
+### 🔥 Dictionary Creation
+
+```py
+# 1. Using {} (literal)
+d = {"a": 1, "b": 2}
+d = {}   # empty dictionary
+
+# 2. Using dict() constructor
+d = dict(a=1, b=2)
+d = dict([("a", 1), ("b", 2)])
+
+# 3. From two iterables (zip)
+keys = ["a", "b", "c"]
+values = [1, 2, 3]
+d = dict(zip(keys, values))
+
+# 4. Dictionary Comprehension
+d = {x: x*x for x in range(5)}
+d = {x: x*x for x in range(10) if x % 2 == 0}
+
+# 5. Using fromkeys()
+d = dict.fromkeys(["a", "b", "c"], 0)
+# {'a': 0, 'b': 0, 'c': 0}
+```
+
 ### 🔥 Dictionary Methods
 
 - `keys()` // returns a list of keys
@@ -447,6 +472,31 @@ print(list(dict.keys())) # ['name', 18] dict keys type casted to list
 ```py
 set = {1, 2, 3, 4, 5}
 print(set) # {1, 3, 2 , 5 , 4} ordered is not maintained
+```
+
+### 🔥 Set Creation
+
+```py
+# 1. Using {} (literal)
+s = {1, 2, 3}
+# empty set must use set()
+s = set()
+
+# 2. Using set() constructor
+s = set([1, 2, 3, 3])  # {1, 2, 3}
+s = set((1, 2, 3))    # {1, 2, 3}
+s = set("abc")       # {'a', 'b', 'c'}
+
+# 3. From any iterable
+s = set(range(5))   # {0, 1, 2, 3, 4}
+
+# 4. Set Comprehension
+s = {x for x in range(5)}
+s = {x for x in range(10) if x % 2 == 0}
+
+# 5. Remove duplicates automatically
+s = set([1, 2, 2, 3, 3])
+# {1, 2, 3}
 ```
 
 ### 🔥 Set Methods
