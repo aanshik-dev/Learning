@@ -4,6 +4,7 @@ import random
 from collections import deque
 
 timeOut = 60
+k = 20
 
 def swap(state, i, j):
   state = list(state)
@@ -22,6 +23,12 @@ def getMoves(state, n):
   if col < n-1: moves.append(swap(state, blank, blank+1)) # left
   return moves
 
+def shuffle(state):
+  state = list(state)
+  for i in range(k):
+    moves = getMoves(state, n)
+    state = random.choice(moves)
+  return state
 
 # UCS ------------
 def ucs(init, n):
@@ -86,9 +93,7 @@ goal = tuple(list(range(1, n*n)) + [0])
 
 for i in range(10):
   # Initial State
-  init = list(range(n*n))
-  random.shuffle(init)
-  init = tuple(init)
+  init = shuffle(goal)
 
   print(f"\nInitial State {i+1}: {init}")
 

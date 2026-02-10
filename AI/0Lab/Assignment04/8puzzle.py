@@ -1,9 +1,10 @@
 import time
 import random
 from collections import deque
-import matplotlib
+import matplotlib.pyplot as plt
+import numpy as np
 
-timeLim = 120
+timeLim = 60
 
 def swap(state, i, j):
   state = list(state)
@@ -13,7 +14,8 @@ def swap(state, i, j):
 def getMoves(state, n):
   moves = []
   idx = state.index(0)
-  r, c = idx//n, idx%n
+  r = idx//n
+  c = idx%n
 
   if r > 0: moves.append(swap(state, idx, idx - n))
   if r < n - 1: moves.append(swap(state, idx, idx + n))
@@ -37,10 +39,10 @@ def bfs(init, n):
       return "Success", time.time() - start, depth
   
     moves = getMoves(state, n)
-    for nxt in moves:
-        if nxt not in vis:
-            vis.add(nxt)
-            q.append((nxt, depth + 1))
+    for mov in moves:
+        if mov not in vis:
+            vis.add(mov)
+            q.append((mov, depth + 1))
 
   return "Failure", time.time() - start, None
 
@@ -56,8 +58,8 @@ def dfs(init, n):
 
       if state == goal:
         return "Success", time.time() - start, depth
-      for nxt in getMoves(state, n):
-        stack.append((nxt, depth + 1))
+      for mov in getMoves(state, n):
+        stack.append((mov, depth + 1))
 
     return "Failure", time.time() - start, None
 
@@ -76,8 +78,8 @@ def dls(init, n):
           return "Success", time.time() - start, depth
 
         if depth < limit:
-          for nxt in getMoves(state, n):
-            stack.append((nxt, depth + 1))
+          for mov in getMoves(state, n):
+            stack.append((mov, depth + 1))
 
     return "Failure", time.time() - start, None
 
@@ -96,8 +98,8 @@ def iterDeep(init, n):
               return "Success", time.time() - start, depth
 
           if depth < limit:
-            for nxt in getMoves(state, n):
-              stack.append((nxt, depth + 1))
+            for mov in getMoves(state, n):
+              stack.append((mov, depth + 1))
 
     return "Failure", time.time() - start, None
 
@@ -107,7 +109,28 @@ n = int(input(f"====== Menu ======\n8 - puzzle: 3 \n15 - puzzle: 4\nEnter the va
 
 # Goal State
 goal = tuple(list(range(1, n*n)) + [0])
-Stats = []
+
+stats = {
+  "BFS": {
+    "time": [],"success": 0,"path": []
+  },
+  "DFS": {
+    "time": [],"success": 0,"path": []
+  },
+  "DLS": {
+    "time": [],"success": 0,"path": []
+  },
+  "ID": {
+    "time": [],"success": 0,"path": []
+  }
+}
+
+search = {
+  "BFS": bfs,
+  "DFS": dfs,
+  "DLS": dls,
+  "ID": iterDeep
+}
 
 for i in range(10):
   # Initial State
@@ -117,25 +140,48 @@ for i in range(10):
 
   print(f"\nInitial State {i+1}: {init}")
 
-  #BFS
-  print(f" => Running BFS")
-  status, sec, path = bfs(init, n)
-  print(f"    -> {status}, Time: {sec:.2f}s, Path Length: {path}")
-  
-  #DFS
-  print(f" => Running DFS")
-  status, sec, path = dfs(init, n)
-  print(f"    -> {status}, Time: {sec:.2f}s, Path Length: {path}")
+  for algo in search:
+    print(f" => Running {algo}")
+    status, sec, path = search[algo](init, n)
+    stats[algo]["time"].append(sec)
+    if status == "Success":
+      stats[algo]["path"].append(path)
+      stats[algo]["success"] += 1
+    print(f"    -> {status}, Time: {sec:.2f}s, Path Length: {path}")
 
-  #DLS
-  print(f" => Running DLS")
-  status, sec, path = dls(init, n)
-  print(f"    -> {status}, Time: {sec:.2f}s, Path Length: {path}")
+avgTime = {}
+successRate = {}
+avgPath = {}
 
-  #ID
-  print(f" => Running ID")
-  status, sec, path = iterDeep(init, n)
-  print(f"    -> {status}, Time: {sec:.2f}s, Path Length: {path}")
+for algo in stats:
+    avgTime[algo] = np.mean(stats[algo]["time"])
+    successRate[algo] = (stats[algo]["success"] / 10) * 100
+    if stats[algo]["path"]:
+        avgPath[algo] = np.mean(stats[algo]["path"])
+    else:
+        avgPath[algo] = 0
 
 
-  
+algos = list(avgTime.keys())
+times = list(avgTime.values())
+rates = list(successRate.values())
+paths = list(avgPath.values())
+
+plt.figure()
+plt.bar(algos, times)
+plt.ylabel("Average Time (seconds)")
+plt.title(f"Average Execution Time (n={n})")
+plt.show()
+
+plt.figure()
+plt.bar(algos, rates)
+plt.ylabel("Success Rate (%)")
+plt.ylim(0, 100)
+plt.title(f"Success Rate (n={n})")
+plt.show()
+
+plt.figure()
+plt.bar(algos, paths)
+plt.ylabel("Average Path Length")
+plt.title(f"Average Solution Length (n={n})")
+plt.show()
