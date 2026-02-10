@@ -2,13 +2,19 @@ import random
 import time
 from collections import deque
 
-def bfs(init, n, goal):
+timeOut = 60;
+
+def bfs(init, n):
   start = time.time()
-  q = deque([init])
+  q = deque([(init, 0)])
+  vis = set([init])
 
-
-  if(init == goal):
-    return "Success", 
+  while q:
+    if time.time() - start > timeOut:
+      return "Failure", timeOut, None
+    state, depth = q.popleft()
+    if(init == goal):
+      return "Success", 
 
 
 
@@ -26,19 +32,22 @@ for i in range(10):
 
   print(f"\nInitial State {i+1}: {init}")
 
-  #bfs
+  #BFS
   print(f" => Running BFS")
   status, sec, path = bfs(init, n)
   print(f"    -> {status}, Time: {sec:.2f}s, Path Length: {path}")
 
+  #DFS
   print(f" => Running DFS")
   # status, sec, path = dfs(init, n)
   print(f"    -> {status}, Time: {sec:.2f}s, Path Length: {path}")
 
+  #DLS
   print(f" => Running DLS")
   # status, sec, path = dls(init, n)
   print(f"    -> {status}, Time: {sec:.2f}s, Path Length: {path}")
 
+  #ID
   print(f" => Running ID")
   # status, sec, path = iterDeep(init, n)
   print(f"    -> {status}, Time: {sec:.2f}s, Path Length: {path}")

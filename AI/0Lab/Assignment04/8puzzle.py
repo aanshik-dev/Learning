@@ -1,23 +1,24 @@
 import time
 import random
 from collections import deque
+import matplotlib
 
 timeLim = 120
+
+def swap(state, i, j):
+  state = list(state)
+  state[i], state[j] = state[j], state[i]
+  return tuple(state)
 
 def getMoves(state, n):
   moves = []
   idx = state.index(0)
   r, c = idx//n, idx%n
 
-  def swap(i, j):
-      lst = list(state)
-      lst[i], lst[j] = lst[j], lst[i]
-      return tuple(lst)
-
-  if r > 0: moves.append(swap(idx, idx - n))
-  if r < n - 1: moves.append(swap(idx, idx + n))
-  if c > 0: moves.append(swap(idx, idx - 1))
-  if c < n - 1: moves.append(swap(idx, idx + 1))
+  if r > 0: moves.append(swap(state, idx, idx - n))
+  if r < n - 1: moves.append(swap(state, idx, idx + n))
+  if c > 0: moves.append(swap(state, idx, idx - 1))
+  if c < n - 1: moves.append(swap(state, idx, idx + 1))
   return moves
 
 
@@ -42,7 +43,6 @@ def bfs(init, n):
             q.append((nxt, depth + 1))
 
   return "Failure", time.time() - start, None
-
 
 # DFS (Tree Search) --------
 def dfs(init, n):
@@ -107,6 +107,7 @@ n = int(input(f"====== Menu ======\n8 - puzzle: 3 \n15 - puzzle: 4\nEnter the va
 
 # Goal State
 goal = tuple(list(range(1, n*n)) + [0])
+Stats = []
 
 for i in range(10):
   # Initial State
@@ -116,21 +117,25 @@ for i in range(10):
 
   print(f"\nInitial State {i+1}: {init}")
 
-  #bfs
+  #BFS
   print(f" => Running BFS")
   status, sec, path = bfs(init, n)
   print(f"    -> {status}, Time: {sec:.2f}s, Path Length: {path}")
-
+  
+  #DFS
   print(f" => Running DFS")
   status, sec, path = dfs(init, n)
   print(f"    -> {status}, Time: {sec:.2f}s, Path Length: {path}")
 
+  #DLS
   print(f" => Running DLS")
   status, sec, path = dls(init, n)
   print(f"    -> {status}, Time: {sec:.2f}s, Path Length: {path}")
 
+  #ID
   print(f" => Running ID")
   status, sec, path = iterDeep(init, n)
   print(f"    -> {status}, Time: {sec:.2f}s, Path Length: {path}")
+
 
   
