@@ -154,12 +154,12 @@ successRate = {}
 avgPath = {}
 
 for algo in stats:
-    avgTime[algo] = np.mean(stats[algo]["time"])
-    successRate[algo] = (stats[algo]["success"] / 10) * 100
-    if stats[algo]["path"]:
-        avgPath[algo] = np.mean(stats[algo]["path"])
-    else:
-        avgPath[algo] = 0
+  avgTime[algo] = np.mean(stats[algo]["time"])
+  successRate[algo] = (stats[algo]["success"] / 10) * 100
+  if stats[algo]["path"]:
+      avgPath[algo] = np.mean(stats[algo]["path"])
+  else:
+      avgPath[algo] = 0
 
 
 algos = list(avgTime.keys())
@@ -185,3 +185,5 @@ plt.bar(algos, paths)
 plt.ylabel("Average Path Length")
 plt.title(f"Average Solution Length (n={n})")
 plt.show()
+
+

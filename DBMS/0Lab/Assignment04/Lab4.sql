@@ -20,7 +20,7 @@ where age = (select min(age) from eligible_stud_l41);
 -- 2. Find the names of all classes that either meet in room 20 AVW or have five or more students enrolled
 select name from class where room = "20 AVW"
 union
-select cname from enrolled group by cname having count(*) > 5;
+select cname from enrolled group by cname having count(*) >= 5;
 
 -- 3. Find the names of faculty members who teach in every room in which some class is taught
 select f.fname, class
@@ -57,7 +57,7 @@ join (
   from (
      select age, standing, count(*) cnt 
 	 from student group by age, standing
-  ) grp 
+  ) grp
   group by age
 ) grp
 on grp.age = s.age
@@ -66,12 +66,6 @@ where (
  from student s2 
  where s2.age = s.age and s2.standing = s.standing
 ) = grp.cnt;
-
-select age, max(cnt) as cnt from ( 
-select age, standing, count(*) cnt from student group by age, standing) grp group by age;
-
-
-select age, standing, count(*) cnt from student group by age, standing;
 
 -- 7. Find the number of courses conducted per room.
 select room, count(*) from class group by room;
@@ -94,3 +88,6 @@ select * from student where age > 18 and standing = "SR" and major not like "%En
 
 -- 12. Find the classes for which no student has enrolled.
 select * from class c where c.name not in (select distinct cname from enrolled);
+
+
+select c.name, c.meets_at from class c join enrolled e on e.cname = c.name; 

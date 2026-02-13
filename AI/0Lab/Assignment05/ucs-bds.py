@@ -2,6 +2,8 @@ import time
 import heapq
 import random
 from collections import deque
+from matplotlib import pyplot as plt
+import numpy as np
 
 timeOut = 60
 k = 20
@@ -39,17 +41,17 @@ def ucs(init, n):
 
   while pq:
     if time.time() - start > timeOut:
-      return "Timeout", timeOut, None
+      return "Timeout", timeOut, len(vis), None
     depthRank, state = heapq.heappop(pq)
 
     if state == goal:
-      return "Success", time.time() - start, depthRank
+      return "Success", time.time() - start, len(vis), None
     for mov in getMoves(state, n):
       cost = depthRank + 1
       if mov not in vis or cost < vis[mov]:   
         vis[mov] = cost 
         heapq.heappush(pq, (cost, mov))
-  return "Failure", time.time() - start, None
+  return "Failure", time.time() - start, len(vis), None
 
 
 # BDS ------------
@@ -63,7 +65,7 @@ def bds(init, n):
   
   while frontq and backq:
     if time.time() - start > timeOut:
-      return "Timeout", timeOut, None
+      return "Timeout", timeOut, len(backvis) , None
     
     fnode, fdepth = frontq.popleft()
     for fmov in getMoves(fnode, n):
@@ -72,7 +74,7 @@ def bds(init, n):
         frontq.append((fmov, fdepth + 1))
         if fmov in backvis:
           depth = fdepth + backvis[fmov] + 1
-          return "Success", time.time() - start, depth  
+          return "Success", time.time() - start, len(backvis) + len(frontvis), depth  
         
     bnode, bdepth = backq.popleft()
     for bmov in getMoves(bnode, n):
@@ -81,10 +83,20 @@ def bds(init, n):
         backq.append((bmov, bdepth + 1))
         if bmov in frontvis:
           depth = bdepth + frontvis[bmov] + 1
-          return "Success", time.time() - start, depth        
-  return "Failure", time.time() - start, None
+          return "Success", time.time() - start, len(backvis) + len(frontvis), depth        
+  return "Failure", time.time() - start, len(backvis) + len(frontvis), None
 
 
+stats = {
+  "ucs" : {
+    "time" : [],
+    "visNodes": []
+  },
+  "bds" : {
+    "time" : [],
+    "visNodes": []
+  }
+}
 
 n = int(input(f"====== Menu ======\n8 - puzzle: 3 \n15 - puzzle: 4\nEnter the value of n: "))
 
@@ -98,11 +110,36 @@ for i in range(10):
   print(f"\nInitial State {i+1}: {init}")
 
   #UCS
-  print(f" => Running BFS")
-  status, sec, path = ucs(init, n)
+  print(f" => Running UCS")
+  status, sec, nodes, path = ucs(init, n)
+  stats["ucs"]["time"].append(sec)
+  stats["ucs"]["visNodes"].append(nodes)
   print(f"    -> {status}, Time: {sec:.2f}s, Path Length: {path}")
 
-  #BS
-  print(f" => Running DFS")
-  status, sec, path = bds(init, n)
+  #BDS
+  print(f" => Running BDS")
+  status, sec, nodes, path = bds(init, n)
+  stats["bds"]["time"].append(sec)
+  stats["bds"]["visNodes"].append(nodes)
   print(f"    -> {status}, Time: {sec:.2f}s, Path Length: {path}")
+
+avgTime = []
+avgNodes = []
+
+for algo in stats:
+  avgTime.append(np.mean(stats[algo]["time"]))
+  avgNodes.append(np.mean(stats[algo]["visNodes"]))
+
+plt.figure()
+plt.bar(["UCS", "BDS"], avgTime)
+plt.ylabel("Average Time (seconds)")
+plt.xlabel("Algorithms")
+plt.title(f"Average Execution Time (n={n})")
+plt.show()
+
+plt.figure()
+plt.bar(["UCS", "BDS"], avgNodes)
+plt.ylabel("Average Explored Nodes")
+plt.xlabel("Algorithms")
+plt.title(f"Average Nodes Explored (n={n})")
+plt.show()
