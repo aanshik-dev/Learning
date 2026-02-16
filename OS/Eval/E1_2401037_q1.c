@@ -26,16 +26,9 @@ int main() {
 
   if (pid == 0) {
     close(fd[0]); // close read
-    int stuck = 1;
-
     while (1) {
       printf("Child: I am Alive and working !!\n");
-      if (!(stuck % 5 == 0)) {
-        write(fd[1], "Alive", 5);
-      } else {
-        sleep(5);
-      }
-      stuck++;
+      write(fd[1], "Alive", 5);
       sleep(1);
     }
   } else if (pid > 0) {
@@ -53,17 +46,9 @@ int main() {
         pid = fork();
         if (pid == 0) {
           close(fd[0]); // close write
-          int stuck = 1;
-
           while (1) {
             printf("Child: I am Alive and working !!\n");
-            if (!(stuck % 5 == 0)) {
-              write(fd[1], "Alive", 5);
-            } else {
-              sleep(5);
-            }
-
-            stuck++;
+            write(fd[1], "Alive", 5);
             sleep(1);
           }
         }

@@ -49,7 +49,6 @@ int main(int argc, char *argv[]) {
     pid = fork();
 
     if (pid == 0) {
-      /* -------- CHILD PROCESS -------- */
       close(pipes[i][0]); // Close read end
 
       int count = count_occurrences(argv[i + 2], keyword);
@@ -58,12 +57,10 @@ int main(int argc, char *argv[]) {
       close(pipes[i][1]);
       exit(0);
     } else {
-      /* -------- PARENT PROCESS -------- */
       close(pipes[i][1]); // Close write end
     }
   }
 
-  /* Parent waits and collects results */
   for (int i = 0; i < num_files; i++) {
     int child_count;
     wait(NULL);

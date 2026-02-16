@@ -23,7 +23,6 @@ void *findWord(void *arg) {
     }
   }
   thData->count = words;
-  pthread_exit(NULL);
 }
 
 int main() {
