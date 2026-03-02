@@ -669,5 +669,11 @@ int main() {
 }
 ```
 
+### 🔥 Thread Scheduling
+
+- PCS : Process Contention Scope or process local scheduling
+
+- SCS - System Contention Scope or system global scheduling
+
 </div>
 </div>
