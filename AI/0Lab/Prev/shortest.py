@@ -1,8 +1,7 @@
 import heapq
 import numpy as np
-import time
 
-file = open("./Learning/AI/0Lab/Prev/graph_data2.txt", "r")
+file = open("./Learning/AI/0Lab/Prev/graph_data.txt", "r")
 file.seek(0)
 data = file.read().split("\n")
 nd, edges = data[0].split(" ")
@@ -24,8 +23,6 @@ graph = np.full((nd, nd), -1.0)
 for edge in edges:
   graph[int(edge[0])][int(edge[1])] = float(edge[2])
   graph[int(edge[1])][int(edge[0])] = float(edge[2])
-
-print(graph)
 
 start = int(input("Enter start node: "))
 end = int(input("Enter end node: "))
@@ -74,5 +71,5 @@ def Astar(start, end):
   
 
 path, cost = Astar(start, end)
-print(path)
-print(f"Total Cost: {cost}")
+print(" -> ".join(map(str, path)))
+print(f"Total Cost: {cost:.2f}")
