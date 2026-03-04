@@ -9,7 +9,7 @@ mat5 = np.full(10, 5)
 evens = np.arange(10, 50, 2)
 rand = np.random.rand(1)[0]
 
-file = open("./Learning/AI/Assignment02/matrix.txt", "w+")
+file = open("matrix.txt", "w+")
 file.write(str(mat))
 
 file.seek(0)
