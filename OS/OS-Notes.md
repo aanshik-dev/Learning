@@ -119,7 +119,7 @@ ssize_t write(int fd, const void *buffer, size_t count);
 int open(const char *pathname, int flags);
 int open(const char *pathname, int flags, mode_t mode);
 
-int fd = open("file.txt", O_RDONLY | O_CREAT | O_TRUNC, 0655);
+int fd = open("file.txt", O_WRONLY | O_CREAT | O_TRUNC, 0655);
 ```
 
 | Flags        | Meaning                         |

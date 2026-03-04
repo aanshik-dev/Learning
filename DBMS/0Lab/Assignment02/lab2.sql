@@ -132,4 +132,8 @@ Select snum from enrolled where cname = "Database Systems";  -- Question 3
 
 Select sname from Student natural join  enrolled where cname = "Database Systems"; -- Question 4
 
-select fname from faculty where de = 20; -- Question 5
+select fname from faculty where deptid = 20; -- Question 5
+
+drop view eligible_stud_l41;
+drop view fac;
+drop view r128_faculty;
