@@ -1,4 +1,4 @@
-file = open("./Learning/AI/Assignment02/text.txt", "w+")
+file = open("./Learning/AI/0Lab/Assignment02/text.txt", "w+")
 file.write("A girl is playing there badminton.\nThe scenery is beautiful.\nThe birds are flying in the sky.\nThe sky is cloudy.\nAlphabets consists of vowels and consonants.")
 
 file.seek(0)
