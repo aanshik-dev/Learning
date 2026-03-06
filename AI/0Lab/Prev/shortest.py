@@ -1,28 +1,40 @@
 import heapq
 import numpy as np
+import matplotlib.pyplot as plt
 
 file = open("./Learning/AI/0Lab/Prev/graph_data.txt", "r")
-file.seek(0)
 data = file.read().split("\n")
-nd, edges = data[0].split(" ")
-nd, edges = int(nd), int(edges)
+n, e = data[0].split(" ")
+n, e = int(n), int(e)
 
 i = 1
 nodes = []
-while i < len(data) and len(data[i].split(" ")) == 2:
-  nodes.append(tuple(map(float, data[i].split(" "))))
+for k in range(n):
+  nodes.append(tuple(map(float, data[i].split())))
   i += 1
 
 edges = []
-while i < len(data) and len(data[i].split(" ")) == 3:
-  edges.append(tuple(data[i].split(" ")))
-  i += 1
+graph = np.full((n, n), -1.0)
 
-graph = np.full((nd, nd), -1.0)
+for k in range(i, i+e):
+  u, v, w = data[k].split()
+  u,v,w = int(u), int(v), float(w)
+  edges.append((int(u), int(v), float(w)))
+  graph[u][v] = w
+  graph[v][u] = w
 
-for edge in edges:
-  graph[int(edge[0])][int(edge[1])] = float(edge[2])
-  graph[int(edge[1])][int(edge[0])] = float(edge[2])
+plt.figure()
+xs = [i[0] for i in nodes]
+ys = [i[1] for i in nodes]
+plt.scatter(xs, ys)
+plt.title("Graph")
+plt.xlabel("X")
+plt.ylabel("Y")
+
+for u,v,w in edges:
+  x1, y1 = nodes[u]
+  x2, y2 = nodes[v]
+  plt.plot([x1, x2], [y1, y2])
 
 start = int(input("Enter start node: "))
 end = int(input("Enter end node: "))
@@ -30,7 +42,6 @@ end = int(input("Enter end node: "))
 if start >= len(nodes) or end >= len(nodes):
   print("Invalid node")
   exit()
-
 
 def hur(node, end):
   sx, sy = nodes[node]
@@ -40,7 +51,7 @@ def hur(node, end):
 
 def childs(node):
   res = []
-  for i in range(nd):
+  for i in range(n):
     if graph[node][i] != -1:
       res.append(i)
   return res
@@ -73,3 +84,5 @@ def Astar(start, end):
 path, cost = Astar(start, end)
 print(" -> ".join(map(str, path)))
 print(f"Total Cost: {cost:.2f}")
+
+plt.show()
