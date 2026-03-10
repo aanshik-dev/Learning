@@ -4,7 +4,7 @@
 <div style= "backdrop-filter: blur(15px) brightness(150%); padding: 25px" >
 
 # 🐦‍🔥🔥 **PYTHON NOTES** 🔥🐦‍🔥
-
+- By  Aanshik-dev
 <br>
 
 ## 🐦‍🔥 VARIABLES
