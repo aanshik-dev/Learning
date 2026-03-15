@@ -5,10 +5,10 @@ struct proc {
   int at;
   int burst;
   int pr;
-  int left;
   int end;
   int wait;
   int tat;
+  int done;
 };
 
 int main() {
@@ -22,11 +22,10 @@ int main() {
   printf("\nEnter the Process in format [PID  AT  BT  PR]\n");
   for (int i = 0; i < n; i++) {
     scanf("%d %d %d %d", &arr[i].pid, &arr[i].at, &arr[i].burst, &arr[i].pr);
-    arr[i].left = arr[i].burst;
+    arr[i].done = 0;
   }
 
   int complete = 0, time = 0;
-  int prev = -1;
 
   printf("\nGantt Chart:\n");
 
@@ -37,7 +36,7 @@ int main() {
 
     for (int i = 0; i < n; i++) {
 
-      if (arr[i].at <= time && arr[i].left > 0) {
+      if (arr[i].at <= time && arr[i].done == 0) {
 
         if (arr[i].pr < best) {
           best = arr[i].pr;
@@ -54,28 +53,25 @@ int main() {
 
     if (idx != -1) {
 
-      if (prev != idx) {
-        if (prev != -1)
-          printf("%d) | ", time);
-        printf("P%d (%d-", arr[idx].pid, time);
+      int start = time;
+
+      time += arr[idx].burst;
+      arr[idx].end = time;
+      arr[idx].done = 1;
+      complete++;
+
+      printf("P%d (%d - %d) | ", arr[idx].pid, start, time);
+
+      for (int i = 0; i < n; i++) {
+        if (arr[i].at <= time && arr[i].done == 0) {
+          arr[i].pr--;
+        }
       }
-
-      arr[idx].left--;
-      time++;
-
-      if (arr[idx].left == 0) {
-        arr[idx].end = time;
-        complete++;
-      }
-
-      prev = idx;
 
     } else {
       time++;
     }
   }
-
-  printf("%d", time);
 
   float wait = 0, turnAT = 0;
 

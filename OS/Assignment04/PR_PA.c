@@ -57,11 +57,18 @@ int main() {
       if (prev != idx) {
         if (prev != -1)
           printf("%d) | ", time);
+
         printf("P%d (%d-", arr[idx].pid, time);
       }
 
       arr[idx].left--;
       time++;
+
+      for (int i = 0; i < n; i++) {
+        if (i != idx && arr[i].at <= time && arr[i].left > 0) {
+          arr[i].pr--;
+        }
+      }
 
       if (arr[idx].left == 0) {
         arr[idx].end = time;
@@ -97,3 +104,9 @@ int main() {
 
   return 0;
 }
+
+// 1 0 7 3
+// 2 2 4 1
+// 3 4 1 2
+// 4 5 4 4
+// 5 6 6 5
