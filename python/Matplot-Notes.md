@@ -221,6 +221,7 @@ plt.tight_layout()
 plt.show()
 ```
 
+
 <br>
 
 ## 🐦‍🔥 STACKED BAR PLOT

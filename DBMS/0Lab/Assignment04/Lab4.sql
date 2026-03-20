@@ -3,6 +3,7 @@ select * from student;
 select * from faculty; 
 select * from enrolled;
 select * from class;
+select * from ready_students;
 
 -- 1. Find the name of the youngest student who is either a Finance major or 
 -- enrolled in a course taught by Linda Davis.
