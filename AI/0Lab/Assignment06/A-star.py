@@ -159,7 +159,3 @@ plt.ylabel("Average Nodes Expanded")
 plt.title(f"Nodes Expanded (n={n})")
 plt.legend()
 plt.show()
-
-
-
-

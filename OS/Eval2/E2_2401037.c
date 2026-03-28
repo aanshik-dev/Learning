@@ -11,7 +11,6 @@ sem_t mutex, QueM, QueW;
 void exitBath() {
   sem_wait(&mutex);
   in--;
-
   if (men > 0)
     men--;
   else if (women > 0)

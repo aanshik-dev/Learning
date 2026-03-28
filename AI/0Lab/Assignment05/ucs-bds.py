@@ -36,7 +36,7 @@ def shuffle(state):
 def ucs(init, n):
   start = time.time()
   pq = []
-  heapq.heappush(pq, (0, init))
+  heapq.heappush(pq, (0, init)) 
   vis = {init: 0}
 
   while pq:

@@ -47,7 +47,7 @@ def hill_climb():
       return init, pathCost
 
 # Simulated Annealing
-def simul_anneal(temp, cool,iter):
+def simul_anneal(temp, cool, iter):
   init = start()
   pathCost = cost(init)
   for _ in range(iter):
