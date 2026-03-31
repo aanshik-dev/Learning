@@ -22,8 +22,10 @@ React is a JavaScript library for building user interfaces, primarily for single
 ### 🔥 Vite
 
 ```bash
-# Create Vite React project
+# Create new Vite React project
 npm create vite@latest
+# Create project in current directory
+npm create vite@latest .
 # or
 yarn create vite my-app
 
@@ -32,7 +34,19 @@ npm install
 npm run dev
 ```
 
+- Enter the project name
+- Enter the package name (lowercase, no space, use `-`)
+- Select the framework
+- Select the bundler
+- Select the features
+
 > `npx` ( Node package execute ) is used to execute latest node packages without installing them to machine.
+
+If running script is diabled then run this command
+
+```bash
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+```
 
 ### 🔥 Project Structure
 
@@ -55,6 +69,16 @@ my-app/
 ├── README.md
 └── vite.config.js
 ```
+
+### 🔥 Adding most used dependencies
+
+⚡ Tailwind CSS : follow steps given at [link](https://tailwindcss.com/docs/installation/using-vite)
+
+⚡ Framer Motion: `npm install framer-motion`
+
+⚡ Lucide-icon: `npm install lucide-react`
+
+
 
 <br>
 
