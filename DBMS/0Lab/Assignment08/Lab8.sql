@@ -83,12 +83,14 @@ begin
     declare course_credit int;
     select credits into course_credit from class
         where name = new.cname;
-    if new.grade is not null and new.grade <> 'F' then
-
+    if new.grade is not null and new.grade = 'D' then
+		update student
+        set total_credits = total_credits + (course_credit/2)
+        where snum = new.snum;
+    elseif new.grade is not null and new.grade <> 'F' then
         update student
         set total_credits = total_credits + course_credit
         where snum = new.snum;
-	elseif 
     end if;
 end$$
 delimiter ;
@@ -125,7 +127,7 @@ create table ready_students (
 
 -- 301221823 Social Cognition B
 update enrolled set grade = 'B'
-where snum = 301221823 and cname = 'Social Cognition';
+where snum = 556784565 and cname = 'Air Quality Engineering';
 
 select * from ready_students;
 
