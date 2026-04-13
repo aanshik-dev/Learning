@@ -64,6 +64,43 @@
 - `git push name (branch) ` // push project to github. Ex-`git push origin main`
 - `git push -u origin main ` // shortcut to push to same location
 
+### 🔶 Forked repo
+
+```
+[Main Repo: Others account]
+            ↓
+[Forked Repo: Your account]
+            ↓
+[Cloned Repo: Local]
+```
+
+if you have pull the forked repo to local and then the owner made some changes to Main repo, and you want your repo to be consistent then do these:
+
+⚡ 1. Add the original repo as upstream
+
+```bash
+git remote add upstream https://github.com/original-owner/repo.git
+```
+
+⚡ 2. Verify upstream
+
+```bash
+git remote -v
+
+output: 
+origin    https://github.com/your-username/repo.git
+upstream  https://github.com/original-owner/repo.git
+```
+
+⚡ 3. Fetch from upstream
+
+```bash
+git fetch upstream
+```
+
+⚡ 4. Merge from upstream
+
+
 ### 🔶 Modified & Untracked Files
 
 - `git add filename ` // adds file to stage
