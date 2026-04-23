@@ -1,0 +1,131 @@
+Hello from the pygame community. https://www.pygame.org/contribute.html
+Welcome to Chess!
+You'll be playing against an AI using Minimax with Alpha-Beta pruning (depth 3)
+Choose your color (white/black): white
+
+You are playing as WHITE
+AI is playing as BLACK
+AI search depth: 3
+
+Game started!
+
+You played: d2d4
+AI played: b8c6 (took 0.33 seconds)
+Board evaluation: 32.00
+You played: e2e3
+AI played: e7e6 (took 0.29 seconds)
+Board evaluation: 32.00
+You played: d1d3
+AI played: f8b4 (took 0.56 seconds)
+Board evaluation: 32.00
+You played: e1e2
+AI played: g8f6 (took 0.67 seconds)
+Board evaluation: 26.00
+You played: c2c3
+AI played: b4d6 (took 0.47 seconds)
+Board evaluation: 23.00
+You played: b1a3
+AI played: f6d5 (took 0.64 seconds)
+Board evaluation: 22.00
+You played: g1f3
+AI played: d8f6 (took 0.91 seconds)
+Board evaluation: 27.00
+You played: a3c4
+AI played: d6e7 (took 0.79 seconds)
+Board evaluation: 35.00
+You played: e3e4
+AI played: f6g6 (took 0.68 seconds)
+Board evaluation: 32.00
+You played: e4d5
+AI played: g6d3 (took 0.73 seconds)
+Board evaluation: -550.00
+You played: e2d3
+AI played: e6d5 (took 0.42 seconds)
+Board evaluation: 245.00
+You played: c4e5
+AI played: c6e5 (took 0.41 seconds)
+Board evaluation: -80.00
+You played: f3e5
+AI played: e7f6 (took 0.60 seconds)
+Board evaluation: 245.00
+You played: e5f3
+AI played: d7d6 (took 0.33 seconds)
+Board evaluation: 211.00
+You played: c1f4
+AI played: c8f5 (took 0.35 seconds)
+Board evaluation: 216.00
+You played: d3e3
+AI played: e8c8 (took 0.48 seconds)
+Board evaluation: 213.00
+You played: h2h4
+AI played: h8e8 (took 0.54 seconds)
+Board evaluation: 206.00
+You played: e3d2
+AI played: f5g4 (took 0.58 seconds)
+Board evaluation: 207.00
+You played: f1b5
+AI played: e8e4 (took 0.49 seconds)
+Board evaluation: 209.00
+You played: f4g3
+AI played: a7a6 (took 0.54 seconds)
+Board evaluation: 210.00
+You played: b5a4
+AI played: b7b5 (took 0.50 seconds)
+Board evaluation: 216.00
+You played: a4c2
+AI played: e4e8 (took 0.50 seconds)
+Board evaluation: 217.00
+You played: b2b3
+AI played: e8e7 (took 0.49 seconds)
+Board evaluation: 211.00
+You played: a2a4
+AI played: b5a4 (took 0.56 seconds)
+Board evaluation: 108.00
+You played: b3a4
+AI played: d8e8 (took 0.46 seconds)
+Board evaluation: 204.00
+You played: c2f5
+AI played: g4f5 (took 0.10 seconds)
+Board evaluation: -127.00
+You played: a1b1
+AI played: e7e2 (took 0.49 seconds)
+Board evaluation: -127.00
+You played: d2c1
+AI played: f5e4 (took 0.61 seconds)
+Board evaluation: -128.00
+You played: h1e1
+AI played: e2e1 (took 0.33 seconds)
+Board evaluation: -628.00
+You played: c1d2
+AI played: e1b1 (took 0.34 seconds)
+Board evaluation: -1126.00
+You played: f3e5
+AI played: b1b2 (took 0.35 seconds)
+Board evaluation: -1124.00
+You played: d2e3
+AI played: e4g2 (took 0.29 seconds)
+Board evaluation: -1231.00
+You played: a4a5
+AI played: d6e5 (took 0.21 seconds)
+Board evaluation: -1551.00
+You played: d4e5
+AI played: e8e7 (took 0.23 seconds)
+Board evaluation: -1445.00
+You played: e3d4
+AI played: b2d2 (took 0.18 seconds)
+Board evaluation: -1447.00
+You played: d4c5
+AI played: f6e5 (took 0.16 seconds)
+Board evaluation: -1555.00
+You played: c3c4
+AI played: d2c2 (took 0.17 seconds)
+Board evaluation: -1558.00
+You played: c5c6
+AI played: c2c4 (took 0.21 seconds)
+Board evaluation: -20000.00
+
+==================================================
+GAME OVER!
+Checkmate! Black wins!
+==================================================
+PS D:\Coding\Learning> 
