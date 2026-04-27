@@ -15,12 +15,12 @@ int main() {
     return 1;
   }
   if (pid == 0) {
-    close(pipeline[1]);
+    close(pipeline[1]); // Close write end
     read(pipeline[0], buffer, sizeof(buffer));
     printf("%s\nChild: Are Babuji Ram Ram ! Tu dada ban gail badu !!\n", buffer);
     close(pipeline[0]);
   } else if (pid > 0) {
-    close(pipeline[0]);
+    close(pipeline[0]);  // Close read end
     char message[] = "Parent: Hello ham tuhar babuji bolat raha !!";
     write(pipeline[1], message, strlen(message) + 1);
     close(pipeline[1]);
