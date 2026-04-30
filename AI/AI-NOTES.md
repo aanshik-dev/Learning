@@ -3,7 +3,7 @@
 
 # 🐦‍🔥🔥 **AI - NOTES** 🔥🐦‍🔥
 
-⚡ BY - THE AANSHIK-DEV
+⚡ BY - [AANSHIK-DEV](https://aanshik-dev.vercel.app/)
 
 <br>
 
@@ -124,9 +124,8 @@ Components:
 | IDDFS     | Yes      | Yes                |
 | UCS       | Yes      | Yes                |
 | Greedy    | No       | No                 |
-| A*        | Yes      | Yes (admissible h) |
+| A\*       | Yes      | Yes (admissible h) |
 | BDS       | Yes      | Yes (unit cost)    |
-
 
 ```py
 import time
