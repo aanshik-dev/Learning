@@ -85,6 +85,8 @@ console.trace("Hello Trace");
 
 `&&`, `||`, `!`, `??` null coalescing
 
+> "If not null use this" `??` "else use this"
+
 ### 🔥 Unary Operators
 
 `i++` ,`++i` ,`i--` ,`--i`
@@ -139,9 +141,11 @@ function sum(a, b = 0) {
 }
 
 // Rest parameters
-function sumAll(...numbers) {
+function sumAll(a, b, ...numbers) {
+  console.log(a, b);
   return numbers.reduce((acc, num) => acc + num, 0);
 }
+// reduce((accumulator, currentValue) => accumulator + currentValue, initialValue);
 ```
 
 ### 🔥 Higher order Functions
