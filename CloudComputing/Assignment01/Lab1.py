@@ -109,6 +109,6 @@ print(sqrMap(10)) #11
 
 lst = [1,2,6,5,4]
 al = AtomicList(*lst)
-print(al.apply(lambda x: x * 2)) #12
+print(al.apply(lambda x: [i * 2 for i in x]))
 print(upper(["hello", "world"])) #13
 print(product([1,2,3,4,5])) #14
