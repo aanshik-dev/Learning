@@ -1,0 +1,51 @@
+PART A
+Data: 11 22 33 , AA
+Transmitted: 03 11 22 33 01 AA
+Clean Received: 03 11 22 33 01 AA
+Recovered: ['11 22 33', 'AA']
+Corrupted Received: 05 11 22 33 01 AA
+Recovered: ['11 22 33 01 AA']
+
+PART B
+Data: 11 22
+Transmitted: 7E 11 22 7E
+Recovered: 11 22
+Data: 7E
+Transmitted: 7E 7D 7E 7E
+Recovered: 7E
+Data: 7D
+Transmitted: 7E 7D 7D 7E
+Recovered: 7D
+Data: 7D 7E
+Transmitted: 7E 7D 7D 7D 7E 7E
+Recovered: 7D 7E
+
+PART C
+Data: FF
+Stuffed: FB 80
+Bit length: 9
+Recovered: FF
+Data: 7E
+Stuffed: 7D 00
+Bit length: 9
+Recovered: 7E
+Data: FF FF
+Stuffed: FB EF A0
+Bit length: 19
+Recovered: FF FF
+
+PART D
+Random data
+Payload size: 100 bytes
+Byte stuffing size: 105 bytes
+Byte stuffing overhead: 5.0 %
+Bit stuffing size: 809 bits
+Bit stuffing overhead: 1.125 %
+
+Worst case
+Byte stuffing input: 7E 7E 7E 7E 7E ...
+Byte stuffing size: 202 bytes
+Byte stuffing overhead: 102.0 %
+Bit stuffing input: FF FF FF FF FF ...
+Bit stuffing size: 960 bits
+Bit stuffing overhead: 20.0 %
