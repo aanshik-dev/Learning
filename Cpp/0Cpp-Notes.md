@@ -1076,8 +1076,8 @@ It represents the actual implementation of a class and occupies memory.
 
 ```cpp
 int main(){
-  Student s1();
-  Student s2();
+  Student s1;
+  Student s2;
   return 0;
 }
 ```
@@ -1153,8 +1153,474 @@ int main() {
 
 <br>
 
-## 🐦‍🔥 CONSTRUCTOR FUNCTION
+## 🐦‍🔥 CONSTRUCTORS
 
+A **constructor** is a special member function that is automatically called when an object of a class is created.
+
+### 🌟 Key Properties:
+- Same name as the class.
+- No return type (not even `void`).
+- Usually declared in the `public` section.
+- Automatically invoked on object creation.
+
+<br>
+
+### 1️⃣ Default Constructor
+Constructor with no parameters. If no constructor is defined, the compiler provides a default one.
+
+```cpp
+class Car {
+public:
+    string brand;
+    Car() {
+        brand = "Unknown";
+    }
+};
+```
+
+<br>
+
+### 2️⃣ Parameterized Constructor
+Constructor that accepts arguments to initialize member variables with specific values.
+
+```cpp
+class Car {
+public:
+    string brand;
+    int speed;
+
+    Car(string b, int s) {
+        brand = b;
+        speed = s;
+    }
+};
+
+int main() {
+    Car c1("BMW", 240);
+}
+```
+
+<br>
+
+### 3️⃣ Copy Constructor
+Used to initialize an object using another object of the same class.
+
+- **Syntax:** `ClassName(const ClassName &obj)`
+- Passed by reference `&` to prevent infinite recursion.
+
+```cpp
+class Car {
+public:
+    string brand;
+    Car(string b) : brand(b) {}
+
+    // Copy Constructor
+    Car(const Car &c) {
+        brand = c.brand;
+    }
+};
+
+int main() {
+    Car c1("Audi");
+    Car c2 = c1; // Calls copy constructor
+}
+```
+
+<br>
+
+### 4️⃣ Shallow Copy vs Deep Copy
+
+| Feature | Shallow Copy | Deep Copy |
+| :--- | :--- | :--- |
+| **Pointers** | Copies pointer values (both point to same memory) | Allocates new dynamic memory and copies data |
+| **Default** | Done by default copy constructor | Must be explicitly defined by programmer |
+| **Issue** | Double-free crash when destructor runs | Safe and independent objects |
+
+```cpp
+class Student {
+public:
+    int* cgpa;
+    Student(int c) {
+        cgpa = new int(c);
+    }
+    // Deep Copy Constructor
+    Student(const Student &s) {
+        cgpa = new int(*s.cgpa);
+    }
+    ~Student() {
+        delete cgpa;
+    }
+};
+```
+
+<br>
+
+### 5️⃣ Constructor Initializer List
+More efficient way to initialize data members before the constructor body executes.
+
+```cpp
+class Point {
+    int x, y;
+public:
+    Point(int a, int b) : x(a), y(b) {} // Initializer list
+};
+```
+
+<br>
+
+## 🐦‍🔥 DESTRUCTOR
+
+A **destructor** is a special member function that is automatically called when an object goes out of scope or is explicitly deleted with `delete`.
+
+### 🌟 Key Properties:
+- Same name as the class preceded by a tilde (`~`).
+- No return type, takes no parameters (cannot be overloaded).
+- Only **one** destructor per class.
+- Used to deallocate dynamic memory and release resources (files, locks).
+- Called in **reverse order** of constructor execution.
+
+```cpp
+class Demo {
+public:
+    Demo() { cout << "Constructor called\n"; }
+    ~Demo() { cout << "Destructor called\n"; }
+};
+
+int main() {
+    Demo d1; // Constructor runs
+} // d1 goes out of scope -> Destructor runs automatically
+```
+
+<br>
+
+## 🐦‍🔥 `this` POINTER
+
+`this` is an implicit pointer available in all non-static member functions that holds the memory address of the current object.
+
+### 🌟 Common Uses:
+1. Resolving name conflict between parameters and member variables.
+2. Returning reference to the current object for method chaining.
+
+```cpp
+class Rectangle {
+    int length, width;
+public:
+    Rectangle(int length, int width) {
+        this->length = length;
+        this->width = width;
+    }
+
+    Rectangle& setLength(int l) {
+        this->length = l;
+        return *this; // Method chaining
+    }
+};
+```
+
+<br>
+
+## 🐦‍🔥 INHERITANCE
+
+Inheritance is a mechanism where a new class (**Derived / Child class**) acquires properties and behaviors of an existing class (**Base / Parent class**).
+
+- **Purpose:** Code Reusability, Extensibility, and establishing `is-a` relationship.
+
+```cpp
+// Syntax
+class DerivedClass : access_specifier BaseClass {
+    // derived class members
+};
+```
+
+<br>
+
+### 🛡️ Modes of Inheritance (Access Table)
+
+| Base Member | `public` Inheritance | `protected` Inheritance | `private` Inheritance |
+| :--- | :---: | :---: | :---: |
+| **`public`** | `public` | `protected` | `private` |
+| **`protected`** | `protected` | `protected` | `private` |
+| **`private`** | ❌ Not Inherited | ❌ Not Inherited | ❌ Not Inherited |
+
+<br>
+
+### 🌿 Types of Inheritance
+
+#### 1. Single Inheritance
+One base class $\rightarrow$ One derived class.
+```cpp
+class Animal { public: void eat() { cout << "Eating"; } };
+class Dog : public Animal { public: void bark() { cout << "Barking"; } };
+```
+
+#### 2. Multilevel Inheritance
+Class derived from another derived class (Grandparent $\rightarrow$ Parent $\rightarrow$ Child).
+```cpp
+class A {};
+class B : public A {};
+class C : public B {};
+```
+
+#### 3. Multiple Inheritance
+One derived class inherits from more than one base class.
+```cpp
+class Engine { public: void start() {} };
+class Body { public: void assemble() {} };
+class Car : public Engine, public Body {};
+```
+
+> 📝 NOTE: **Ambiguity in Multiple Inheritance**
+> When two base classes have a function with the same name, use the **Scope Resolution Operator (`::`)**:
+> `car.Engine::start();`
+
+#### 4. Hierarchical Inheritance
+Multiple derived classes inherit from a single base class.
+```cpp
+class Shape {};
+class Circle : public Shape {};
+class Rectangle : public Shape {};
+```
+
+#### 5. Hybrid Inheritance & The Diamond Problem
+A combination of two or more inheritance types.
+
+```
+       A
+      / \
+     B   C
+      \ /
+       D
+```
+
+- **Diamond Problem:** `D` receives two duplicate copies of `A` through `B` and `C`, causing ambiguity.
+- **Solution:** Use **`virtual` base class**.
+
+```cpp
+class A { public: int val; };
+class B : virtual public A {};
+class C : virtual public A {};
+class D : public B, public C {}; // Only 1 shared copy of A exists in D
+```
+
+<br>
+
+## 🐦‍🔥 POLYMORPHISM
+
+Polymorphism means **"many forms"** — the ability of a message or function to be processed in different ways.
+
+```
+                    Polymorphism
+                   /            \
+       Compile-Time              Run-Time
+      (Static Binding)        (Dynamic Binding)
+       /            \                 |
+Function        Operator          Virtual
+Overloading    Overloading       Functions
+```
+
+<br>
+
+### 1️⃣ Compile-Time Polymorphism (Static Binding)
+
+Function call is resolved at compile time. Faster execution.
+
+#### A. Function Overloading
+Same function name with different parameter count or types.
+
+```cpp
+class Math {
+public:
+    int add(int a, int b) { return a + b; }
+    double add(double a, double b) { return a + b; }
+    int add(int a, int b, int c) { return a + b + c; }
+};
+```
+
+#### B. Operator Overloading
+Giving special meaning to an existing C++ operator when applied to user-defined data types.
+
+```cpp
+class Complex {
+public:
+    int real, imag;
+    Complex(int r = 0, int i = 0) : real(r), imag(i) {}
+
+    // Overload '+' operator
+    Complex operator+(const Complex &obj) {
+        return Complex(real + obj.real, imag + obj.imag);
+    }
+};
+
+int main() {
+    Complex c1(3, 4), c2(1, 2);
+    Complex c3 = c1 + c2; // Calls operator+
+}
+```
+
+<br>
+
+### 2️⃣ Run-Time Polymorphism (Dynamic Binding)
+
+Function call is resolved at runtime using base class pointers / references and `virtual` functions.
+
+#### A. Function Overriding
+A derived class provides a specific implementation of a function already defined in its base class.
+
+#### B. Virtual Functions
+A member function in the base class declared with the `virtual` keyword, overridden in derived classes, resolved at runtime via **vtable** and **vptr**.
+
+```cpp
+class Base {
+public:
+    virtual void show() {
+        cout << "Base show\n";
+    }
+    virtual ~Base() {} // Virtual destructor is essential!
+};
+
+class Derived : public Base {
+public:
+    void show() override {
+        cout << "Derived show\n";
+    }
+};
+
+int main() {
+    Base* ptr = new Derived();
+    ptr->show(); // Output: "Derived show" (Runtime polymorphism)
+    delete ptr;
+}
+```
+
+> 📝 NOTE: **Virtual Destructor**
+> If you delete a derived class object through a base class pointer (`Base* b = new Derived(); delete b;`), the base class destructor must be `virtual` to prevent resource leaks by ensuring derived destructor is called first.
+
+<br>
+
+## 🐦‍🔥 ABSTRACTION
+
+Abstraction means displaying only the essential features of an object and hiding internal implementation details from the outside world.
+
+### 🌟 How to achieve Abstraction in C++:
+1. **Using Classes & Access Modifiers:** (`private` / `protected` hide implementation; `public` provides interface).
+2. **Using Abstract Classes & Pure Virtual Functions.**
+
+<br>
+
+### 🧩 Pure Virtual Functions & Abstract Classes
+
+- **Pure Virtual Function:** A virtual function with `= 0` and no definition in the base class.
+- **Abstract Class:** A class containing at least one pure virtual function. **Cannot be instantiated**.
+
+```cpp
+class Shape { // Abstract Class (Interface)
+public:
+    virtual void draw() = 0; // Pure Virtual Function
+};
+
+class Circle : public Shape {
+public:
+    void draw() override {
+        cout << "Drawing Circle\n";
+    }
+};
+
+int main() {
+    // Shape s; // ERROR: Cannot instantiate abstract class
+    Shape* s = new Circle();
+    s->draw();
+    delete s;
+}
+```
+
+<br>
+
+### ⚖️ Encapsulation vs Abstraction
+
+| Feature | Encapsulation | Abstraction |
+| :--- | :--- | :--- |
+| **Focus** | **How** data is stored and bundled | **What** the object does (essential view) |
+| **Action** | Wrapping data + methods into one unit | Hiding background implementation |
+| **Mechanism** | `private`, `protected`, `public` | Abstract Classes, Pure Virtual Functions |
+| **Analogy** | A pill with capsule covering chemicals | Driving a car without knowing engine details |
+
+<br>
+
+## 🐦‍🔥 FRIEND FUNCTION & FRIEND CLASS
+
+A `friend` can access the `private` and `protected` members of a class even though it is not a member function/class.
+
+### 1️⃣ Friend Function
+```cpp
+class Box {
+private:
+    int width = 10;
+    // Friend function declaration
+    friend void printWidth(Box b);
+};
+
+void printWidth(Box b) {
+    cout << "Width: " << b.width << endl; // Allowed!
+}
+```
+
+### 2️⃣ Friend Class
+All member functions of a friend class can access private and protected members.
+
+```cpp
+class A {
+private:
+    int secret = 42;
+    friend class B; // B is a friend of A
+};
+
+class B {
+public:
+    void reveal(A a) {
+        cout << "Secret: " << a.secret << endl;
+    }
+};
+```
+
+<br>
+
+## 🐦‍🔥 STATIC MEMBERS IN C++
+
+`static` members belong to the class itself, not to individual instances/objects.
+
+### 1️⃣ Static Data Members
+- Only **one copy** exists, shared by all objects of the class.
+- Must be explicitly defined/initialized outside the class.
+
+### 2️⃣ Static Member Functions
+- Can be called without creating an object using `ClassName::function()`.
+- Can **only access static data members** and other static functions (cannot use `this` pointer).
+
+```cpp
+class Counter {
+public:
+    static int count; // Declaration
+
+    Counter() {
+        count++;
+    }
+
+    static void showCount() { // Static function
+        cout << "Count: " << count << endl;
+    }
+};
+
+// Definition outside class is mandatory
+int Counter::count = 0;
+
+int main() {
+    Counter c1, c2, c3;
+    Counter::showCount(); // Output: Count: 3
+}
+```
+
+<br>
 
 </div>
 </div>
+

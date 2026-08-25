@@ -2,3 +2,7 @@
 *.class
 Learning\GitHub\gitLearning
 Robotics/
+.venv/
+__pycache__/
+*.pyc
+aws/

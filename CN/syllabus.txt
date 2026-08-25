@@ -1,0 +1,15 @@
+Syllabus:
+Introduction, Basics of cryptography: Encryption, Authentication, Access Control. Malicious Software: Malwares, Viruses, worms,
+Trojans. Denial of Service Attacks: Flooding attacks, DDos attacks. Intrusion Detection, Firewalls, and Intrusion Prevention
+Systems. Software Security: Buffer overflow, stack overflow, safe programming. Database and Cloud security: SQL injection
+attacks, Database Access Control, Data Protection in Cloud, Security as a service. Network Security: Internet Security Protocols
+and Standards, Wireless Network Security.
+
+
+Textbook:
+1. William Stallings and Lawrie Brown, Computer Security: Prinicples and Practice. 3rd Edition, Pearson, 2014.
+
+
+References:
+1. Chuck Easttom II, Computer Security Fundamentals, 2nd Edition, Pearson Education, 2014.
+2. Behrouz A. Forouzan, Introduction to Cryptography and Network Security, McGraw-Hill 1st edition, 2008.

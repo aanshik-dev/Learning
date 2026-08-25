@@ -10,36 +10,36 @@
 
 ## 🐦‍🔥 VARIABLES
 
-A variable is like a container that holds a value. Python is dynamically typed, meaning you `don't have to declare the variable's type` when you define it.
+A variable is like a container that holds a value.
+Python is dynamically typed, `don't have to declare the variable's type`
 
 ## 🐦‍🔥 DATA TYPES
 
-- `Integer (int)`&nbsp; // Python integers have arbitrary precision (no fixed size)
-- `String`&nbsp; // Can be used as 'Str', "Str", '''Str'''
-- `float`&nbsp; // number with decimal point
+- `Integer (int)`  arbitrary precision (no fixed size)
+- `String (str)`  can be used as 'Str', "Str", '''Str'''
+- `float (float)`  number with decimal point
 - `boolean (bool)` represent True/False
 - `None`
-  // Python has no separate double; float is double-precision
+   ⚡ There is no no separate double ( float is double-precision )
+   ⚡ `ord("A")` = 65 and `chr(65)` = "A"
 
 ```py
 name = "Aanshik"
 age = 20
 height = 5.6
 print(type(name), type(age), type(height) )
-
-#OUTPUT
 # <class 'str'> <class 'int'> <class 'float'>
 ```
 
 ## 🔥 Type Conversion Vs Type Casting
 
 - Type Conversion - implicit - small to big - done by compiler
-- **Type Casting** - explicit - big to small - done by user
+- Type Casting - explicit - big to small - done by user
 
 ```py
 price = 75.56
 percent = price + 5 # Conversion
-print(percent)
+ print(percent)
 # Output: 80.56
 
 price = 75.56

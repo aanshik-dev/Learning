@@ -1,8 +1,5 @@
 import random
 
-FLAG = 0x7E
-ESC = 0x7D
-
 def show(data):
     return " ".join(f"{x:02X}" for x in data)
 
@@ -45,13 +42,14 @@ received = transmit(stream, [(0, 0x05)])
 print("Corrupted Received:", show(received))
 print("Recovered:", [show(x) for x in recoverByteCount(received)])
 
+
 def byteStuff(payload):
-    result = [FLAG]
+    result = [0x7E]
     for byte in payload:
-        if byte == FLAG or byte == ESC:
-            result.append(ESC)
+        if byte == 0x7E or byte == 0x7D:
+            result.append(0x7D)
         result.append(byte)
-    result.append(FLAG)
+    result.append(0x7E)
 
     return result
 
@@ -59,7 +57,7 @@ def recoverByteStuff(frame):
     result = []
     i = 1
     while i < len(frame) - 1:
-        if frame[i] == ESC:
+        if frame[i] == 0x7D:
             i += 1
         result.append(frame[i])
         i += 1
@@ -123,7 +121,6 @@ def bitUnstuff(stuffed_bytes, bit_length):
     while i < len(bits):
         bit = bits[i]
         result.append(bit)
-
         if bit == 1:
             count += 1
             if count == 5:
@@ -132,7 +129,6 @@ def bitUnstuff(stuffed_bytes, bit_length):
         else:
             count = 0
         i += 1
-
     return bits2Bytes(result)
 
 print()
@@ -151,14 +147,13 @@ for payload in tests:
     print("Recovered:", show(recovered))
 
 
-def byte_overhead(payload):
+def byteOverhead(payload):
     framed = byteStuff(payload)
     overhead = ((len(framed) - len(payload)) / len(payload)) * 100
-
     return len(framed), overhead
 
 
-def bit_overhead(payload):
+def bitOverhead(payload):
     stuffed, bit_length = bitStuff(payload)
     payload_bits = len(payload) * 8
     overhead = ((bit_length - payload_bits) / payload_bits) * 100
@@ -169,32 +164,30 @@ def bit_overhead(payload):
 print()
 print("PART D")
 
-random.seed(42)
+randomPload = [random.randint(0, 255) for _ in range(100)]
 
-random_payload = [random.randint(0, 255) for _ in range(100)]
-
-byte_size, byte_percent = byte_overhead(random_payload)
-bit_size, bit_percent = bit_overhead(random_payload)
+byteSize, bytePercent = byteOverhead(randomPload)
+bitSize, bitPercent = bitOverhead(randomPload)
 
 print("Random data")
-print("Payload size:", len(random_payload), "bytes")
-print("Byte stuffing size:", byte_size, "bytes")
-print("Byte stuffing overhead:", byte_percent, "%")
-print("Bit stuffing size:", bit_size, "bits")
-print("Bit stuffing overhead:", bit_percent, "%")
+print("Payload size:", len(randomPload), "bytes")
+print("Byte stuffing size:", byteSize, "bytes")
+print("Byte stuffing overhead:", bytePercent, "%")
+print("Bit stuffing size:", bitSize, "bits")
+print("Bit stuffing overhead:", bitPercent, "%")
 
 
 worst_byte = [0x7E] * 100
 worst_bit = [0xFF] * 100
 
-byte_size, byte_percent = byte_overhead(worst_byte)
-bit_size, bit_percent = bit_overhead(worst_bit)
+byteSize, bytePercent = byteOverhead(worst_byte)
+bitSize, bitPercent = bitOverhead(worst_bit)
 
 print()
 print("Worst case")
 print("Byte stuffing input:", show(worst_byte[:5]), "...")
-print("Byte stuffing size:", byte_size, "bytes")
-print("Byte stuffing overhead:", byte_percent, "%")
+print("Byte stuffing size:", byteSize, "bytes")
+print("Byte stuffing overhead:", bytePercent, "%")
 print("Bit stuffing input:", show(worst_bit[:5]), "...")
-print("Bit stuffing size:", bit_size, "bits")
-print("Bit stuffing overhead:", bit_percent, "%")
+print("Bit stuffing size:", bitSize, "bits")
+print("Bit stuffing overhead:", bitPercent, "%")
