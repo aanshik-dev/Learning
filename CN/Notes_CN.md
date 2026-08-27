@@ -818,8 +818,7 @@ The receiver re-calculates parity for each coverage group:
 **Syndrome Vector** $S = (S_8 S_4 S_2 S_1)_2 = (0 1 0 1)_2 = 5_{10}$.
 
 > 🌟 **RESULT**: The binary syndrome $0101_2 = 5$ points directly to **Bit Position 5**!
-> The receiver flips Pos 5 back ($1 
-ightarrow 0$) and extracts original message $1000001$! ✅
+> The receiver flips Pos 5 back ($1 \rightarrow 0$) and extracts original message $1000001$! ✅
 
 <br>
 
@@ -909,8 +908,7 @@ CRC treats bit strings as polynomials with binary coefficients ($0$ and $1$).
 
 - A $k$-bit frame is represented as polynomial:
 $$M(x) = a_{k-1} x^{k-1} + a_{k-2} x^{k-2} + \dots + a_0 x^0$$
-  - Example: Bit string `110001` $
-ightarrow M(x) = x^5 + x^4 + 1$.
+  - Example: Bit string `110001` $\rightarrow M(x) = x^5 + x^4 + 1$.
 
 #### A. Polynomial Arithmetic (Modulo 2)
 - Modulo 2 arithmetic without carries or borrows.
@@ -931,8 +929,7 @@ Given message polynomial $M(x)$ of length $m$ bits and an agreed Generator Polyn
 
 > 📝 **PROBLEM**:
 > Frame Payload $M = 110101$ (6 bits).
-> Generator Polynomial $G(x) = x^3 + x + 1 
-ightarrow$ Bit string `1011` (Degree $r = 3$).
+> Generator Polynomial $G(x) = x^3 + x + 1 \rightarrow$ Bit string `1011` (Degree $r = 3$).
 > Compute the transmitted frame $T(x)$.
 
 ### Step 1: Append $r = 3$ zeros to $M$
@@ -1219,8 +1216,7 @@ $$a = \frac{t_{prop}}{t_{trans}}$$
 $$\text{Optimal Window Size } w = 2 \cdot a + 1 = 1 + \frac{2 \cdot t_{prop} \cdot R}{L}$$
 
 #### B. Link Efficiency Formula
-$$\eta = \min\left(1, \frac{W_s}{1 + 2a}
-ight)$$
+$$\eta = \min\left(1, \frac{W_s}{1 + 2a}\right)$$
 
 #### C. Mathematical Proof: Maximum Sender Window Bound ($W_s \le 2^m - 1$)
 For $m$-bit sequence numbers, total sequence space is $2^m$.
@@ -1414,14 +1410,14 @@ ALOHA  CSMA                 Bitmap Token-Passing          FDM TDM CDMA
 1️⃣ **Pure ALOHA**:
 - Transmit whenever data is ready.
 - If collision occurs, wait a random time and retransmit.
-- Vulnerable period $= 2 \cdot  au$ (where $ au$ is frame duration).
+- Vulnerable period $= 2 \cdot \tau$ (where $\tau$ is frame duration).
 - Throughput equation ($G =$ offered load):
 $$S = G \cdot e^{-2G}$$
 - Maximum Throughput $= \frac{1}{2e} \approx 0.184$ (18.4%) at $G = 0.5$.
 
 2️⃣ **Slotted ALOHA**:
-- Time divided into discrete slots of duration $ au$. Stations can only transmit at slot boundaries.
-- Vulnerable period $=  au$.
+- Time divided into discrete slots of duration $\tau$. Stations can only transmit at slot boundaries.
+- Vulnerable period $= \tau$.
 - Throughput equation:
 $$S = G \cdot e^{-G}$$
 - Maximum Throughput $= \frac{1}{e} \approx 0.368$ (36.8%) at $G = 1.0$.
@@ -1457,7 +1453,7 @@ Standard used in classic Wired Ethernet (IEEE 802.3).
 > To ensure a sender detects a collision before completing transmission, transmission time $t_{trans}$ must be at least twice the end-to-end propagation delay ($2 \cdot t_{prop}$):
 > $$t_{trans} \ge 2 \cdot t_{prop} \implies \frac{L_{min}}{R} \ge 2 \cdot t_{prop} \implies L_{min} = 2 \cdot t_{prop} \cdot R$$
 > For $10\text{ Mbps}$ Ethernet over $2.5\text{ km}$ max distance ($t_{prop} = 25.6\ \mu\text{s}$):
-> $$L_{min} = 2 \cdot (25.6  imes 10^{-6}\text{ s}) \cdot (10^7\text{ bps}) = 512\text{ bits} = 64\text{ Bytes}$$
+> $$L_{min} = 2 \cdot (25.6 \times 10^{-6}\text{ s}) \cdot (10^7\text{ bps}) = 512\text{ bits} = 64\text{ Bytes}$$
 
 ---
 
