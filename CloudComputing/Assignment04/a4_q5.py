@@ -3,6 +3,7 @@
 
 import boto3
 import time
+import requests
 
 region = "ap-south-1"
 linux_ami = "ami-0ac7b260cf76d8865"
@@ -60,14 +61,12 @@ linux_id = linux_instance["Instances"][0]["InstanceId"]
 print(f"\nLinux Instance ID: {linux_id}")
 print("Waiting for instance to enter Running state...")
 
-
 # waiting for instance to enter running state
 waiter = ec2.get_waiter("instance_running")
 waiter.wait(
     InstanceIds=[linux_id]
 )
 print("Linux instance is RUNNING.")
-
 
 # getting the instance details
 linux_desc = ec2.describe_instances(
@@ -85,6 +84,19 @@ print(f"Public IP : {public_ip}")
 print("\nWaiting for HTTP server to start...")
 time.sleep(30)
 
-# opening the browser
-print("HTTP Server should now be running.")
-print(f"Open in browser: http://{public_ip}")
+# Verifying HTTP server
+try:
+    url = f"http://{public_ip}"
+    response = requests.get(url, timeout=10)
+
+    if response.status_code == 200:
+        print("HTTP Server is running successfully.")
+        print(f"HTTP Status Code: {response.status_code}")
+        print(f"Response: {response.text}")
+    else:
+        print("HTTP Server is not responding correctly.")
+        print(f"HTTP Status Code: {response.status_code}")
+
+except requests.exceptions.RequestException as e:
+    print("HTTP Server verification failed.")
+    print(f"Error: {e}")

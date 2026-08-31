@@ -34,4 +34,3 @@ for status in health["InstanceStatuses"]:
     print(f"Instance ID: {status['InstanceId']}")
     print(f"System Status: {status['SystemStatus']['Status']}")
     print(f"Instance Status: {status['InstanceStatus']['Status']}")
-    print()
