@@ -1,0 +1,670 @@
+Age,Gender,Education Level,Job Title,Years of Experience,Salary
+25.0,Male,Bachelor's Degree,Back end Developer,2.0,90249.0
+36.0,Male,Bachelor's Degree,Software Engineer Manager,8.0,135000.0
+27.0,Male,Bachelor's Degree,Software Engineer,3.0,80000.0
+24.0,Male,Bachelor's Degree,Back end Developer,2.0,64182.0
+29.0,Female,Bachelor's,Junior Sales Representative,1.5,40000.0
+27.0,Male,Bachelor's,Software Engineer,4.0,140000.0
+28.0,Male,High School,Sales Executive,2.0,40000.0
+32.0,Male,Bachelor's Degree,Operations Manager,6.0,90000.0
+36.0,Male,PhD,Senior Data Scientist,12.0,170000.0
+30.0,Female,Bachelor's,Data Analyst,5.0,145000.0
+35.0,Female,PhD,Senior Product Marketing Manager,9.0,95000.0
+33.0,Female,Master's Degree,Marketing Manager,9.0,130000.0
+26.0,Male,Bachelor's Degree,Product Designer,2.0,55000.0
+48.0,Male,PhD,Director of Data Science,18.0,210000.0
+32.0,Female,Master's Degree,Full Stack Engineer,6.0,115000.0
+48.0,Male,PhD,Senior Project Engineer,16.0,190000.0
+27.0,Male,Bachelor's Degree,Front end Developer,2.0,70000.0
+31.0,Male,Master's Degree,Full Stack Engineer,8.0,120288.0
+43.0,Male,Master's Degree,Senior Software Engineer,21.0,185119.0
+38.0,Male,PhD,Senior Data Scientist,13.0,170000.0
+30.0,Male,Master's,Software Engineer,6.0,170000.0
+54.0,Male,PhD,Software Engineer Manager,17.0,195000.0
+25.0,Male,Bachelor's Degree,Front end Developer,1.0,55000.0
+42.0,Male,Master's Degree,Product Manager,14.0,180000.0
+26.0,Male,Bachelor's Degree,Software Developer,2.0,60000.0
+42.0,Male,PhD,Senior Software Engineer,14.0,170000.0
+26.0,Female,Bachelor's Degree,Junior Web Developer,2.0,45000.0
+28.0,Male,Bachelor's Degree,Senior Software Engineer,7.0,175000.0
+32.0,Male,Bachelor's,Software Engineer,8.0,190000.0
+33.0,Female,Master's Degree,Senior Software Engineer,8.0,105000.0
+29.0,Female,Bachelor's,Junior Sales Representative,2.0,40000.0
+40.0,Female,Bachelor's Degree,Financial Manager,16.0,215000.0
+35.0,Female,Master's Degree,Data Analyst,9.0,120000.0
+28.0,Female,Bachelor's Degree,Marketing Analyst,3.0,60000.0
+26.0,Female,High School,Sales Associate,1.0,35000.0
+37.0,Male,Master's Degree,Marketing Director,14.0,190000.0
+37.0,Male,PhD,Product Manager,14.0,195000.0
+35.0,Female,PhD,Research Scientist,11.0,150000.0
+56.0,Male,PhD,Software Engineer Manager,17.0,195000.0
+24.0,Male,Bachelor's Degree,Back end Developer,1.0,55000.0
+29.0,Female,Bachelor's Degree,Junior Marketing Manager,3.0,55000.0
+44.0,Male,PhD,Data Scientist,16.0,160000.0
+28.0,Female,Master's Degree,Digital Marketing Manager,4.0,55000.0
+42.0,Male,PhD,Senior Software Engineer,14.0,170000.0
+26.0,Male,Bachelor's Degree,Product Designer,2.0,50000.0
+28.0,Male,Bachelor's Degree,Web Developer,4.0,65000.0
+41.0,Female,PhD,Director of Data Science,16.0,200000.0
+29.0,Female,Bachelor's Degree,Digital Marketing Specialist,4.0,65000.0
+40.0,Female,Master's,Senior Training Specialist,12.0,100000.0
+42.0,Male,PhD,Senior Software Engineer,14.0,170000.0
+43.0,Male,Bachelor's,Senior Project Manager,15.0,120000.0
+49.0,Male,PhD,Senior Project Engineer,17.0,195000.0
+33.0,Female,Master's,Product Manager,11.0,198000.0
+24.0,Male,Bachelor's Degree,Back end Developer,1.0,55000.0
+30.0,Male,PhD,Data Scientist,7.0,185000.0
+26.0,Male,Bachelor's Degree,Software Developer,3.0,60000.0
+44.0,Male,PhD,Data Scientist,17.0,168000.0
+45.0,Male,PhD,Software Engineer Manager,16.0,185000.0
+33.0,Male,PhD,Research Scientist,10.0,150000.0
+25.0,Female,High School,Sales Associate,1.0,35000.0
+34.0,Female,PhD,Research Director,10.0,150000.0
+27.0,Male,Bachelor's Degree,Software Engineer,3.0,80000.0
+30.0,Female,Master's Degree,Full Stack Engineer,6.0,110707.0
+40.0,Female,Master's Degree,Human Resources Manager,12.0,130000.0
+28.0,Male,High School,Back end Developer,7.0,95845.0
+42.0,Male,Master's Degree,Full Stack Engineer,19.0,177347.0
+24.0,Male,High School,Junior Sales Associate,1.0,25000.0
+27.0,Male,PhD,Data Scientist,2.0,115000.0
+26.0,Female,Bachelor's,Data Analyst,3.0,130000.0
+29.0,Female,Bachelor's Degree,Financial Manager,4.0,55000.0
+27.0,Male,Bachelor's Degree,Software Developer,3.0,60000.0
+39.0,Male,Master's Degree,Director of HR,12.0,120000.0
+42.0,Male,PhD,Senior Software Engineer,14.0,170000.0
+29.0,Male,PhD,Software Engineer Manager,6.0,106662.0
+29.0,Male,Master's Degree,Financial Analyst,5.0,95000.0
+48.0,Male,PhD,Director of Data Science,18.0,210000.0
+45.0,Male,Master's Degree,Director of HR,14.0,140000.0
+31.0,Female,PhD,Data Scientist,8.0,140000.0
+37.0,Male,Bachelor's Degree,Operations Manager,10.0,113000.0
+42.0,Female,Master's Degree,Senior Software Engineer,16.0,138286.0
+25.0,Female,Master's Degree,Junior HR Generalist,1.0,32000.0
+24.0,Male,Bachelor's,Data Analyst,2.0,95000.0
+32.0,Female,Bachelor's Degree,Director of Marketing,8.0,80000.0
+35.0,Female,Master's Degree,Full Stack Engineer,10.0,152039.0
+50.0,Female,Master's Degree,Content Marketing Manager,19.0,190000.0
+23.0,Male,Bachelor's Degree,Back end Developer,1.0,55000.0
+45.0,Male,Master's Degree,Marketing Manager,20.0,204000.0
+32.0,Female,Master's Degree,Marketing Manager,6.0,77000.0
+33.0,Male,PhD,Data Scientist,8.0,190000.0
+28.0,Female,PhD,Data Scientist,5.0,100000.0
+31.0,Male,Master's Degree,Financial Analyst,6.0,100000.0
+48.0,Male,PhD,Director of Data Science,18.0,210000.0
+38.0,Male,Master's Degree,Full Stack Engineer,15.0,171652.0
+39.0,Female,Bachelor's Degree,Financial Manager,16.0,200000.0
+32.0,Male,Bachelor's,Software Engineer,8.0,190000.0
+34.0,Male,PhD,Research Director,11.0,160000.0
+48.0,Female,Master's Degree,Senior Software Engineer,24.0,184480.0
+31.0,Female,PhD,Data Scientist,8.0,140000.0
+48.0,Male,Bachelor's Degree,Front end Developer,23.0,173851.0
+29.0,Male,Bachelor's,Software Engineer,4.0,140000.0
+35.0,Male,Bachelor's Degree,Back end Developer,8.0,140000.0
+37.0,Male,Bachelor's Degree,Sales Director,7.0,90000.0
+30.0,Female,Bachelor's Degree,Marketing Coordinator,5.0,90000.0
+31.0,Female,Master's Degree,Financial Manager,8.0,120000.0
+24.0,Female,Bachelor's Degree,Back end Developer,1.0,60000.0
+43.0,Female,PhD,Senior Project Engineer,14.0,190000.0
+29.0,Female,High School,Junior Sales Associate,1.0,25000.0
+41.0,Male,PhD,Data Scientist,15.0,157000.0
+29.0,Male,Bachelor's Degree,Software Engineer,3.0,75000.0
+28.0,Male,Bachelor's Degree,Product Designer,3.0,60000.0
+37.0,Male,Master's Degree,Marketing Director,14.0,190000.0
+24.0,Male,Bachelor's,Data Analyst,2.0,95000.0
+29.0,Female,Bachelor's Degree,Marketing Coordinator,4.0,65000.0
+27.0,Female,Bachelor's Degree,Software Engineer,3.0,70000.0
+38.0,Male,Master's Degree,Senior Human Resources Manager,11.0,110000.0
+42.0,Male,Master's Degree,Full Stack Engineer,19.0,177347.0
+54.0,Male,Master's Degree,Senior Software Engineer,32.0,195270.0
+33.0,Male,PhD,Research Scientist,10.0,150000.0
+26.0,Male,Bachelor's Degree,Senior Product Marketing Manager,5.0,85000.0
+31.0,Male,High School,Junior HR Generalist,2.0,35000.0
+28.0,Male,Bachelor's,Software Engineer,3.0,125000.0
+31.0,Male,Bachelor's,Data Analyst,9.0,195000.0
+28.0,Female,PhD,Data Scientist,5.0,100000.0
+29.0,Female,Master's Degree,Senior HR Generalist,4.0,70000.0
+24.0,Male,Bachelor's,Data Analyst,1.0,95000.0
+42.0,Male,PhD,Director of Data Science,12.0,170000.0
+43.0,Female,Master's Degree,Sales Manager,14.0,140000.0
+50.0,Female,Bachelor's Degree,Sales Manager,15.0,150000.0
+39.0,Male,Bachelor's Degree,Operations Manager,13.0,127000.0
+26.0,Male,Bachelor's Degree,Marketing Analyst,2.0,50000.0
+33.0,Male,Master's,Product Manager,11.0,198000.0
+35.0,Male,Bachelor's Degree,Front end Developer,10.0,128712.0
+45.0,Male,PhD,Senior Project Engineer,16.0,185000.0
+29.0,Female,Bachelor's,Junior Project Manager,2.0,40000.0
+31.0,Male,Bachelor's,Data Analyst,9.0,190000.0
+32.0,Male,Master's Degree,Product Manager,7.0,110000.0
+37.0,Male,Bachelor's Degree,Product Manager,13.0,160000.0
+29.0,Female,High School,Junior Sales Associate,1.0,26000.0
+31.0,Male,Master's,Data Scientist,9.0,185000.0
+36.0,Male,PhD,Senior Data Scientist,12.0,170000.0
+28.0,Male,Bachelor's Degree,Junior Data Analyst,3.0,52000.0
+25.0,Female,Bachelor's Degree,Front end Developer,1.0,55000.0
+34.0,Male,PhD,Research Director,12.0,170000.0
+34.0,Male,Master's Degree,Full Stack Engineer,12.0,160976.0
+33.0,Male,PhD,Data Scientist,8.0,190000.0
+29.0,Male,Bachelor's,Marketing Analyst,3.0,50000.0
+41.0,Female,Bachelor's,Senior Project Coordinator,11.0,95000.0
+28.0,Male,Bachelor's Degree,Software Engineer,4.0,75000.0
+45.0,Male,PhD,Director of HR,14.0,140000.0
+32.0,Male,Bachelor's Degree,Product Manager,7.0,120000.0
+31.0,Female,Bachelor's,Accountant,4.0,55000.0
+54.0,Male,Bachelor's Degree,Full Stack Engineer,27.0,183417.0
+25.0,Male,Bachelor's Degree,Financial Analyst,1.0,55000.0
+26.0,Male,Master's Degree,Full Stack Engineer,4.0,102859.0
+30.0,Male,Master's Degree,Financial Manager,7.0,120000.0
+23.0,Male,Bachelor's Degree,Sales Representative,1.0,35000.0
+57.0,Male,PhD,Software Engineer Manager,18.0,195000.0
+26.0,Male,Bachelor's Degree,Product Designer,2.0,50000.0
+46.0,Male,Master's Degree,Senior Software Engineer,20.0,174938.0
+49.0,Male,Bachelor's Degree,Back end Developer,24.0,178284.0
+26.0,Male,High School,Junior Sales Associate,1.0,26000.0
+39.0,Male,PhD,Senior Engineer,12.0,115000.0
+47.0,Male,PhD,Research Scientist,22.0,160000.0
+49.0,Male,Master's Degree,Software Engineer Manager,23.0,182392.0
+30.0,Male,Master's,Software Engineer,6.0,170000.0
+43.0,Male,PhD,Data Scientist,16.0,160000.0
+29.0,Male,Bachelor's,Junior Business Operations Analyst,1.5,35000.0
+29.0,Female,Master's,Data Scientist,6.0,180000.0
+34.0,Male,Master's Degree,Data Analyst,8.0,100000.0
+31.0,Female,PhD,Data Scientist,8.0,140000.0
+24.0,Male,High School,Delivery Driver,0.0,28000.0
+24.0,Female,Bachelor's Degree,Software Developer,2.0,55000.0
+30.0,Female,PhD,Data Scientist,7.0,185000.0
+44.0,Female,PhD,Director of HR,13.0,135000.0
+30.0,Female,Bachelor's Degree,Software Engineer,5.0,90000.0
+38.0,Female,PhD,Senior Research Scientist,12.0,140000.0
+51.0,Female,Bachelor's,Customer Service Manager,22.0,130000.0
+44.0,Male,PhD,Data Scientist,15.0,150000.0
+30.0,Female,Bachelor's Degree,Full Stack Engineer,5.0,100000.0
+35.0,Female,Master's Degree,Full Stack Engineer,8.0,140000.0
+34.0,Male,Master's Degree,Full Stack Engineer,7.0,140000.0
+36.0,Male,Bachelor's,Technical Recruiter,8.0,70000.0
+26.0,Male,Bachelor's Degree,Software Developer,3.0,60000.0
+29.0,Female,Master's,Data Analyst,6.0,150000.0
+44.0,Female,PhD,Software Engineer Manager,18.0,161621.0
+27.0,Female,Bachelor's Degree,Software Engineer,3.0,70000.0
+29.0,Female,Master's Degree,Web Developer,3.0,60000.0
+49.0,Male,PhD,Senior Project Engineer,17.0,195000.0
+41.0,Male,PhD,Data Scientist,15.0,157000.0
+25.0,Female,Bachelor's,Data Analyst,2.0,90000.0
+43.0,Male,PhD,Senior Project Engineer,13.0,185000.0
+25.0,Female,Master's Degree,Software Engineer,2.0,60000.0
+46.0,Male,PhD,Senior Project Engineer,15.0,180000.0
+35.0,Female,Bachelor's Degree,Human Resources Manager,8.0,92000.0
+48.0,Male,PhD,Data Scientist,22.0,219000.0
+28.0,Male,High School,Junior Sales Associate,2.0,35000.0
+27.0,Female,Bachelor's Degree,Junior Software Engineer,2.0,48000.0
+26.0,Female,Bachelor's,Data Analyst,3.0,130000.0
+35.0,Female,Master's Degree,Marketing Manager,10.0,110000.0
+42.0,Female,PhD,Senior Marketing Manager,13.0,140000.0
+33.0,Female,Bachelor's Degree,Human Resources Manager,6.0,75000.0
+40.0,Male,Master's Degree,Software Engineer Manager,17.0,151670.0
+25.0,Female,Master's,Data Analyst,1.0,100000.0
+52.0,Female,Master's,Senior Marketing Manager,25.0,170000.0
+46.0,Male,Master's Degree,Senior Software Engineer,21.0,174305.0
+30.0,Female,Bachelor's Degree,Digital Marketing Specialist,4.0,65000.0
+28.0,Male,Bachelor's Degree,Front end Developer,2.0,70000.0
+27.0,Female,Master's Degree,Content Marketing Manager,4.0,80000.0
+28.0,Female,Bachelor's Degree,Junior Software Developer,2.0,37000.0
+32.0,Male,Bachelor's Degree,Product Manager,7.0,120000.0
+43.0,Male,PhD,Senior Project Engineer,13.0,185000.0
+41.0,Male,PhD,Software Engineer Manager,16.0,151310.0
+46.0,Male,PhD,Senior Project Engineer,16.0,190000.0
+33.0,Male,Bachelor's Degree,Operations Manager,6.0,75000.0
+36.0,Male,Bachelor's Degree,Sales Director,6.0,75000.0
+39.0,Female,Master's Degree,Marketing Manager,11.0,120000.0
+43.0,Male,PhD,Senior Software Engineer,12.0,170000.0
+29.0,Male,Bachelor's Degree,Product Designer,3.0,60000.0
+27.0,Male,Bachelor's Degree,Product Designer,3.0,60000.0
+38.0,Male,PhD,Data Scientist,12.0,130000.0
+36.0,Male,Bachelor's Degree,Sales Manager,11.0,160000.0
+56.0,Male,PhD,Software Engineer Manager,17.0,195000.0
+25.0,Male,Bachelor's Degree,Product Manager,1.0,55000.0
+42.0,Male,Master's Degree,Product Manager,14.0,180000.0
+44.0,Female,PhD,Senior HR Manager,18.0,160000.0
+37.0,Male,Bachelor's Degree,Data Analyst,11.0,160000.0
+29.0,Female,Bachelor's Degree,Software Developer,5.0,80000.0
+27.0,Female,High School,Junior HR Coordinator,1.0,30000.0
+27.0,Female,Master's Degree,Marketing Manager,3.0,60000.0
+29.0,Female,Bachelor's,Software Engineer,4.0,140000.0
+26.0,Male,Bachelor's Degree,Junior Software Engineer,1.0,55000.0
+25.0,Male,Bachelor's Degree,Product Manager,1.0,55000.0
+27.0,Male,Bachelor's Degree,Software Engineer,2.0,70000.0
+39.0,Female,Master's Degree,Software Engineer Manager,12.0,160000.0
+54.0,Male,Bachelor's Degree,Senior Project Engineer,28.0,192292.0
+30.0,Female,Master's Degree,Front end Developer,5.0,105000.0
+27.0,Male,Bachelor's,Software Engineer,4.0,160000.0
+46.0,Male,PhD,Software Engineer Manager,16.0,185000.0
+27.0,Male,Bachelor's Degree,Product Designer,3.0,60000.0
+27.0,Female,Bachelor's Degree,Graphic Designer,2.0,50000.0
+25.0,Female,Master's Degree,Software Engineer,2.0,60000.0
+34.0,Male,Bachelor's,Product Manager,9.0,185000.0
+25.0,Female,Master's Degree,Junior HR Generalist,1.0,32000.0
+49.0,Male,PhD,Software Engineer Manager,15.0,185000.0
+42.0,Male,PhD,Data Scientist,14.0,140000.0
+40.0,Male,PhD,Senior Software Engineer,12.0,160000.0
+27.0,Male,PhD,Marketing Manager,4.0,55000.0
+28.0,Female,Master's Degree,Marketing Manager,7.0,110000.0
+23.0,Male,Bachelor's Degree,Software Engineer,1.0,60000.0
+27.0,Female,Master's Degree,Full Stack Engineer,3.0,100000.0
+27.0,Male,Bachelor's Degree,Software Engineer,3.0,75000.0
+31.0,Female,High School,Junior HR Coordinator,3.0,38000.0
+29.0,Male,Bachelor's,Data Analyst,7.0,130000.0
+33.0,Female,Master's,Product Manager,11.0,195000.0
+29.0,Male,Bachelor's Degree,Marketing Analyst,4.0,70000.0
+28.0,Female,Bachelor's Degree,Front end Developer,2.0,65000.0
+28.0,Female,Bachelor's Degree,Software Engineer,4.0,70000.0
+36.0,Female,Bachelor's,Recruiter,9.0,60000.0
+24.0,Male,PhD,Software Engineer Manager,1.0,106686.0
+33.0,Female,Master's,Product Manager,11.0,198000.0
+33.0,Female,Bachelor's Degree,Full Stack Engineer,6.0,115000.0
+47.0,Male,PhD,Software Engineer Manager,21.0,174985.0
+32.0,Female,Bachelor's Degree,Director of Marketing,8.0,80000.0
+43.0,Male,PhD,Data Scientist,16.0,160000.0
+25.0,Female,Bachelor's Degree,Marketing Manager,3.0,65000.0
+41.0,Female,PhD,Director of Data Science,16.0,200000.0
+37.0,Female,Master's Degree,Senior Human Resources Manager,9.0,105000.0
+36.0,Male,Bachelor's Degree,Software Engineer Manager,8.0,135000.0
+27.0,Female,Bachelor's Degree,Marketing Coordinator,2.0,50000.0
+24.0,Female,Bachelor's Degree,Junior Web Developer,1.0,40000.0
+24.0,Female,Bachelor's Degree,Software Developer,2.0,55000.0
+28.0,Female,Bachelor's Degree,Marketing Analyst,3.0,65000.0
+43.0,Male,PhD,Data Scientist,16.0,162000.0
+51.0,Male,PhD,Data Scientist,24.0,240000.0
+46.0,Male,PhD,Director of HR,15.0,150000.0
+49.0,Female,PhD,Senior Project Engineer,17.0,195000.0
+45.0,Male,PhD,Senior Project Engineer,16.0,185000.0
+34.0,Female,Bachelor's Degree,Full Stack Engineer,8.0,122485.0
+27.0,Male,Bachelor's,Software Engineer,4.0,140000.0
+24.0,Female,High School,Sales Associate,1.0,30000.0
+44.0,Female,PhD,Data Scientist,18.0,183000.0
+36.0,Male,Master's Degree,Full Stack Engineer,13.0,146508.0
+47.0,Male,PhD,Data Scientist,19.0,190000.0
+30.0,Female,High School,Sales Executive,2.0,40000.0
+27.0,Male,Bachelor's Degree,Senior Project Engineer,4.0,115000.0
+40.0,Female,Master's Degree,Human Resources Manager,11.0,120000.0
+25.0,Male,High School,Junior Sales Associate,1.0,30000.0
+45.0,Male,Master's Degree,Marketing Manager,13.0,130000.0
+24.0,Female,Bachelor's Degree,Front end Developer,1.0,51265.0
+31.0,Female,Master's Degree,Financial Manager,7.0,120000.0
+34.0,Female,Bachelor's Degree,Human Resources Manager,9.0,99000.0
+54.0,Male,Bachelor's Degree,Full Stack Engineer,25.0,179756.0
+49.0,Male,Bachelor's Degree,Full Stack Engineer,22.0,181132.0
+33.0,Male,PhD,Sales Director,10.0,155000.0
+27.0,Female,Bachelor's Degree,Back end Developer,3.0,80000.0
+27.0,Female,Bachelor's,Data Analyst,5.0,120000.0
+27.0,Male,Bachelor's Degree,Marketing Analyst,2.0,50000.0
+31.0,Female,Master's Degree,Financial Manager,8.0,120000.0
+37.0,Male,Master's Degree,Marketing Director,14.0,180000.0
+35.0,Female,Bachelor's Degree,Back end Developer,10.0,114776.0
+33.0,Female,Bachelor's Degree,Junior HR Generalist,7.0,65000.0
+29.0,Female,High School,Junior Sales Associate,1.0,26000.0
+26.0,Female,Bachelor's Degree,Junior HR Generalist,2.0,42000.0
+33.0,Male,PhD,Sales Director,10.0,155000.0
+31.0,Male,Master's Degree,Full Stack Engineer,7.0,140000.0
+43.0,Male,High School,Senior Software Engineer,22.0,165919.0
+29.0,Female,Master's Degree,Web Developer,4.0,65000.0
+26.0,Female,Master's Degree,Front end Developer,2.0,65840.0
+28.0,Male,Master's,Product Manager,3.0,130000.0
+44.0,Female,PhD,Director of HR,13.0,135000.0
+30.0,Female,Bachelor's,Data Analyst,5.0,145000.0
+48.0,Male,PhD,Director of Data Science,18.0,210000.0
+26.0,Male,High School,Junior Sales Associate,2.0,31000.0
+34.0,Female,PhD,Research Director,10.0,150000.0
+49.0,Male,PhD,Software Engineer Manager,15.0,185000.0
+42.0,Male,PhD,Data Scientist,14.0,140000.0
+24.0,Female,Bachelor's Degree,Web Developer,1.0,40000.0
+49.0,Male,PhD,Data Scientist,22.0,220000.0
+27.0,Female,Bachelor's Degree,Software Engineer,3.0,70000.0
+32.0,Male,PhD,Research Scientist,10.0,150000.0
+46.0,Male,PhD,Data Scientist,18.0,180000.0
+26.0,Female,Master's Degree,Front end Developer,3.0,72649.0
+34.0,Female,Bachelor's Degree,Human Resources Manager,9.0,99000.0
+30.0,Female,Bachelor's Degree,Junior Marketing Manager,4.0,57000.0
+33.0,Male,Bachelor's Degree,Full Stack Engineer,7.0,130000.0
+30.0,Female,Bachelor's,Content Marketing Manager,3.0,55000.0
+32.0,Male,Bachelor's Degree,Junior Marketing Manager,6.0,72000.0
+49.0,Male,PhD,Software Engineer Manager,15.0,185000.0
+35.0,Female,Master's Degree,Data Analyst,9.0,120000.0
+31.0,Male,Bachelor's Degree,Operations Manager,5.0,70000.0
+32.0,Male,Bachelor's Degree,Operations Manager,6.0,75000.0
+29.0,Female,High School,Junior Sales Associate,1.0,30000.0
+38.0,Female,Master's Degree,Back end Developer,10.0,155000.0
+35.0,Male,PhD,Senior Human Resources Manager,10.0,110000.0
+42.0,Female,Master's Degree,Senior Software Engineer,16.0,138286.0
+34.0,Male,Master's Degree,Data Scientist,9.0,140000.0
+35.0,Male,Master's Degree,Senior Project Engineer,8.0,101332.0
+32.0,Male,Master's Degree,Product Manager,7.0,110000.0
+30.0,Female,Bachelor's Degree,Digital Marketing Specialist,4.0,65000.0
+32.0,Female,Bachelor's Degree,Director of Marketing,8.0,80000.0
+34.0,Male,Master's Degree,Software Engineer Manager,9.0,146075.0
+26.0,Male,High School,Sales Manager,2.0,40000.0
+31.0,Male,Bachelor's Degree,Junior Marketing Manager,5.0,70000.0
+40.0,Male,Master's Degree,Software Engineer Manager,16.0,150301.0
+43.0,Female,Bachelor's Degree,Content Marketing Manager,12.0,120000.0
+39.0,Female,Bachelor's Degree,Financial Manager,15.0,200000.0
+30.0,Female,Bachelor's Degree,Software Engineer,5.0,90000.0
+24.0,Male,Bachelor's,Data Analyst,1.0,90000.0
+43.0,Female,PhD,Senior Data Scientist,15.0,150000.0
+24.0,Female,Bachelor's Degree,Front end Developer,1.0,55000.0
+50.0,Male,PhD,Data Scientist,23.0,225000.0
+40.0,Female,Bachelor's Degree,Financial Manager,16.0,215000.0
+36.0,Male,Bachelor's Degree,Software Engineer Manager,8.0,135000.0
+27.0,Male,Bachelor's Degree,Marketing Analyst,2.0,50000.0
+33.0,Female,Master's,Product Manager,11.0,190000.0
+30.0,Male,Bachelor's Degree,Software Engineer,5.0,75000.0
+36.0,Female,Master's Degree,Senior Project Engineer,12.0,130356.0
+32.0,Male,Bachelor's Degree,Product Manager,7.0,120000.0
+24.0,Male,Bachelor's,Data Analyst,1.0,92000.0
+39.0,Female,Master's Degree,Software Engineer Manager,12.0,160000.0
+36.0,Male,Bachelor's Degree,Operations Manager,9.0,110000.0
+26.0,Male,Bachelor's Degree,Back end Developer,2.0,65000.0
+29.0,Female,Bachelor's Degree,Front end Developer,4.0,90000.0
+42.0,Female,Bachelor's Degree,Senior Software Engineer,20.0,150534.0
+35.0,Female,Master's Degree,Data Analyst,9.0,120000.0
+37.0,Female,Bachelor's Degree,Full Stack Engineer,10.0,149217.0
+43.0,Female,Bachelor's Degree,Marketing Manager,12.0,120000.0
+25.0,Female,Bachelor's Degree,Junior Software Developer,1.0,35000.0
+26.0,Male,Bachelor's Degree,Marketing Analyst,2.0,50000.0
+46.0,Male,Master's,Senior Project Manager,21.0,135000.0
+36.0,Male,Bachelor's Degree,Sales Manager,11.0,160000.0
+27.0,Male,Bachelor's Degree,Software Engineer,3.0,80000.0
+26.0,Female,Master's Degree,Front end Developer,2.0,65840.0
+28.0,Male,Bachelor's Degree,Web Developer,4.0,65000.0
+32.0,Female,Bachelor's,Junior Financial Analyst,5.0,50000.0
+37.0,Other,Master's Degree,Full Stack Engineer,14.0,161393.0
+27.0,Male,High School,Junior Sales Associate,2.0,35000.0
+30.0,Female,Bachelor's Degree,Marketing Coordinator,5.0,90000.0
+39.0,Male,PhD,Research Scientist,14.0,185000.0
+50.0,Female,Master's Degree,Content Marketing Manager,19.0,190000.0
+35.0,Male,Bachelor's Degree,Front end Developer,9.0,125091.0
+31.0,Male,Bachelor's,Data Analyst,9.0,190000.0
+30.0,Female,Bachelor's Degree,Marketing Coordinator,4.0,57000.0
+30.0,Male,Bachelor's Degree,Project Manager,6.0,110000.0
+41.0,Female,PhD,Director of Data Science,16.0,200000.0
+35.0,Male,Master's,Senior Software Developer,9.0,110000.0
+53.0,Male,PhD,Software Engineer Manager,25.0,181714.0
+24.0,Male,High School,Delivery Driver,0.0,28000.0
+28.0,Male,Bachelor's,Technical Support Specialist,2.0,40000.0
+44.0,Male,PhD,Data Scientist,18.0,182000.0
+30.0,Female,Bachelor's Degree,Junior Marketing Manager,4.0,57000.0
+36.0,Male,Master's Degree,Back end Developer,9.0,150000.0
+25.0,Female,Bachelor's Degree,Front end Developer,1.0,55000.0
+26.0,Male,Bachelor's Degree,Senior Product Marketing Manager,5.0,85000.0
+36.0,Male,Bachelor's Degree,Sales Director,6.0,75000.0
+27.0,Female,Bachelor's Degree,Software Engineer,3.0,70000.0
+34.0,Male,Master's Degree,Data Scientist,9.0,140000.0
+30.0,Female,Bachelor's Degree,Financial Manager,4.0,55000.0
+28.0,Male,PhD,Sales Representative,4.0,55000.0
+26.0,Male,Bachelor's Degree,Software Engineer,1.0,52000.0
+23.0,Male,High School,Sales Executive,1.0,35000.0
+26.0,Male,Bachelor's Degree,Back end Developer,3.0,75072.0
+45.0,Female,Bachelor's Degree,Senior Project Engineer,22.0,171036.0
+34.0,Female,PhD,Research Director,11.0,160000.0
+51.0,Male,PhD,Data Scientist,24.0,240000.0
+34.0,Female,PhD,Research Director,11.0,160000.0
+27.0,Male,Bachelor's Degree,Software Engineer,3.0,80000.0
+22.0,Male,Bachelor's Degree,Front End Developer,1.0,50000.0
+28.0,Female,Bachelor's Degree,Marketing Coordinator,3.0,60000.0
+39.0,Female,PhD,Senior Research Scientist,13.0,145000.0
+24.0,Female,Bachelor's Degree,Front end Developer,1.0,55000.0
+32.0,Male,Master's Degree,Web Developer,6.0,80000.0
+24.0,Male,High School,Junior Sales Associate,1.0,25000.0
+31.0,Female,Master's Degree,Senior Software Engineer,6.0,113065.0
+27.0,Female,Master's Degree,Back end Developer,2.0,70000.0
+27.0,Male,Bachelor's Degree,Junior Software Engineer,1.0,55000.0
+36.0,Male,Bachelor's Degree,Software Engineer Manager,8.0,135000.0
+28.0,Male,Bachelor's Degree,Marketing Analyst,3.0,65000.0
+48.0,Male,PhD,Director of Data Science,18.0,210000.0
+46.0,Male,Bachelor's Degree,Senior Project Engineer,23.0,181699.0
+33.0,Female,Master's Degree,Full Stack Engineer,9.0,136533.0
+31.0,Female,High School,Junior Sales Associate,1.0,25000.0
+30.0,Male,Bachelor's Degree,Back end Developer,4.0,95000.0
+32.0,Female,PhD,Data Scientist,9.0,145000.0
+24.0,Female,High School,Juniour HR Coordinator,1.0,32000.0
+30.0,Female,Bachelor's,Junior Marketing Coordinator,2.0,40000.0
+29.0,Male,Bachelor's Degree,Marketing Analyst,4.0,75000.0
+44.0,Female,PhD,Software Engineer Manager,18.0,162454.0
+23.0,Female,Bachelor's Degree,Front end Developer,1.0,55000.0
+25.0,Female,Master's Degree,Software Engineer,2.0,60000.0
+49.0,Male,PhD,Senior Project Engineer,17.0,195000.0
+25.0,Female,Master's,Data Analyst,1.0,100000.0
+50.0,Male,PhD,Senior Product Marketing Manager,15.0,150000.0
+24.0,Male,Bachelor's Degree,Back end Developer,1.0,55935.0
+29.0,Female,Bachelor's Degree,Financial Manager,4.0,55000.0
+33.0,Male,Bachelor's Degree,Front end Developer,6.0,110000.0
+48.0,Male,Master's Degree,Director of Marketing,18.0,180000.0
+44.0,Female,PhD,Software Engineer Manager,18.0,162454.0
+28.0,Male,Bachelor's,Software Engineer,4.0,160000.0
+41.0,Female,PhD,Director of Data Science,16.0,200000.0
+24.0,Female,Bachelor's Degree,Software Developer,2.0,55000.0
+24.0,Male,Bachelor's Degree,Back end Developer,1.0,55935.0
+54.0,Female,PhD,Software Engineer Manager,31.0,191818.0
+55.0,Male,PhD,Software Engineer Manager,18.0,210000.0
+27.0,Male,Bachelor's,Software Engineer,4.0,140000.0
+24.0,Female,High School,Receptionist,0.0,25000.0
+25.0,Male,Bachelor's Degree,Product Manager,1.0,60000.0
+28.0,Female,Master's Degree,Marketing Manager,7.0,110000.0
+49.0,Female,PhD,Senior Project Engineer,17.0,195000.0
+27.0,Female,Bachelor's Degree,Junior Software Engineer,2.0,48000.0
+34.0,Male,Master's Degree,Director of HR,10.0,105000.0
+29.0,Male,Bachelor's Degree,Digital Marketing Manager,6.0,95000.0
+43.0,Female,PhD,Senior Project Engineer,14.0,190000.0
+45.0,Male,Bachelor's Degree,Financial Manager,21.0,250000.0
+36.0,Male,Bachelor's Degree,Sales Director,6.0,75000.0
+32.0,Male,Bachelor's Degree,Project Manager,8.0,120000.0
+31.0,Female,Bachelor's,Software Engineer,6.0,155000.0
+51.0,Male,PhD,Data Scientist,24.0,240000.0
+44.0,Male,Master's Degree,Senior Project Engineer,11.0,170000.0
+31.0,Male,Bachelor's,Data Analyst,9.0,195000.0
+26.0,Female,Bachelor's Degree,Junior HR Generalist,2.0,42000.0
+37.0,Male,Master's Degree,Marketing Director,14.0,180000.0
+27.0,Male,Bachelor's Degree,Front end Developer,3.0,80000.0
+29.0,Female,Master's,Data Scientist,6.0,150000.0
+30.0,Female,Master's Degree,Senior Project Engineer,4.0,92438.0
+34.0,Female,PhD,Research Director,10.0,150000.0
+29.0,Female,Bachelor's Degree,Marketing Coordinator,3.0,55000.0
+45.0,Male,Master's Degree,Marketing Manager,20.0,204000.0
+31.0,Male,Master's Degree,Senior Project Engineer,6.0,125000.0
+27.0,Female,Bachelor's Degree,Graphic Designer,2.0,50000.0
+41.0,Female,Master's Degree,Marketing Coordinator,13.0,131000.0
+31.0,Other,High School,Back end Developer,8.0,104127.0
+28.0,Female,High School,Junior Sales Associate,1.0,25000.0
+38.0,Male,Master's Degree,Marketing Manager,12.0,120000.0
+51.0,Female,Master's Degree,Content Marketing Manager,19.0,190000.0
+34.0,Male,Master's Degree,Data Scientist,9.0,140000.0
+35.0,Female,Master's Degree,Data Analyst,9.0,120000.0
+33.0,Female,Master's,Product Manager,10.0,195000.0
+28.0,Male,High School,Junior Sales Associate,2.0,35000.0
+32.0,Male,Bachelor's Degree,Product Manager,7.0,120000.0
+50.0,Female,Master's Degree,Senior Project Engineer,22.0,182768.0
+25.0,Female,Bachelor's,Data Analyst,2.0,90000.0
+30.0,Female,PhD,Data Scientist,7.0,170000.0
+36.0,Female,Master's Degree,Web Developer,7.0,85000.0
+28.0,Male,Bachelor's Degree,Full Stack Engineer,4.0,77606.0
+33.0,Male,Bachelor's Degree,Marketing Manager,7.0,110000.0
+33.0,Female,Master's,Product Manager,11.0,195000.0
+39.0,Female,Master's Degree,Human Resources Manager,11.0,120000.0
+29.0,Female,Bachelor's Degree,Junior Marketing Manager,3.0,55000.0
+27.0,Female,Master's Degree,Front end Developer,5.0,78354.0
+35.0,Male,PhD,Senior Human Resources Manager,10.0,110000.0
+28.0,Female,Bachelor's Degree,Front end Developer,3.0,80000.0
+28.0,Male,Bachelor's Degree,Product Designer,3.0,60000.0
+46.0,Male,PhD,Software Engineer Manager,16.0,185000.0
+50.0,Female,Master's Degree,Content Marketing Manager,19.0,190000.0
+40.0,Female,Bachelor's Degree,Financial Manager,16.0,215000.0
+31.0,Female,Master's,Data Scientist,6.0,180000.0
+47.0,Male,PhD,Director of Engineering,20.0,180000.0
+27.0,Male,Bachelor's Degree,Software Engineer,3.0,80000.0
+36.0,Male,Bachelor's Degree,Software Engineer Manager,8.0,135000.0
+25.0,Female,Bachelor's Degree,Marketing Manager,3.0,65000.0
+29.0,Male,Bachelor's Degree,Marketing Analyst,4.0,70000.0
+42.0,Male,Master's,Project Engineer,14.0,115000.0
+38.0,Male,Master's Degree,Marketing Director,14.0,195000.0
+42.0,Male,Master's Degree,Product Manager,14.0,180000.0
+32.0,Male,Bachelor's,Software Engineer,8.0,190000.0
+30.0,Female,Bachelor's,Junior Operations Coordinator,2.0,40000.0
+33.0,Female,Master's,Product Manager,11.0,195000.0
+50.0,Female,PhD,Software Engineer Manager,16.0,185000.0
+38.0,Male,Master's Degree,Marketing Director,14.0,195000.0
+25.0,Female,Bachelor's,Data Analyst,2.0,100000.0
+25.0,Male,Bachelor's Degree,Product Manager,1.0,60000.0
+39.0,Female,Bachelor's Degree,Financial Manager,16.0,200000.0
+22.0,Female,High School,Receptionist,0.0,25000.0
+31.0,Male,High School,Junior HR Generalist,2.0,35000.0
+34.0,Male,Master's,Product Manager,12.0,196000.0
+29.0,Female,Bachelor's Degree,Digital Marketing Specialist,3.0,60000.0
+31.0,Female,Master's Degree,Financial Manager,8.0,120000.0
+48.0,Male,PhD,Director of Data Science,18.0,210000.0
+24.0,Male,Bachelor's,Data Analyst,1.0,90000.0
+23.0,Female,High School,Back end Developer,1.0,52807.0
+35.0,Male,Bachelor's Degree,Project Manager,10.0,130000.0
+27.0,Male,Bachelor's,Software Engineer,4.0,160000.0
+28.0,Female,Bachelor's,Junior Operations Manager,1.0,35000.0
+31.0,Male,Master's Degree,Senior Project Engineer,6.0,125000.0
+27.0,Female,High School,Junior HR Generalist,1.0,32000.0
+35.0,Male,Master's Degree,Back end Developer,8.0,140000.0
+30.0,Male,Bachelor's,Data Analyst,5.0,160000.0
+33.0,Male,Bachelor's Degree,Marketing Manager,9.0,130000.0
+32.0,Male,Master's Degree,Product Manager,7.0,110000.0
+21.0,Female,High School,Junior Sales Representative,0.0,25000.0
+33.0,Male,PhD,Data Scientist,8.0,190000.0
+25.0,Female,High School,Sales Executive,1.0,35000.0
+35.0,Male,PhD,Senior Research Scientist,10.0,130000.0
+28.0,Male,Master's Degree,Full Stack Engineer,5.0,84181.0
+28.0,Male,Bachelor's Degree,Software Developer,3.0,60000.0
+33.0,Male,Master's,Senior Operations Manager,7.0,115000.0
+48.0,Male,Master's,Director of Marketing,21.0,180000.0
+24.0,Female,High School,Receptionist,0.0,25000.0
+28.0,Female,Master's,Data Scientist,6.0,150000.0
+28.0,Female,Bachelor's Degree,Junior Software Developer,2.0,36000.0
+28.0,Female,High School,Sales Representative,2.0,40000.0
+28.0,Male,High School,Junior Sales Associate,2.0,35000.0
+24.0,Male,Bachelor's Degree,Sales Representative,1.0,35000.0
+26.0,Male,Bachelor's Degree,Junior Software Engineer,1.0,55000.0
+26.0,Male,Master's Degree,Full Stack Engineer,4.0,90944.0
+45.0,Male,PhD,Software Engineer Manager,16.0,185000.0
+38.0,Male,Master's Degree,Marketing Director,14.0,195000.0
+38.0,Male,Master's Degree,Senior Software Engineer,10.0,155000.0
+30.0,Male,Bachelor's Degree,Software Developer,6.0,85000.0
+28.0,Female,PhD,Data Scientist,5.0,100000.0
+24.0,Female,High School,Receptionist,0.0,25000.0
+30.0,Male,Bachelor's Degree,Software Engineer,4.0,65000.0
+33.0,Female,Bachelor's Degree,Full Stack Engineer,6.0,115000.0
+46.0,Male,PhD,Senior Researcher,18.0,150000.0
+27.0,Male,Bachelor's Degree,Software Engineer,3.0,80000.0
+24.0,Female,High School,Receptionist,0.0,25000.0
+31.0,Female,Master's Degree,Financial Manager,8.0,120000.0
+31.0,Male,High School,Sales Associate,3.0,50000.0
+38.0,Female,Master's Degree,Marketing Manager,10.0,110000.0
+27.0,Female,Bachelor's Degree,Software Engineer,3.0,70000.0
+33.0,Male,Master's Degree,Senior Data Scientist,8.0,120000.0
+32.0,Female,Bachelor's Degree,Director of Marketing,8.0,80000.0
+29.0,Male,Bachelor's Degree,Front End Developer,4.0,80000.0
+28.0,Male,Bachelor's Degree,Software Engineer,4.0,75000.0
+28.0,Female,PhD,Director of Marketing,6.0,105000.0
+27.0,Male,Bachelor's Degree,Back end Developer,3.0,85000.0
+30.0,Male,High School,Junior HR Generalist,1.0,32000.0
+30.0,Female,PhD,Data Scientist,7.0,185000.0
+32.0,Male,Master's Degree,Back end Developer,6.0,130000.0
+49.0,Female,PhD,Software Engineer Manager,22.0,178684.0
+32.0,Male,Bachelor's Degree,Project Manager,8.0,120000.0
+29.0,Female,Bachelor's,Data Analyst,7.0,130000.0
+31.0,Male,Master's,Data Scientist,6.0,160000.0
+33.0,Female,Master's Degree,Senior Software Engineer,8.0,105000.0
+29.0,Male,Bachelor's Degree,Marketing Analyst,4.0,75000.0
+29.0,Female,Bachelor's,Junior Business Development Associate,1.5,35000.0
+25.0,Male,Bachelor's Degree,Product Manager,1.0,60000.0
+45.0,Male,PhD,Senior Project Engineer,14.0,185000.0
+31.0,Male,Master's Degree,Financial Analyst,6.0,100000.0
+35.0,Female,Master's Degree,Data Analyst,9.0,120000.0
+38.0,Male,Bachelor's Degree,Operations Manager,11.0,119000.0
+30.0,Female,PhD,Data Scientist,7.0,170000.0
+25.0,Male,Bachelor's Degree,Product Manager,1.0,60000.0
+42.0,Male,PhD,Senior Software Engineer,14.0,170000.0
+31.0,Male,Bachelor's,Data Analyst,9.0,195000.0
+27.0,Male,Bachelor's Degree,Back end Developer,3.0,85000.0
+28.0,Male,Bachelor's Degree,Software Engineer,3.0,85000.0
+34.0,Male,Bachelor's,Software Engineer,12.0,195000.0
+36.0,Female,PhD,Marketing Manager,9.0,95000.0
+27.0,Male,Bachelor's Degree,Front end Developer,3.0,80000.0
+26.0,Male,Bachelor's Degree,Software Developer,2.0,60000.0
+28.0,Female,Master's Degree,Marketing Manager,7.0,110000.0
+54.0,Male,PhD,Software Engineer Manager,17.0,195000.0
+31.0,Male,Bachelor's Degree,Software Developer,6.0,85000.0
+29.0,Female,Bachelor's,Junior Marketing Analyst,2.0,40000.0
+47.0,Male,Master's,Director of Operations,20.0,170000.0
+36.0,Female,PhD,Research Scientist,13.0,185000.0
+35.0,Male,Bachelor's Degree,Full Stack Engineer,8.0,145000.0
+28.0,Female,Master's Degree,Full Stack Engineer,7.0,115920.0
+46.0,Male,PhD,Software Engineer Manager,14.0,180000.0
+40.0,Male,PhD,Data Scientist,15.0,150000.0
+27.0,Male,Bachelor's Degree,Software Engineer,3.0,80000.0
+37.0,Male,PhD,Director of HR,11.0,115000.0
+29.0,Male,Bachelor's Degree,Marketing Analyst,4.0,70000.0
+30.0,Female,PhD,Data Scientist,6.0,170000.0
+29.0,Female,Bachelor's,Sales Associate,3.0,40000.0
+31.0,Male,Bachelor's,Data Analyst,9.0,195000.0
+45.0,Female,Master's,Senior Marketing Manager,16.0,160000.0
+26.0,Female,Bachelor's Degree,Junior HR Coordinator,1.0,35000.0
+32.0,Male,Bachelor's Degree,Product Manager,7.0,120000.0
+39.0,Male,Master's Degree,Senior HR Generalist,10.0,105000.0
+28.0,Male,Master's Degree,Front end Developer,5.0,76742.0
+51.0,Female,Master's Degree,Content Marketing Manager,19.0,190000.0
+24.0,Male,Bachelor's,Data Analyst,1.0,90000.0
+30.0,Female,Bachelor's,Software Engineer,8.0,180000.0
+33.0,Male,Master's Degree,Senior Software Engineer,8.0,139817.0
+30.0,Female,Bachelor's Degree,Software Engineer,5.0,90000.0
+31.0,Male,Bachelor's Degree,Sales Director,9.0,140000.0
+30.0,Female,Master's Degree,Senior Project Engineer,6.0,107906.0
+24.0,Male,PhD,Software Engineer Manager,1.0,106686.0
+36.0,Male,Master's Degree,Senior HR Generalist,7.0,89000.0
+28.0,Female,Master's Degree,Marketing Manager,7.0,110000.0
+27.0,Male,Bachelor's Degree,Back end Developer,3.0,85000.0
+53.0,Male,PhD,Software Engineer Manager,19.0,195000.0
+27.0,Male,Bachelor's Degree,Front end Developer,2.0,65000.0
+27.0,Female,Master's Degree,Content Marketing Manager,4.0,80000.0
+27.0,Male,Bachelor's Degree,Front end Developer,2.0,65000.0
+30.0,Female,Bachelor's Degree,Marketing Coordinator,5.0,90000.0
+32.0,Male,Master's Degree,Product Manager,7.0,110000.0
+44.0,Female,Master's,Senior HR Specialist,15.0,140000.0
+32.0,Female,Master's Degree,Senior Human Resources Manager,6.0,80000.0
+27.0,Female,Bachelor's Degree,Web Developer,2.0,50000.0
+36.0,Male,Master's Degree,Front end Developer,8.0,106492.0
+34.0,Male,Bachelor's Degree,Operations Manager,8.0,101000.0
+33.0,Female,Master's Degree,Software Developer,8.0,95000.0
+25.0,Male,Bachelor's Degree,Product Manager,1.0,60000.0
+48.0,Male,PhD,Senior Project Engineer,16.0,190000.0
+27.0,Male,Bachelor's,Customer Service Rep,2.0,40000.0
+25.0,Female,Master's Degree,Software Engineer,2.0,60000.0
+38.0,Male,Bachelor's Degree,Operations Manager,11.0,119000.0
+44.0,Female,PhD,Data Scientist,18.0,183000.0
+26.0,Female,Bachelor's,Marketing Coordinator,1.0,45000.0
+34.0,Female,PhD,Research Director,10.0,150000.0
+24.0,Female,High School,Sales Associate,1.0,30000.0
+36.0,Female,Bachelor's,Senior Marketing Manager,8.0,95000.0
+34.0,Male,Bachelor's Degree,Operations Manager,8.0,104000.0
+27.0,Male,Bachelor's Degree,Software Engineer,3.0,75000.0
+34.0,Male,Master's Degree,Data Analyst,8.0,100000.0
+36.0,Male,Bachelor's Degree,Operations Manager,8.0,100000.0
+26.0,Male,High School,Junior Sales Associate,2.0,31000.0
+27.0,Female,High School,Junior HR Generalist,1.0,32000.0
+35.0,Female,Master's Degree,Data Analyst,9.0,120000.0
+42.0,Female,Master's Degree,Sales Manager,13.0,130000.0
+29.0,Female,Master's,Data Scientist,6.0,150000.0
+27.0,Female,Bachelor's Degree,Software Developer,3.0,61000.0
+44.0,Male,PhD,Senior Data Scientist,15.0,180000.0
+36.0,Female,Master's Degree,Marketing Director,11.0,160000.0
+41.0,Male,PhD,Senior Project Engineer,13.0,185000.0
+32.0,Female,Master's Degree,Full Stack Engineer,6.0,115000.0
+31.0,Male,Bachelor's,Data Analyst,9.0,195000.0
+29.0,Male,Bachelor's Degree,Front End Developer,4.0,80000.0
+27.0,Male,Bachelor's Degree,Junior Data Analyst,2.0,50000.0
+42.0,Male,Bachelor's Degree,Financial Manager,13.0,130000.0
+39.0,Female,Bachelor's Degree,Financial Manager,15.0,200000.0
+54.0,Male,PhD,Software Engineer Manager,18.0,195000.0
+27.0,Male,Bachelor's Degree,Back end Developer,3.0,80000.0
+31.0,Male,Master's Degree,Product Manager,6.0,120000.0
+29.0,Female,High School,Junior Sales Associate,1.0,25000.0

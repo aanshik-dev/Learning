@@ -1,0 +1,37 @@
+1. In this assignment, we used simple linear regression to 
+predict salary from experience. 
+
+2. DATASET SPLITTING ANALYSIS (10:90 to 90:10)
+
+- We generated 9 random splits from 10% train to 90% train.
+- Observations:
+  - At 10:90 split: High error and lower R2 because 3 training samples are not 
+    enough to capture the true linear trend.
+  - Between 50:50 and 70:30 splits: The model performs very consistently with 
+    low mean-RSS and high R2.
+  - At 80:20 and 90:10 splits: The test R2 drops sharply. This happens not because the learned line is bad, but because 
+  the test set has only 3 to 6 samples. A small test set makes R2 highly sensitive to tiny individual deviations.
+  - Best Split: 60:40 gave the best results with the lowest test error and highest test R2. 
+
+
+3. EFFECT OF THETA Initialization
+We trained Gradient Descent on the best split (60:40) using 3 different starting points: Zero (0, 0), Random [0,1], and Random [0,100].
+
+Results (alpha = 0.001, 1000 epochs):
+  - Zero initialization  : w1 = 6999.43, w2 = 12304.73, R2 = 0.8464, Mean-RSS = 9.44e+07
+  - Random [0,1]         : w1 = 6999.60, w2 = 12304.71, R2 = 0.8464, Mean-RSS = 9.44e+07
+  - Random [0,100]       : w1 = 7048.39, w2 = 12297.16, R2 = 0.8469, Mean-RSS = 9.40e+07
+
+Conclusion:
+Initialization has almost NO effect on the final outcome. This is because the MSE cost function for Linear Regression is convex (a single bowl shape with only one global minimum). As long as learning rate is proper, gradient descent will 
+slide down to the exact same minimum regardless of where it starts.
+
+
+4. EFFECT OF LEARNING RATE
+We tested learning rates: [0.0001, 0.05, 0.1, 1, 10, 100, 1000] on the 60:40 split.
+
+Observations:
+  - alpha = 0.0001 : Too small. Takes too long to converge (R2 = 0.787 after 1000 epochs).
+  - alpha = 0.001  : Progresses steadily, reaching R2 = 0.846 in 1000 epochs.
+  - alpha = 0.05   : OPTIMAL. Reaches the true global minimum (w1 = 25069.30, w2 = 9507.46, R2 = 0.9587), matching the exact OLS solution.
+  - alpha >= 0.1   : DIVERGES (NaN). Since salary is in thousands (~10^5) and features are not normalized, the gradients are huge (~10^6). Multiplying by alpha >= 0.1 causes the step to overshoot the valley and explode to infinity.
