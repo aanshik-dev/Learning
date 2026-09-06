@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operations & Support Directory | Apex Cloud Labs</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <a href="index.html" class="brand-container">
+            <div class="brand-logo">
+                <svg viewBox="0 0 24 24">
+                    <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3z"/>
+                </svg>
+            </div>
+            <div>
+                <span class="brand-title">Apex Cloud Labs <span class="brand-badge">Auto Scaling</span></span>
+            </div>
+        </a>
+        <nav>
+            <a href="index.html">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                Dashboard
+            </a>
+            <a href="services.html">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                Services
+            </a>
+            <a href="contact.html" class="active">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                Contact
+            </a>
+            <div class="nav-status">
+                <span class="pulse-dot"></span>
+                <span>ap-south-1 Active</span>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero-card">
+            <div class="hero-header">
+                <div class="hero-title-group">
+                    <span class="chip-tag">Operations & Governance</span>
+                    <h1>Cloud Operations Directory</h1>
+                    <p class="hero-subtitle">Infrastructure administration directory, cluster telemetry endpoints, and support escalation protocols for Assignment 5.</p>
+                </div>
+            </div>
+
+            <!-- Student Profile Badge & Infrastructure Meta -->
+            <div class="spec-strip" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-top: 1.5rem;">
+                <div class="spec-box">
+                    <div class="spec-title">Lead Engineer</div>
+                    <div class="spec-val" style="color: var(--primary);">Ansik Singh Tomar</div>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem;">Roll No: 2401037</p>
+                </div>
+                <div class="spec-box">
+                    <div class="spec-title">Academic Course</div>
+                    <div class="spec-val" style="color: var(--accent);">CS351: IT Workshop II</div>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem;">Cloud Computing & Auto Scaling</p>
+                </div>
+                <div class="spec-box">
+                    <div class="spec-title">Primary Region</div>
+                    <div class="spec-val" style="color: var(--success);">ap-south-1 (Mumbai)</div>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem;">AWS Asia Pacific Tier 1</p>
+                </div>
+                <div class="spec-box">
+                    <div class="spec-title">IAM Instance Role</div>
+                    <div class="spec-val" style="font-size: 0.85rem; color: var(--warning);">aanshik-ec2-s3-role</div>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem;">S3 Access Delegation</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid">
+            <div class="card">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                </div>
+                <h3>Submit Node Diagnostic Query</h3>
+                <p>Send operational telemetry inquiries or benchmark audit notices directly to the CloudOps console.</p>
+
+                <form id="incidentForm" style="margin-top: 1rem;" onsubmit="handleFormSubmit(event)">
+                    <div class="form-group">
+                        <label class="form-label" for="userName">Operator Name</label>
+                        <input type="text" id="userName" class="form-input" placeholder="e.g. Lab Evaluator / DevOps Engineer" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="categorySelect">Audit Category</label>
+                        <select id="categorySelect" class="form-select">
+                            <option value="autoscaling">Auto Scaling Trigger Verification</option>
+                            <option value="cloudwatch">CloudWatch Alarm Threshold Check</option>
+                            <option value="performance">Apache Benchmark Load Report</option>
+                            <option value="general">General Infrastructure Observation</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="userNotes">Observations / Query</label>
+                        <textarea id="userNotes" class="form-textarea" placeholder="Describe observation or test results..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-icon primary" style="width: 100%; justify-content: center; padding: 0.75rem;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                        <span>Dispatch Diagnostic Report</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <div id="toast">Report dispatched to Ops console!</div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-credits">
+                <div class="student-pill">Student: <strong>Ansik Singh Tomar</strong> &bull; Roll No: <strong>2401037</strong></div>
+                <span>CS351: IT Workshop II (Cloud Computing) &bull; Assignment 5</span>
+            </div>
+            <div>
+                <span>AWS Auto Scaling &bull; Ubuntu 24.04 LTS &bull; Apache HTTP</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const toast = document.getElementById('toast');
+        function showToast(msg) {
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('userName').value.trim();
+            const category = document.getElementById('categorySelect').value;
+            showToast(`Report logged successfully for ${name} (${category})`);
+            document.getElementById('incidentForm').reset();
+        }
+    </script>
+</body>
+</html>

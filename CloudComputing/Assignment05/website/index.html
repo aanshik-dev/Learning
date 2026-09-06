@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cloud Infrastructure Console | Apex Cloud Labs</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <a href="index.html" class="brand-container">
+        <div class="brand-logo">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3z"
+            />
+          </svg>
+        </div>
+        <div>
+          <span class="brand-title"
+            >Apex Cloud Labs <span class="brand-badge">Auto Scaling</span></span
+          >
+        </div>
+      </a>
+      <nav>
+        <a href="index.html" class="active">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          Dashboard
+        </a>
+        <a href="services.html">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+            <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+            <line x1="6" y1="6" x2="6.01" y2="6"></line>
+            <line x1="6" y1="18" x2="6.01" y2="18"></line>
+          </svg>
+          Services
+        </a>
+        <a href="contact.html">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+            ></path>
+          </svg>
+          Contact
+        </a>
+        <div class="nav-status">
+          <span class="pulse-dot"></span>
+          <span>ap-south-1 Active</span>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container">
+      <!-- Main Instance Telemetry Card -->
+      <section class="hero-card">
+        <div class="hero-header">
+          <div class="hero-title-group">
+            <span class="chip-tag">AWS EC2 Cluster Node</span>
+            <h1>System Status & Node Telemetry</h1>
+            <p class="hero-subtitle">
+              Production workload running on Apache HTTP Server distributed via
+              AWS Auto Scaling Group with CloudWatch threshold alarms.
+            </p>
+          </div>
+        </div>
+
+        <!-- Instance ID Callout Box (sed target) -->
+        <div class="instance-showcase">
+          <div class="instance-label-row">
+            <div class="instance-label">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                <line x1="6" y1="18" x2="6.01" y2="18"></line>
+              </svg>
+              Responding EC2 Node Identity
+            </div>
+            <span
+              class="chip-tag"
+              style="
+                color: var(--success);
+                border-color: rgba(16, 185, 129, 0.3);
+              "
+            >
+              <span class="pulse-dot"></span> Online & Serving
+            </span>
+          </div>
+
+          <div class="instance-pill-container">
+            <span id="instanceId" class="instance-code">{{INSTANCE_ID}}</span>
+            <div class="instance-actions">
+              <button
+                id="copyBtn"
+                class="btn-icon"
+                title="Copy Instance ID"
+                aria-label="Copy Instance ID"
+              >
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path
+                    d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                  ></path>
+                </svg>
+                <span id="copyText">Copy ID</span>
+              </button>
+              <button
+                id="refreshBtn"
+                class="btn-icon primary"
+                title="Refresh Node Probe"
+                aria-label="Refresh Node Probe"
+              >
+                <svg
+                  id="refreshIcon"
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polyline points="23 4 23 10 17 10"></polyline>
+                  <polyline points="1 20 1 14 7 14"></polyline>
+                  <path
+                    d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"
+                  ></path>
+                </svg>
+                <span>Probe Node</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="instance-meta-row">
+            <span class="meta-item">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              Last Probe Timestamp:
+              <span
+                id="probeTimestamp"
+                style="
+                  color: var(--text-primary);
+                  font-family: var(--font-mono);
+                  margin-left: 4px;
+                "
+                >Synchronizing...</span
+              >
+            </span>
+            <span class="meta-item">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+              IMDSv2 Token-Protected Metadata
+            </span>
+          </div>
+        </div>
+
+        <!-- Hardware & Cloud Spec Strip -->
+        <div class="spec-strip">
+          <div class="spec-box">
+            <div class="spec-title">Region & Availability</div>
+            <div class="spec-val">ap-south-1 (Mumbai)</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-title">Instance Type & Arch</div>
+            <div class="spec-val">t3.micro</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-title">Operating System</div>
+            <div class="spec-val">Ubuntu 24.04 LTS</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-title">Web Server Daemon</div>
+            <div class="spec-val">Apache / 2.4.58</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Auto Scaling Group Specifications Section -->
+      <div class="grid">
+        <div class="card">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+              <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+            </svg>
+          </div>
+          <h3>Auto Scaling Group Capacity</h3>
+          <p>
+            Configured with resilient horizontal scaling parameters to
+            automatically adapt to incoming HTTP traffic bursts while optimizing
+            resource consumption.
+          </p>
+          <div
+            class="spec-strip"
+            style="grid-template-columns: 1fr 1fr 1fr; margin-top: 1.2rem"
+          >
+            <div class="spec-box" style="text-align: center">
+              <div class="spec-title">Min Size</div>
+              <div
+                class="spec-val"
+                style="justify-content: center; color: var(--primary)"
+              >
+                1 Node
+              </div>
+            </div>
+            <div class="spec-box" style="text-align: center">
+              <div class="spec-title">Desired</div>
+              <div
+                class="spec-val"
+                style="justify-content: center; color: var(--accent)"
+              >
+                1 Node
+              </div>
+            </div>
+            <div class="spec-box" style="text-align: center">
+              <div class="spec-title">Max Size</div>
+              <div
+                class="spec-val"
+                style="justify-content: center; color: var(--warning)"
+              >
+                3 Nodes
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+            </svg>
+          </div>
+          <h3>CloudWatch Scaling Policies</h3>
+          <p>
+            Dynamic CloudWatch metric alarms continuously evaluate average CPU
+            utilization across workers over a 2-minute evaluation period.
+          </p>
+          <div class="threshold-container">
+            <div class="threshold-header">
+              <span
+                ><strong>Scale-Out Alarm:</strong> CPU &ge; 20% (2 min)</span
+              >
+              <span style="color: var(--warning); font-weight: 600"
+                >+1 Instance</span
+              >
+            </div>
+            <div class="threshold-header" style="margin-top: 0.6rem">
+              <span><strong>Scale-In Alarm:</strong> CPU &le; 30% (2 min)</span>
+              <span style="color: var(--success); font-weight: 600"
+                >-1 Instance</span
+              >
+            </div>
+            <div class="threshold-bar" style="margin-top: 0.8rem">
+              <div class="threshold-fill" id="cpuSimBar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div id="toast">Instance ID copied to clipboard!</div>
+
+    <footer>
+      <div class="footer-content">
+        <div class="footer-credits">
+          <div class="student-pill">
+            Student: <strong>Ansik Singh Tomar</strong> &bull; Roll No:
+            <strong>2401037</strong>
+          </div>
+          <span
+            >CS351: IT Workshop II (Cloud Computing) &bull; Assignment 5</span
+          >
+        </div>
+        <div>
+          <span
+            >AWS Auto Scaling &bull; Ubuntu 24.04 LTS &bull; Apache HTTP</span
+          >
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Update Live Clock
+      function updateProbeTimestamp() {
+        const probeElem = document.getElementById("probeTimestamp");
+        if (probeElem) {
+          const now = new Date();
+          probeElem.textContent =
+            now.toLocaleDateString() +
+            " " +
+            now.toLocaleTimeString() +
+            " UTC" +
+            (now.getTimezoneOffset() <= 0 ? "+" : "-") +
+            Math.abs(now.getTimezoneOffset() / 60);
+        }
+      }
+      updateProbeTimestamp();
+
+      // Copy Instance ID Button
+      const copyBtn = document.getElementById("copyBtn");
+      const instanceIdElem = document.getElementById("instanceId");
+      const toast = document.getElementById("toast");
+
+      function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add("show");
+        setTimeout(() => {
+          toast.classList.remove("show");
+        }, 2500);
+      }
+
+      if (copyBtn && instanceIdElem) {
+        copyBtn.addEventListener("click", () => {
+          const textToCopy = instanceIdElem.textContent.trim();
+          navigator.clipboard
+            .writeText(textToCopy)
+            .then(() => {
+              showToast("Instance ID copied: " + textToCopy);
+            })
+            .catch(() => {
+              showToast("Copied: " + textToCopy);
+            });
+        });
+      }
+
+      // Refresh Probe Button (triggers visual spin and reloads page to probe load balancer)
+      const refreshBtn = document.getElementById("refreshBtn");
+      const refreshIcon = document.getElementById("refreshIcon");
+      if (refreshBtn && refreshIcon) {
+        refreshBtn.addEventListener("click", () => {
+          refreshIcon.style.transition =
+            "transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)";
+          refreshIcon.style.transform = "rotate(360deg)";
+          setTimeout(() => {
+            window.location.reload();
+          }, 400);
+        });
+      }
+
+      // CPU gauge subtle pulse
+      const cpuBar = document.getElementById("cpuSimBar");
+      if (cpuBar) {
+        let width = 24;
+        setInterval(() => {
+          width = 20 + Math.floor(Math.random() * 12);
+          cpuBar.style.width = width + "%";
+        }, 3000);
+      }
+    </script>
+  </body>
+</html>
