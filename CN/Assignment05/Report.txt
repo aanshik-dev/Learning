@@ -1,0 +1,25 @@
+﻿Part C: Retransmissions
+
+In S1, frame 2 is lost. In GBN, frame 3 is also discarded because it arrives out of order, so both frames 2 and 3 are retransmitted. Thus, GBN resends [2, 3], while SR resends only [2] because it buffers frame 3. In S2, frame 0 is lost while frames 1–7 arrive successfully. GBN discards all these out-of-order frames and therefore retransmits [0, 1, 2, 3, 4, 5, 6, 7]. SR buffers frames 1–7 and retransmits only [0]. Hence, SR performs fewer unnecessary retransmissions than GBN.
+
+
+Part D: Retransmission Overhead
+
+Retransmission overhead is calculated as:
+Overhead = Total number of transmissions / Number of original frames
+For S1, N = 6 and W = 4.
+GBN performs 8 total transmissions because frame 2 is lost and both frames 2 and 3 are retransmitted.
+GBN overhead = 8/6 = 1.333
+SR performs 7 total transmissions because only frame 2 needs to be retransmitted.
+SR overhead = 7/6 = 1.167
+Therefore,
+Overhead gap = 1.333 - 1.167 = 0.166 ≈ 0.167
+For S2, N = 8 and W = 8.
+GBN performs 16 transmissions because frame 0 is lost and all frames 0–7 are retransmitted.
+GBN overhead = 16/8 = 2.000
+SR performs 9 transmissions because only frame 0 is retransmitted.
+SR overhead = 9/8 = 1.125
+Therefore,
+Overhead gap = 2.000 - 1.125 = 0.875
+
+The gap increases with window size because GBN retransmits all subsequent frames after a lost frame, whereas SR retransmits only the missing frame. As the loss rate approaches zero, retransmissions become negligible. Hence, total transmissions approach N for both protocols, making both overheads approach 1 and the difference approach zero.
