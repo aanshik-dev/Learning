@@ -1,8 +1,6 @@
 def xor_div(stream, gen):
   """
-  stream = message bits + appended zeros
-  gen = generator polynomial bits
-  returns the remainder after mod-2 division
+  1 0 0 1 1 0 1 0 0 0
   """
   rem = stream.copy()
   glen = len(gen)

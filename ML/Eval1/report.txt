@@ -1,0 +1,108 @@
+OVERVIEW
+In this assignment, We have implemented OLS  and Batch-Mode Gradient Descent algorithms to predict Salary from Years of Experience using the Salary_Data.csv dataset 
+
+
+DATASET ANALYSIS
+- Dataset: 6699 samples,
+- feature: Years of Experience, target: Salary.
+- Mean salary: 115,327 , Std: 52,786
+- Mean experience: 8.09 years , Std: 6.06
+- The data shows a roughly linear positive trend between experience and salary.
+
+
+DATASET SPLITTING ANALYSIS (1:9 to 9:1)
+We generated 9 train-test splits (10% to 90% training data).
+OLS: R2 and Mean RSS
+  Split        R2      Mean-RSS
+0   1:9  0.647415  9.744303e+08
+1   2:8  0.651231  9.667376e+08
+2   3:7  0.657617  9.494040e+08
+3   4:6  0.660201  9.487831e+08
+4   5:5  0.655542  9.627153e+08
+5   6:4  0.654105  9.573058e+08
+6   7:3  0.655401  9.412013e+08
+7   8:2  0.654047  9.349121e+08
+8   9:1  0.620549  1.017062e+09
+
+Observations:
+- At 1:9 split: Low R2 because only 670 samples are used to train.The learned line does not generalise well to 6030 test samples.
+- From 3:7 to 8:2 splits: R2 is consistently between 0.654 and 0.660. The model is stable across a wide range of training sizes, suggesting the linear relationship is strong and the dataset is large enough.
+- At 9:1 split: R2 drops to 0.620. With only 670 test samples, small deviations cause a disproportionate drop in R2.
+- Best Split: 4:6 gave the highest R2 and lowest Mean-RSS on the test set.
+
+--- Ordinary Linear Regression ---
+  Split           w_0          w_1
+0   1:9  55521.596120  7323.168505
+1   2:8  57827.955485  7062.753066
+2   3:7  59091.954075  6964.463347
+3   4:6  59426.815887  6908.963347
+4   5:5  58283.189635  7025.171422
+5   6:4  58387.457010  7048.460198
+6   7:3  58429.341247  7052.708347
+7   8:2  58345.887396  7059.825009
+8   9:1  57994.652863  7094.711201
+
+Observation: w1 stays close to 7000 across all splits, confirming a stable linear relationship. w0 also converges around 58,000-59,000 for larger training sets.
+
+
+GRADIENT DESCENT: HYPERPARAMETER TUNING
+We used the best OLS split (4:6) to tune the learning rate with zero initialisation over 10,000 epochs.
+
+  Learning Rate   Final w_0       Final w_1       R2        Mean-RSS
+  0.0001          18179.45        10138.72        0.4585    1.51e+09
+  0.001           57658.67        7047.41         0.6607    9.48e+08
+  0.01            59426.82        6908.96         0.6602    9.49e+08
+
+Observations:
+- alpha = 0.0001: Too small. After 10,000 epochs the parameters have not converged (w0 = 18179, far from OLS value of 59427). R2 = 0.458 - under-converged.
+- alpha = 0.001: OPTIMAL. Converges to w0 = 57659, w1 = 7047, R2 = 0.6607. Very close to the OLS solution, confirming convergence to the global minimum.
+- alpha = 0.01: Also converges, but the slightly lower R2 compared to alpha=0.001.
+A large step size causes the update to overshoot the minimum and explode to infinity.
+Selected best learning rate: alpha = 0.001
+
+
+6. GRADIENT DESCENT PARAMETERS (best alpha = 0.001, epochs = 10,000, init = 0,0)
+--- Gradient Descent Parameters ---
+  Split           w_0          w_1
+0   1:9  54095.986271  7433.372810
+1   2:8  56239.750991  7186.869365
+2   3:7  57393.946436  7097.612460
+3   4:6  57658.671932  7047.412579
+4   5:5  56567.424460  7160.905952
+5   6:4  56709.191821  7181.248828
+6   7:3  56780.145629  7183.229514
+7   8:2  56713.254344  7189.234979
+8   9:1  56361.970961  7224.568261
+
+Observation: GD parameters are consistently close to but slightly lower than OLS values.
+This is expected, GD with 10,000 epochs at alpha=0.001 has not fully converged for smaller training sets where gradients are smaller and updates are slower.
+
+
+--- OLS vs Gradient Descent ---
+  Split    OLS_R2  OLS_Mean-RSS     GD_R2   GD_Mean-RSS
+0   1:9  0.647415  9.744303e+08  0.646028  9.782655e+08
+1   2:8  0.651231  9.667376e+08  0.650667  9.683006e+08
+2   3:7  0.657617  9.494040e+08  0.657747  9.490423e+08
+3   4:6  0.660201  9.487831e+08  0.660651  9.475258e+08
+4   5:5  0.655542  9.627153e+08  0.655157  9.637913e+08
+5   6:4  0.654105  9.573058e+08  0.653848  9.580181e+08
+6   7:3  0.655401  9.412013e+08  0.655251  9.416120e+08
+7   8:2  0.654047  9.349121e+08  0.653824  9.355146e+08
+8   9:1  0.620549  1.017062e+09  0.618905  1.021471e+09
+
+Observations:
+  - OLS and GD produce nearly identical results across all splits.
+  - The small differences (< 0.002 in R2) are due to GD not fully converging to the
+    exact closed-form solution within 10,000 epochs at alpha=0.001.
+  - OLS is always exact (closed-form), while GD is approximate but scalable to larger
+    datasets where matrix inversion (OLS) becomes expensive.
+  - For this dataset and scale, OLS is preferred due to its exactness and speed.
+
+
+8. CONCLUSION
+
+  - Both OLS and Gradient Descent successfully fit a linear hypothesis for Salary prediction.
+  - The best split was 4:6 (40:60), giving R2 ≈ 0.66 for both methods.
+  - OLS converges to the exact solution instantly; GD closely approximates it with
+    a well-tuned learning rate (alpha = 0.001) over 10,000 epochs.
+  - R2 ≈ 0.66 suggests Years of Experience alone explains about 66% of salary variance.

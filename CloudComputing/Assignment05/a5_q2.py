@@ -137,3 +137,11 @@ public_ip = instance["PublicIpAddress"]
 
 print(f"Public DNS Address: {public_dns}")
 print(f"Public IP Address:  http://{public_ip}")
+
+
+# History
+# Policy
+# Cloud Watch Alarms
+# ASG
+# Instance
+# Launch Template
