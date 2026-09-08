@@ -9,7 +9,6 @@ import base64
 region = "ap-south-1"
 ubuntu_ami = "ami-01a00762f46d584a1"
 security_group_name = "ec2-sg"
-iamRole = "aanshik-ec2-s3-role"
 launch_template_name = "a5-web-launch-template"
 asg_name = "a5-web-asg"
 
@@ -69,9 +68,6 @@ try:
             "SecurityGroupIds": [
                 grpId
             ],
-            "IamInstanceProfile": {
-                "Name": iamRole
-            },
             "UserData": userdata,
             "KeyName": "iam-key-pair"
         }
@@ -223,5 +219,5 @@ for instance in asg["Instances"]:
     public_dns = instance_details.get("PublicDnsName")
     print("  Instance ID:", instance_id, " | Public IP:", public_ip, " | Public DNS:", public_dns)
 
-    # ssh -i "D:\Coding\Learning\CloudComputing\aws\iam-key-pair.pem" ubuntu@0.0.0.0
+    # ssh -i "D:\Coding\Learning\CloudComputing\aws\iam-key-pair.pem" ubuntu@35.154.0.166
     # stress --cpu 1 --timeout 180

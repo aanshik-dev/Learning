@@ -2,56 +2,16 @@
 # Roll No: 2401037
 
 import boto3
-import os
 
 # constants
 region = "ap-south-1"
 ubuntu_ami = "ami-01a00762f46d584a1"
-bucket_name = "aanshik-a5-web"
 
 # website and script path
-website_folder = "D:/Coding/Learning/CloudComputing/Assignment05/website"
 startup_file ="D:/Coding/Learning/CloudComputing/Assignment05/a5_q1.sh"
 
 # clients
 ec2 = boto3.client("ec2", region_name=region)
-s3 = boto3.client("s3",region_name=region)
-# IAM Role to access the S3 form the EC2
-iamRole = "aanshik-ec2-s3-role"
-
-# Creating S3 Bucket
-print("\nCreating S3 bucket...")
-try:
-    s3.create_bucket(
-        Bucket=bucket_name,
-        CreateBucketConfiguration={
-            "LocationConstraint": region
-        }
-    )
-    print("S3 bucket created:", bucket_name)
-except s3.exceptions.BucketAlreadyOwnedByYou:
-    print("S3 bucket already exists:", bucket_name)
-
-# Uploading Files to EC2
-print("\nUploading website to S3...")
-for root, dirs, files in os.walk(website_folder):
-    for file in files:
-        local_path = os.path.join(root, file)
-
-        relative_path = os.path.relpath(
-            local_path,
-            website_folder
-        ).replace("\\", "/")
-
-        s3_key = relative_path
-
-        s3.upload_file(
-            local_path,
-            bucket_name,
-            s3_key
-        )
-        print("Uploaded:", s3_key)
-print("Website uploaded successfully!\n")
 
 # Reading Script File
 with open(startup_file, "r") as f:
@@ -110,9 +70,6 @@ instance = ec2.run_instances(
   MinCount=1,
   MaxCount=1,
   SecurityGroupIds=[grpId],
-  IamInstanceProfile={
-        "Name": iamRole
-  },
   UserData=startup_script,
   KeyName="iam-key-pair"
 )
