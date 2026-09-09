@@ -1,0 +1,57 @@
+Simulation settings
+-------------------
+H = 10000 frame-times
+Fixed random seed = 42
+G = 0.1 to 3.0 in steps of 0.1
+CSMA propagation delay ratios tested: a = 0.01, 0.05, 0.10
+
+Measured peaks
+--------------
+Pure Aloha:       S = 0.186 at G = 0.4
+Slotted Aloha:    S = 0.373 at G = 0.9
+CSMA a = 0.01:    S = 0.542 at G = 1.10
+CSMA a = 0.05:    S = 0.520 at G = 1.00
+CSMA a = 0.10:    S = 0.499 at G = 1.10
+
+Analytical results
+------------------
+Pure Aloha: S = G exp(-2G), peak = 1/(2e) = 0.1839 at G = 0.5
+Slotted Aloha: S = G exp(-G), peak = 1/e = 0.3679 at G = 1.0
+
+Part D - Written analysis
+------------------------
+1. Why does slotting double the Pure Aloha peak?
+Pure Aloha has a vulnerable window of two frame-times. Slotted Aloha
+allows transmissions only at slot boundaries, reducing the vulnerable
+window to one frame-time. The analytical peak therefore changes from
+1/(2e) to 1/e, which is exactly twice as high.
+
+2. Why does sensing beat both Aloha methods?
+Aloha stations transmit without first checking the channel. 1-persistent
+CSMA senses the channel and defers arrivals while it is busy, greatly
+reducing unnecessary collisions. Collisions still occur because sensing
+is not instantaneous: stations starting within propagation delay a can
+both believe the channel is idle.
+
+3. Why do the Aloha curves collapse at high load while CSMA does not?
+As G increases, Aloha has a rapidly increasing probability that another
+attempt falls inside its vulnerable window, so collisions dominate and
+useful throughput falls. CSMA defers many attempts instead of allowing
+them to overlap, so its throughput remains much higher.
+
+4. What quantity controls how close CSMA comes to full utilisation?
+The propagation delay ratio a controls the collision interval. Increasing
+a makes the channel take longer to reflect a new transmission to other
+stations, increasing collision opportunities and lowering the peak:
+a=0.01 -> S=0.5313
+a=0.05 -> S=0.5160
+a=0.10 -> S=0.4973
+
+5. Vulnerable windows
+Pure Aloha:       2 frame-times
+Slotted Aloha:    1 frame-time
+1-persistent CSMA: approximately one propagation-delay interval a
+
+The shorter vulnerable window of slotted Aloha explains its higher peak
+than Pure Aloha. CSMA has a much smaller collision interval when a is
+small, so it achieves substantially higher throughput.
