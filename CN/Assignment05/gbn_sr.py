@@ -24,6 +24,7 @@ def run_gbn(payloads, W, drops, detailed = False):
         if delivered and ack_to_send is None and expected > 0:
             ack_to_send = expected - 1
 
+        # Cumulative ACK
         ack_delivered = (ack_to_send is not None) and ((round_num, "ack", ack_to_send) not in drops)
         if ack_delivered:
             base = ack_to_send + 1
@@ -81,7 +82,7 @@ def run_sr(payloads: list, W: int, drops: set, detailed: bool = False):
 
 scenarios = [
     ("S0 clean channel", 6, 4, set()),
-    ("S1 one data frame lost", 6, 4, {(1, "data", 2)}),
+    ("S1 one data frame lost", 6, 4, {(1, "data", 2),(2, "data", 1)}),
     ("S2 first frame of full window", 8, 8, {(1, "data", 0)}),
     ("S3 one ack lost", 4, 4, {(1, "ack", 3)}),
 ]
