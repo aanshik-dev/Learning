@@ -1,0 +1,15 @@
+I want to prepare for my mid semester exam of cloud computing, help me with that.
+
+Syllabus: Introduction to Cloud computing, Cloud Concepts and Technologies, Cloud Services & Platforms, Cloud Application Design, Python for Cloud, Cloud Application development in Python.
+
+Textbook: Cloud Computing: A Hands-On Approach by Arshdeep Bahga, Vijay Madisetti, 2013, Univercities perss
+Reference: Cloud Computing Bible by Barrie Sosinsky, 2011, Willey India Pvt Ltd
+
+PYQs are present in the Learning/CloudComputing/PYQs/ folder.
+Lecture Slides are present in the Learning/CloudComputing/Slides 26/ folder.
+Note: Slides are not sufficiant, they are just abstraction, explain the topics properly in easy language, you can also use hinglish language. Explain with suitable example.
+You can refer to the textbook for more information.
+
+You have to do the following task -
+1. Prepare detailed and well structured note in the CC-Notes.md file, with simple explanation, keep the format of md same as 0Cpp-Notes.md file, use the only emoji set which is used in it, no other emoji's, do not use too much special chars
+2. Prepare a answers.md file where all the pyq questions related to Syllabus are answered. also add 25 important questions at last along with answer, that can come in exams.
