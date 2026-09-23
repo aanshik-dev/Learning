@@ -1,27 +1,21 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Fixed random seed for reproducibility
 np.random.seed(42)
-
-# Parameters
-H = 10000  # Number of frame-times
-G_values = np.linspace(0.1, 3.0, 30)  # Sweep G from 0.1 to 3.0
+H = 10000  #frame-times
+G_values = np.linspace(0.1, 3.0, 30)
 
 # Part A: Pure Aloha
 def simulate_pure_aloha(G, H):
-    # Total arrivals - Poisson(G * H)
     num_arrivals = np.random.poisson(G * H)
     if num_arrivals == 0:
         return 0.0
     
-    # Place arrivals uniformly in time [0, H]
     arrival_times = np.sort(np.random.uniform(0, H, num_arrivals))
     
     successful = 0
     for i in range(num_arrivals):
         t = arrival_times[i]
-        # Vulnerable window: (t - 1, t + 1)
         left_conflict = (i > 0) and (t - arrival_times[i - 1] < 1.0)
         right_conflict = (i < num_arrivals - 1) and (arrival_times[i + 1] - t < 1.0)
         
@@ -32,9 +26,7 @@ def simulate_pure_aloha(G, H):
 
 # Part B: Slotted Aloha
 def simulate_slotted_aloha(G, H):
-    # Poisson count of transmissions per slot (H slots)
     slot_counts = np.random.poisson(G, H)
-    # Success if exactly 1 transmission in a slot
     successful = np.sum(slot_counts == 1)
     return successful / H
 
@@ -51,35 +43,29 @@ def simulate_csma(G, H, a=0.01):
     i = 0
     
     while i < num_arrivals:
-        # If channel is idle when arrival occurs, transmission starts at arrival time
         if arrival_times[i] >= current_time:
             trans_start = arrival_times[i]
         else:
-            # Channel is busy; station defers and attempts transmission at current_time
             trans_start = current_time
         
-        # Collect all arrivals that will transmit in this frame cycle:
-        # 1. Stations that deferred during the previous frame and release at trans_start
-        # 2. Stations arriving within the propagation delay window [trans_start, trans_start + a)
         batch_count = 0
         while i < num_arrivals and arrival_times[i] < trans_start + a:
             batch_count += 1
             i += 1
             
-        # Transmission succeeds only if exactly ONE station transmitted
         if batch_count == 1:
             successful += 1
-            
-        # Channel remains busy for 1.0 frame-time from the start of transmission
+  
         current_time = trans_start + 1.0
         
     return successful / H
-# Measure Throughput (S) across G
+
+# Simulated throughput
 S_pure = [simulate_pure_aloha(g, H) for g in G_values]
 S_slotted = [simulate_slotted_aloha(g, H) for g in G_values]
 S_csma_001 = [simulate_csma(g, H, a=0.01) for g in G_values]
 
-# Analytical Curves
+# Analytical throughput
 S_pure_analytical = G_values * np.exp(-2 * G_values)
 S_slotted_analytical = G_values * np.exp(-G_values)
 
@@ -91,10 +77,10 @@ print(f"CSMA (a=0.01) Measured Peak: {max(S_csma_001):.3f} at G = {G_values[np.a
 # Plotting Part A, B, C Comparison
 plt.figure(figsize=(10, 6))
 plt.plot(G_values, S_pure, 'bo', label='Pure Aloha (Simulated)')
-plt.plot(G_values, S_pure_analytical, 'b--', label=r'Pure Aloha Analytical ($S=Ge^{-2G}$)')
+plt.plot(G_values, S_pure_analytical, 'b--', label=r'Pure Aloha Analytical (S=Ge^-2G)')
 
 plt.plot(G_values, S_slotted, 'ro', label='Slotted Aloha (Simulated)')
-plt.plot(G_values, S_slotted_analytical, 'r--', label=r'Slotted Aloha Analytical ($S=Ge^{-G}$)')
+plt.plot(G_values, S_slotted_analytical, 'r--', label=r'Slotted Aloha Analytical (S=Ge^-G)')
 
 plt.plot(G_values, S_csma_001, 'g-o', label='1-persistent CSMA (a=0.01)')
 
