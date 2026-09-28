@@ -11,8 +11,6 @@ mkdir -p /home/ubuntu/app
 
 # Write Flask application code
 cat << 'EOF' > /home/ubuntu/app/app.py
-# Name: Ansik Singh Tomar
-# Roll No: 2401037
 
 from flask import Flask, render_template_string, request, redirect, url_for
 import pymysql
@@ -43,8 +41,8 @@ def init_db():
                 CREATE TABLE IF NOT EXISTS feedbacks (
                     id INT AUTO_INCREMENT PRIMARY KEY,
                     name VARCHAR(100) NOT NULL,
-                    email VARCHAR(100) NOT NULL,
-                    message TEXT NOT NULL,
+                    email VARCHAR(200) NOT NULL,
+                    message VARCHAR(500) NOT NULL,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 );
             """)
