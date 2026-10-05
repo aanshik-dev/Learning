@@ -1,5 +1,5 @@
-# Name: Ansik Singh Tomar
-# Roll No: 2401037
+# Name: satish tailor
+# Roll No: 2401176
 
 import time
 import boto3
@@ -8,15 +8,15 @@ import boto3
 region = "ap-south-1"
 app_name = "a7-app"
 env_name = "a7-app-env"
-version_label = "v1"
+version_label = "v2"
 
-role_name = "aanshik-beanstalk-role"
-instance_profile_name = "aanshik-beanstalk-profile"
+role_name = "satish-eb-beanstalk-role"
+instance_profile_name = "satish-eb-beanstalk-profile"
 
 # S3 Bucket Configuration
-bucket_name = "a7-beanstalk-bucket"
+bucket_name = "satish-tailor-eb"
 zip_filename = "application.zip"
-zip_file_path = "./assignment07/application.zip"
+zip_file_path = "./application.zip"
 
 # 1. Clients
 iam = boto3.client("iam", region_name=region)
@@ -69,9 +69,11 @@ try:
         RoleName=role_name
     )
     print(f"Added role {role_name} to instance profile {instance_profile_name}.")
-except iam.exceptions.ClientError as e:
+except iam.exceptions.LimitExceededException:
+    print(f"Role {role_name} is already attached to instance profile {instance_profile_name}.")
+except Exception as e:
     if "already exists" in str(e):
-        print("IAM role is already attached to the instance profile.")
+        print(f"Role {role_name} is already attached to instance profile {instance_profile_name}.")
     else:
         raise e
 
