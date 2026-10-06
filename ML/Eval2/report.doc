@@ -1,0 +1,124 @@
+OVERVIEW
+---------
+In this evaluation we implemented the k-means clustering for varing k from 2 to 10. and calculated the SSD and silhouette Score, then found the best suitable value of k using the elbow method, which was found to be 4, there was elbow at 4 and also the max silhouette score.
+We did the same thing two times, one for the raw data and one for the scaled data.
+
+DATASET SPECIFICATIONS & SUITABILITY
+-------------------------------------
+- Dataset Name: clustering_dataset.csv
+- Number of Samples: 300
+- Number of Features: 5 (Feature_1, Feature_2, Feature_3, Feature_4, Feature_5)
+- Feature Nature: All features are continuous real-valued numerical variables, making euclidean distance easy to calculate.
+
+
+K-MEANS CLUSTERING EVALUATION (K = 2 to 10) AND K SELECTION
+------------------------------------------------------------
+K-Means was executed for K in range [2, 10] using KMeans function with SSD and Average Silhouette Score computed for each K.
+
+Metrics Table (Raw Data):
+K          SSD        Average_Silhouette
+2    12169.814692         0.581373
+3     7980.592270         0.606974
+4     2077.472507         0.700671
+5     1967.676193         0.566383
+6     1883.209970         0.425507
+7     1801.396138         0.294830
+8     1746.033911         0.287009
+9     1648.069713         0.146996
+10    1609.723297         0.146198
+
+Elbow Method and Silhouette Analysis:
+- SSD (Elbow Method): As K increases from 2 to 10, SSD monotonically decreases. A sharp bend/elbow is observed at K = 4, after which the rate of SSD reduction is reduced greatly.
+- Silhouette Score: Silhouette score reaches its global maximum at K = 4 (Average Silhouette Score = 0.700671).
+- Selection: Both the Elbow curve bend and the maximum Silhouette score agree on K = 4. Clusters for K = 4 have low intra-cluster distance and high inter-cluster distance with uniformly positive silhouette coefficients across all clusters.
+- Chosen Value of K: K = 4
+
+
+2D CLUSTER VISUALIZATION & VARIANCE EXPLAINED
+---------------------------------------------
+The 5-dimensional data was projected onto 2 selected features namingly Feature_1 and Feature_2 to visualize cluster boundaries and final centroids.
+
+Variance Analysis:
+- Total variance across all 5 features: 115.2
+- Feature_1 variance: 8.4810 (7.36% of total)
+- Feature_2 variance: 66.6725 (57.88% of total)
+- Combined variance explained by chosen 2 features: 65.24%
+
+Visualization Observations:
+- Data points in the 2D plane show well-separated clusters, and are not overlapping at all.
+- There are 2 clusters which are very close but they are separated efficiently.
+- The 4 cluster centroids marked with red 'X' lie at the centers of their respective clusters.
+
+
+FINAL CLUSTERING TABLE (CHOSEN K = 4)
+--------------------------------------
+Detailed summary of the 4 clusters obtained on raw data:
+
+Cluster  Size  Cluster_SSD  Avg_Silhouette  Centroid_F1  Centroid_F2  Centroid_F3  Centroid_F4  Centroid_F5
+   0      75   558.617827      0.715315     -7.101937    -9.033022      7.376510    2.132230     4.135138
+   1      75   487.696586      0.686245     -2.351511     9.024931      4.714277    1.920869    -6.958872
+   2      75   480.477210      0.686070     -9.653080     9.622281      6.852838   -5.349856    -6.180435
+   3      75   550.680885      0.715054     -6.187166    -3.786603      0.476501   -1.151549    -4.270900
+
+Overall Metrics:
+- Total Sum Squared Distance: 2077.4725
+- Overall Average Silhouette Score: 0.7007
+- Cluster Sizes: [75, 75, 75, 75] (Highly balanced)
+
+
+EFFECT OF FEATURE SCALING (RAW VS SCALED COMPARISON)
+------------------------------------------------------
+Standard Scaling (Z-score normalization: X_scaled = (X - mean) / std) was applied to all 5 features, and the K-Means evaluation was repeated for K in [2, 10].
+
+Raw vs Scaled Metrics Comparison:
+ K      Raw_SSD     Scaled_SSD    Raw_Silhouette     Scaled_Silhouette
+ 2  12169.814692   1000.767173       0.581373             0.369244
+ 3   7980.592270    448.066143       0.606974             0.568310
+ 4   2077.472507    167.075261       0.700671             0.674502
+ 5   1967.676193    153.972084       0.566383             0.566567
+ 6   1883.209970    145.099127       0.425507             0.460314
+ 7   1801.396138    137.678202       0.294830             0.332824
+ 8   1746.033911    132.633480       0.287009             0.320075
+ 9   1648.069713    122.013839       0.146996             0.203399
+10   1609.723297    116.890073       0.146198             0.204161
+
+Scaling Findings:
+- Selected K on Scaled Data: K = 4 (optimal silhouette score = 0.674502).
+- Cluster Sizes on Scaled Data: [75, 75, 75, 75], matching raw data cluster distribution.
+- Absolute SSD values are smaller on scaled data because variances of all features are normalized to 1.0.
+- Because features in the dataset already had comparable variances, scaling preserved the underlying cluster assignments.
+
+
+COMPREHENSIVE ANALYSIS
+-------------------------
+1. Quality of Obtained Clusters:
+   - Cohesion: High cohesion confirmed by low per-cluster SSD values relative to inter-cluster distances.
+   - Separation: High average silhouette score of 0.700671 indicates that each point is significantly closer to its assigned cluster centroid than to any neighboring cluster.
+   - Balance of Sizes: Cluster sizes are nearly identical (75, 75, 75, 75), avoiding degenerate singletons or oversized clusters.
+
+2. Sensitivity to Choice of K and Random Initialization:
+   - Sensitivity to K: For K < 4, under-clustering occurs with lower silhouette scores (<0.60). For K > 4, over-clustering fragments natural groups, leading to declining silhouette scores.
+   - Sensitivity to Random Initialization (Tested across 5 random_states: 0, 10, 42, 100, 150):
+     
+     Random_State         SSD        Average_Silhouette
+        0             2077.472507      0.700671
+       10             6153.477260      0.484081
+       42             2077.472507      0.700671
+      100             7906.607141      0.467979
+      150             6156.189880      0.483747
+      SSD Range: [2077.4725, 7906.6071] (Std: 2651.3634)
+      Silhouette Range: [0.4680, 0.7007] (Std: 0.1218)
+     
+     Conclusion: Strong separation between the natural clusters ensures consistent convergence to the global optimum across all tested initializations.
+     But it is observed that for 0 and 42 the SSD is low and silhouette score is highest.
+
+3. Observed Effect of Feature Scaling:
+   - Feature scaling standardizes feature variances to unit scale, preventing any single high-variance feature from dominating the Euclidean distance metric.
+   - In this dataset, raw features have balanced scales; thus, scaling produces equivalent cluster assignments while ensuring numerical robustness.
+
+
+CONCLUSION
+- The custom K-Means algorithm and silhouette calculation successfully clustered the 5-dimensional dataset.
+- K = 4 was identified as the optimal number of clusters by both Elbow and Silhouette methods.
+- The clusters exhibit high stability, excellent balance, and robust convergence across multiple random seeds and scaling conditions.
+

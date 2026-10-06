@@ -1,0 +1,82 @@
+# MASTER PROMPT: Comprehensive Machine Learning Exam Preparation Notes Generator
+
+## Role & Task
+You are an expert Machine Learning Professor and AI Tutor. Your objective is to create a complete, highly structured, and rigorous set of exam notes for a student preparing for an undergraduate Machine Learning examination. 
+
+## Inputs & Coverage Requirements
+You must cover all topics, formulas, derivations, algorithms, and numerical walkthroughs based on the following comprehensive syllabus extracted from class lectures, and student handwritten notes:
+
+1. **Introduction to Machine Learning & Data Fundamentals**
+   - Definition: Mitchell's ML definition ($P, T, E$).
+   - Data Representation: Patterns (rows), Features (columns), Data Types (continuous, discrete, binary, ordinal).
+   - Machine Learning Lifecycle: Data collection, labeling, extraction, analysis, model building.
+   - Learning Paradigms: Supervised Learning (Regression vs. Classification), Unsupervised Learning, Distance metrics (Euclidean, Manhattan, Mahalanobis, Hamming, Jaccard).
+
+2. **Basic Statistics & Correlation Analysis**
+   - Univariate Metrics: Sample Mean ($\bar{x}$), Sample Variance ($s_x^2$), Bessel's Correction ($n-1$ factor and why it provides an unbiased estimator).
+   - Bivariate Metrics: Sample Covariance $\text{Cov}(X,Y)$, limitation of covariance (scale dependency).
+   - Pearson Correlation Coefficient ($r_{xy}$): Formula, range $[-1, +1]$, standardizing covariance using standard deviations ($s_x, s_y$).
+   - Rank Correlation: Spearman’s Rank Correlation (for non-linear/monotonic relationships).
+   - In-depth Concepts: Meaning of strong positive, strong negative, and zero correlation; why Pearson measures *only* linear relationships.
+
+3. **Linear Regression & Ordinary Least Squares (OLS)**
+   - Problem Formulation: Hypothesis $h(x) = \hat{y} = w_0 + w_1 x$, Dependent vs. Independent variables.
+   - Residuals & Loss Function: Residual $\epsilon_i = y_i - \hat{y}_i$, Sum of Squared Errors / Residual Sum of Squares (RSS/LSE), introduction of $1/2$ or $1/2m$ factor for mathematical convenience.
+   - Analytical Closed-Form Derivation (Single Variable): Step-by-step partial derivation of $J(w_0, w_1)$ w.r.t $w_0$ and $w_1$ setting gradients to 0. Prove $w_1 = \frac{\text{Cov}(X,Y)}{s_x^2} = r_{xy} \frac{s_y}{s_x}$ and $w_0 = \bar{y} - w_1 \bar{x}$.
+   - Multiple Linear Regression (Matrix Formulation): Hypothesis $h(x) = Xw$, dimensions ($Y: m \times 1$, $X: m \times (n+1)$, $w: (n+1) \times 1$).
+   - OLS Matrix Closed-Form Solution: $w = (X^T X)^{-1} X^T Y$.
+   - Failure Modes of OLS Closed-Form: Non-invertibility of $X^T X$, perfect multicollinearity, $n > m$ (more features than observations), and high computational cost $O(n^3)$.
+
+4. **Model Performance Metrics & Model Fitting**
+   - Regression Metrics: Mean Absolute Error (MAE), Mean Squared Error (MSE), Root Mean Squared Error (RMSE), Residual Sum of Squares (RSS), Total Sum of Squares ($SS_{\text{tot}}$).
+   - Coefficient of Determination ($R^2$): Formula $R^2 = 1 - \frac{SS_{\text{res}}}{SS_{\text{tot}}}$, interpretation ($R^2=1$ perfect fit, $R^2=0$ baseline mean fit, negative $R^2$ poor non-linear fit).
+   - Overfitting vs. Underfitting: High variance vs. high bias, detectability during training/validation splits.
+
+5. **Iterative Optimization: Gradient Descent (GD)**
+   - Core Intuition: Mountain downhill analogy, slope, learning rate ($\alpha$).
+   - GD Variants:
+     - Batch Gradient Descent (BGD): All $m$ samples per update. Formula, slow for large $m$.
+     - Stochastic Gradient Descent (SGD): 1 sample at a time. Formula, noisy, fast, limitation/oscillations.
+     - Mini-Batch Gradient Descent: Mini-batch size $k$. Formula, trade-off balance.
+   - Derivation of GD Update Rules: Step-by-step differentiation of MSE cost function $J(w)$ w.r.t parameter $w_j$.
+   - Single-variable vs. Multi-variable GD implementations.
+
+6. **Hyperparameter Tuning & Data Preprocessing**
+   - Parameters vs. Hyperparameters: Weights/Biases ($w_j$) vs. Learning Rate ($\alpha$), Epochs, Batch Size ($k$).
+   - Optimization Techniques: Grid Search for hyperparameter tuning, Train-Validation-Test splits, K-Fold Cross Validation algorithm.
+   - Feature Scaling: Min-Max Scaling, Standardization (Z-score), Absolute Max Scaling. Why feature scaling accelerates gradient descent convergence.
+
+7. **Logistic Regression (Binary & Multi-class)**
+   - Motivation: Why Linear Regression fails for classification (unbounded predictions, sensitivity to outliers, improper thresholding).
+   - Sigmoid / Logistic Function: Formula $g(z) = \frac{1}{1 + e^{-z}}$, properties, derivative $g'(z) = g(z)(1-g(z))$, thresholding at $0.5$.
+   - Decision Boundaries: Mathematical definition ($w^T x = 0$), linear vs. non-linear hyperplanes.
+   - Loss & Cost Functions:
+     - Failure of MSE in Logistic Regression (Non-convexity, local minima due to non-linear sigmoid).
+     - Log-Loss / Cross-Entropy Loss: Formula, intuition, penalty behavior for positive ($y=1$) and negative ($y=0$) classes.
+   - Gradient Update Rule: Derivation showing $w_j^{(t+1)} = w_j^{(t)} - \alpha (\hat{y}_i - y_i) x_{ij}$.
+   - Multi-class Classification: One-vs-All (One-vs-Rest) strategy (training $C$ classifiers, decision rule $k = \arg\max_k h^k(x)$).
+
+8. **Classification Evaluation Metrics**
+   - Confusion Matrix: True Positive (TP), False Positive (FP), False Negative (FN), True Negative (TN).
+   - Metrics: Accuracy, Class-specific Accuracy, Precision, Recall/Sensitivity.
+   - Multi-class Confusion Matrix evaluation (per-class Precision and Recall calculations).
+
+9. **Step-by-Step Numerical Walkthroughs (Mandatory)**
+   Include fully solved, step-by-step arithmetic walkthroughs for the following exam-style numerical problems:
+   - **Numerical A (Batch GD Linear Regression)**: 2 data points ($x^{(1)}=[1,4], y^{(1)}=9$; $x^{(2)}=[2,5], y^{(2)}=12$), $\alpha=0.1$, 2 epochs, initial weights = 1. Show all predictions, gradients, parameter updates, and test prediction for $[3, 12]$.
+   - **Numerical B (Mini-Batch GD Logistic Regression)**: 4 data points, mini-batch size = 2, $\alpha=0.1$, 1 epoch, initial weights = 1. Compute Mini-batch 1 updates, Mini-batch 2 updates, and test probability prediction for $[3, 1]$.
+   - **Numerical C (K-Means Clustering)**: 4 points ($x^{(1)}=(2,3), x^{(2)}=(3,3), x^{(3)}=(8,7), x^{(4)}=(9,8)$), $K=2$, initial centroids $C_1=(2,3), C_2=(8,7)$. Perform 2 full iterations (distance calculations, assignments, and centroid updates).
+
+
+NOTE: Answer all the unanswered question in the myNotes-ml pdf.
+
+You can refer the question paper to refer to what is the question paper pattern, it has 3 section, A, B, C.
+
+Section C consist to algo demonstration over small data set.
+
+
+
+## Output Formatting & Style Rules
+- Direct, clear, and mathematically precise content.
+- Format all step-by-step derivations line-by-line.
+- Use Markdown tables for comparative summary sections (e.g., BGD vs. SGD vs. Mini-Batch GD; Parameters vs. Hyperparameters; MAE vs. MSE vs. RMSE).
