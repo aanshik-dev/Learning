@@ -5,7 +5,7 @@ TYPE_NAMES = {
 }
 
 CONTROL_SUBTYPES = {
-    11: "RTS",
+    11: "RTS", 
     12: "CTS",
     13: "ACK"
 }

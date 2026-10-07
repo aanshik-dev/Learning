@@ -1,0 +1,22 @@
+Part D: Properties and Rerouting Experiment
+
+1. Spanning Tree Verification
+Vector 1 Tree: Valid spanning tree (N - 1 = 5 edges, reaches all 6 routers, no cycles).
+Vector 3 Tree: Valid spanning tree (N - 1 = 5 edges, reaches all 6 routers, no cycles).
+
+Changed edges between Vector 1 and Vector 3:
+- Node B: was (B, D) -> now (B, C)
+- Node D: was (D, F) -> now (D, E)
+- Node E: was (E, D) -> now (E, F)
+
+
+2. Optimality Principle & Rerouting
+When the cost of link D-F is raised from 2 to 9, router D's direct path to F becomes cost 9, whereas reaching F via E costs 1 + 6 = 7. Therefore, router D switches its next hop to E.
+
+According to the optimality principle, if router E lies on the optimal path from another router (such as C, B, or A) to destination F, then the remaining path from E to F must also be optimal. Because E now reaches F directly with cost 6 (cheaper than via D), traffic from C, B, and A reroutes through E instead of passing through D.
+
+
+3. Undirected Graphs vs. Asymmetric Link Costs
+On an undirected graph with symmetric link costs, the shortest path from any router X to destination S is the exact reverse of the shortest path from S to X. Hence, running Dijkstra once from destination S yields the exact same shortest-path tree (and predecessors) as the sink tree rooted at S.
+
+In contrast, in directed networks or topologies with asymmetric link costs (e.g., asymmetric bandwidth/uplink speeds, satellite links, or directional traffic-engineering metrics where cost(u, v) != cost(v, u)), the least-cost path from X to S is not necessarily the reverse of the path from S to X. In such cases, the true sink tree to S must be computed using incoming/reverse edge costs, and it will differ from Dijkstra's tree rooted at S on forward edges.
