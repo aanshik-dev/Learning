@@ -1,0 +1,53 @@
+Part A: IPv4 Header Fields (Packet 1 - Clean Header)
+
+Bytes: 45 00 00 28 1C 46 00 00 40 11 DB 10 C0 A8 01 0A C0 A8 01 14
+
+  Version:            4
+  IHL:                5 (20 bytes)
+  DSCP/ECN:           0x00
+  Total Length:       40 bytes
+  Identification:     0x1C46
+  Flags:              All clear (no DF, no MF)
+  Fragment Offset:    0
+  TTL:                64
+  Protocol:           17 (UDP)
+  Header Checksum:    0xDB10
+  Source Address:      192.168.1.10
+  Destination Address: 192.168.1.20
+
+Wireshark confirms all fields match the raw header bytes.
+
+
+Part B: Checksum Verification
+
+Clean header:   Stored = 0xDB10, Computed = 0xDB10, Valid = True
+Corrupted header: Stored = 0xDB10, Computed = 0xDC10, Valid = False
+
+In Wireshark (with IPv4 checksum validation enabled), packet 1 shows no error.
+Packet 2 is flagged with "Header checksum: 0xdb10 [incorrect, should be 0xdc10]".
+
+
+Part C: Fragment Reassembly
+
+All three fragments share Identification 0x4A3F.
+
+  Fragment 1: offset=0, MF=1, payload=1480 -> bytes 0 to 1479
+  Fragment 2: offset=185, MF=1, payload=1480 -> bytes 1480 to 2959
+  Fragment 3: offset=370, MF=0, payload=40 -> bytes 2960 to 2999
+
+Total reassembled datagram length: 3000 bytes. Datagram is complete.
+
+Wireshark shows "[Reassembled in #5]" on fragments 3 and 4, and displays the
+full reassembled datagram (3000 bytes payload) on packet 5 (the last fragment).
+
+
+Part D: Analysis
+
+1. TTL and Checksum Recomputation
+   The TTL field is decremented by 1 at every router. Since the header checksum covers the entire header changing any field including TTL, invalidates the existing checksum. Therefore, every router must recompute the header checksum after decrementing TTL. In Part B, the corrupted packet has TTL changed from 0x40 to 0x3F but the checksum was not updated, so the checksum no longer matches.
+
+2. Why Fragment Payloads Must Be Multiples of 8 Bytes
+   The fragment offset field is measured in units of 8 bytes. This means each fragment's payload must start at an 8-byte boundary. For fragments to fit together without gaps or overlaps, every fragment except the last must have a payload length that is a multiple of 8 bytes. The last fragment can have any length because no subsequent fragment needs to align after it.
+
+3. Why the IPv4 Checksum Covers Only the Header
+   The IPv4 header checksum protects only the header, not the payload. This is because the header changes at every hop, TTL decremented, checksum recomputed, so recomputing a checksum over the entire packet would be expensive. The payload is protected by higher-layer checksums: UDP has its own optional checksum, and TCP has a mandatory checksum.
