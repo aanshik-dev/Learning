@@ -1,0 +1,19 @@
+I have my ml practical exam which is a written exam where i have to write the python code in pen paper mode. 
+
+The syllabus include, All the assignments till now. the format is like till now we have covered many algorithms which are listed below, so the main function block, the code code can be asked.
+- OLS
+- Gradient Descent, with all three variants
+- logistic regression
+- k fold validation
+- k-means clustering
+- DBscan
+- normalisation, Scaling
+- performance calculations
+- data reading
+- confusion matrix
+- and other important code from the past assignments.
+All these with & without using package.
+
+You have to create an md file covering all these in simple python with comments and short explanation of the code below.
+
+Graphs and visualization can be asked, but with less chances, so keep it at the bottom.
