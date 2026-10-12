@@ -43,7 +43,6 @@ def reassemble(fragments):
     # total length = end of last byte + 1
     total_length = max(end for _, end in ranges) + 1
 
-    # complete if ranges cover 0..total_length-1 with no gaps and last fragment has MF=0
     sorted_frags = sorted(zip(fragments, ranges), key=lambda x: x[1][0])
     expected = 0
     complete = True
