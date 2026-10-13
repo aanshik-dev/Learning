@@ -17,92 +17,83 @@ print(df.describe())
 
 X = df.values
 
-# Simple K-Means implementation without classes
-def runKMeans(data, k, maxIter=300, tol=1e-4, seed=42):
+def euclidean_distance(p1, p2):
+    return np.sqrt(np.sum((p1 - p2) ** 2))
+
+def runKMeans(X, k, max_iter=300, tol=1e-4, seed=42):
     np.random.seed(seed)
-    numSamples, numFeats = data.shape
+    random_idx = np.random.choice(len(X), k, replace=False)
+    centroids = X[random_idx].copy()
 
-    # Initial random centroids
-    randIdxs = np.random.choice(numSamples, k, replace=False)
-    centers = data[randIdxs].copy()
-    labels = np.zeros(numSamples, dtype=int)
+    for _ in range(max_iter):
+        clusters = []
+        for point in X:
+            distances = [euclidean_distance(point, c) for c in centroids]
+            clusters.append(np.argmin(distances))
+        clusters = np.array(clusters)
 
-    for iterNum in range(maxIter):
-        # Calculate distances to centroids
-        distMatrix = np.linalg.norm(
-            data[:, np.newaxis, :] - centers[np.newaxis, :, :], axis=2
-        )
-        labels = np.argmin(distMatrix, axis=1)
+        new_centroids = []
 
-        # Update centroids
-        newCenters = np.zeros((k, numFeats))
-        for clusterIdx in range(k):
-            pts = data[labels == clusterIdx]
-            if len(pts) > 0:
-                newCenters[clusterIdx] = np.mean(pts, axis=0)
+        for i in range(k):
+            points = X[clusters == i]
+            if len(points) == 0:
+                new_centroids.append(X[np.random.choice(len(X))])
             else:
-                newCenters[clusterIdx] = data[np.random.choice(numSamples)]
+                new_centroids.append(np.mean(points, axis=0))
 
-        # Check convergence
-        shift = np.linalg.norm(newCenters - centers)
-        centers = newCenters
+        new_centroids = np.array(new_centroids)
+        shift = np.linalg.norm(new_centroids - centroids)
+        centroids = new_centroids
+
         if shift < tol:
             break
 
-    # Calculate SSD / Inertia
+    clusters = np.array([
+        np.argmin([euclidean_distance(point, c) for c in centroids])
+        for point in X
+    ])
+
     ssd = 0.0
-    for clusterIdx in range(k):
-        pts = data[labels == clusterIdx]
-        if len(pts) > 0:
-            ssd += np.sum((pts - centers[clusterIdx]) ** 2)
 
-    return centers, labels, ssd
+    for i in range(k):
+        points = X[clusters == i]
+        if len(points) > 0:
+            ssd += np.sum((points - centroids[i]) ** 2)
+
+    return centroids, clusters, ssd
 
 
-# Compute silhouette scores per sample
 def getSilSamples(data, labels):
     numSamples = data.shape[0]
     uniqueLabels = np.unique(labels)
 
     if len(uniqueLabels) <= 1 or len(uniqueLabels) >= numSamples:
         return np.zeros(numSamples)
-
-    # Pairwise distances
-    diff = data[:, np.newaxis, :] - data[np.newaxis, :, :]
-    distMatrix = np.sqrt(np.sum(diff**2, axis=2))
-    silScores = np.zeros(numSamples)
-
+    silScores = []
     for i in range(numSamples):
         ownCluster = labels[i]
-        ownMask = labels == ownCluster
+        same = data[labels == ownCluster]
+        aDist = np.mean([
+            euclidean_distance(data[i], p)
+            for p in same if not np.array_equal(p, data[i])
+        ])
 
-        # Intra-cluster mean distance a
-        aDist = (
-            np.sum(distMatrix[i, ownMask]) / (np.sum(ownMask) - 1)
-            if np.sum(ownMask) > 1
-            else 0.0
-        )
-
-        # Inter-cluster min mean distance b
-        bDist = np.inf
+        bDist = float('inf')
         for otherCluster in uniqueLabels:
             if otherCluster == ownCluster:
                 continue
-            otherMask = labels == otherCluster
-            if np.sum(otherMask) > 0:
-                avgDist = np.mean(distMatrix[i, otherMask])
-                if avgDist < bDist:
-                    bDist = avgDist
-
+            other = data[labels == otherCluster]
+            avgDist = np.mean([
+                euclidean_distance(data[i], p) for p in other
+            ])
+            bDist = min(bDist, avgDist)
         maxDist = max(aDist, bDist)
-        silScores[i] = (bDist - aDist) / maxDist if maxDist > 0 else 0.0
-
-    return silScores
-
+        s_i = (bDist - aDist) / maxDist if maxDist > 0 else 0.0
+        silScores.append(s_i)
+    return np.array(silScores)
 
 def getAvgSil(data, labels):
     return float(np.mean(getSilSamples(data, labels)))
-
 
 # Evaluate K-Means range
 def evalKRange(data, prefix="raw", seed=42):

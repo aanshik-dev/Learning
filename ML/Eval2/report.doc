@@ -89,7 +89,7 @@ Scaling Findings:
 - Because features in the dataset already had comparable variances, scaling preserved the underlying cluster assignments.
 
 
-COMPREHENSIVE ANALYSIS
+ANALYSIS
 -------------------------
 1. Quality of Obtained Clusters:
    - Cohesion: High cohesion confirmed by low per-cluster SSD values relative to inter-cluster distances.

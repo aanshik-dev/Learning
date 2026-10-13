@@ -1,0 +1,16 @@
+
+============================================================
+RESULT ANALYSIS FOR QUESTION 1 (DBSCAN CLUSTERING)
+============================================================
+1. Grid Search (1b):
+   - Best Parameters: epsilon = 2.0, minpts = 5
+   - Clusters Found: 3, Noise Points: 182 / 200
+   - Silhouette Score: 0.6821
+   - Analysis: The predefined search range for epsilon ([2.0, 2.5, 3.0, 3.5, 4.0]) was very small relative to the feature scale of Annual Income (15-137) and Spending Score (1-100). Consequently, over 90% of the customer points were flagged as noise, capturing only small local dense regions.
+
+2. K-Distance Graph (1c):
+   - Optimal Epsilon: 9.49 (determined from the elbow point with minpts = 5)
+   - Clusters Found: 4, Noise Points: 17 / 200
+   - Silhouette Score: 0.4873
+   - Analysis: The k-distance graph identifies the true scale of density in the customer space. With epsilon = 9.49, DBSCAN clusters the customers into meaningful groups with minimal noise (17 points), successfully segmenting distinct groups (such as high-income/high-spending, high-income/low-spending, low-income/high-spending, etc.) for marketing strategy planning.
+============================================================

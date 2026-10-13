@@ -1,0 +1,27 @@
+
+======================================================================
+RESULT ANALYSIS FOR QUESTION 2 (HIERARCHICAL CLUSTERING STRATEGIES)
+======================================================================
+Target Clusters: 5
+
+1. Single Linkage:
+   - Silhouette Score: 0.2795
+   - Cluster Size Distribution: [1, 1, 2, 193, 3]
+   - Analysis: Single linkage measures the minimum pairwise distance between clusters. Consequently, it is vulnerable to the 'chaining effect' where a chain of closely spaced points bridges distant groups. As observed, one dominant cluster absorbs 193 out of 200 customers, while the remaining clusters contain isolated singletons. It performs poorly for market segmentation.
+
+2. Complete Linkage:
+   - Silhouette Score: 0.5527
+   - Cluster Size Distribution: [79, 21, 23, 38, 39]
+   - Analysis: Complete linkage measures the maximum pairwise distance between clusters. This prevents chaining and forces clusters to remain compact and spherical. The cluster sizes are well balanced ([79, 21, 23, 38, 39]), neatly identifying standard customer segments:
+     * High Income, High Spending (Prime Target)
+     * High Income, Low Spending (Careful Spenders)
+     * Low Income, High Spending (Careless Spenders)
+     * Low Income, Low Spending (Sensible Spenders)
+     * Moderate Income, Moderate Spending (Average Customers)
+   - It achieves the best silhouette score (0.5527).
+
+3. Centroid Linkage:
+   - Silhouette Score: 0.4793
+   - Cluster Size Distribution: [3, 21, 36, 102, 38]
+   - Analysis: Centroid linkage computes distances between the geometric means of clusters. It provides a compromise between single and complete linkage, forming reasonable clusters ([3, 21, 36, 102, 38]), but can suffer from non-monotonic distance merges (inversions) in dendrograms. Complete linkage remains the most robust strategy for this dataset.
+======================================================================
