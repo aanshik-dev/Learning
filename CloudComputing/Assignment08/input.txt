@@ -1,0 +1,1 @@
+MapReduce is cool, MapReduce does parallel tasks, Hadoop is fun. Use Hadoop MapReduce.

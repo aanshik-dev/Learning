@@ -1,3 +1,6 @@
+# Name: Ansik Singh Tomar
+# Roll No: 2401037
+
 import sys
 
 current_word = None
@@ -7,15 +10,17 @@ for line in sys.stdin:
     line = line.strip()
     if not line:
         continue
-    word, count = line.split("\t", 1)
+    
+    word, count = line.split('\t')
     count = int(count)
+    
     if current_word == word:
         current_count += count
     else:
         if current_word:
-            print("%s\t%s" % (current_word, current_count))
+            print(f"{current_word}\t{current_count}")
         current_word = word
         current_count = count
 
-if current_word:
-    print("%s\t%s" % (current_word, current_count))
+if current_word == word:
+    print(f"{current_word}\t{current_count}")

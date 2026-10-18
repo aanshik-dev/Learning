@@ -1,0 +1,145 @@
+# Demo for hadoop count
+docker pull apache/hadoop:3
+docker compose up -d
+
+docker exec -it namenode bash
+mkdir input
+echo "Hello Docker" >input/file1.txt 
+echo "Hello Hadoop" >input/file2.txt
+
+hdfs dfs -mkdir -p /user/root/input
+hdfs dfs -put ./input/* /user/root/input
+
+hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.6.jar wordcount /user/root/input output
+
+echo -e "input file1.txt:" ; hdfs dfs -cat /user/root/input/file1.txt 
+echo -e "input file2.txt:" ; hdfs dfs -cat /user/root/input/file2.txt
+echo -e "wordcount output:" ; hdfs dfs -cat output/part-r-00000
+
+
+======================================================
+
+# Local using python script and cmd
+cat input.txt | python mapper.py  
+cat input.txt | python mapper.py | Sort-Object | python reducer.py | select -first 20
+
+=======================================================================================
+
+# Running scripts on the docker
+docker compose up -d
+
+"namenode", "datanode", "resourcemanager", "nodemanager" | ForEach-Object {
+    docker exec -u 0 -i $_ bash -c "cat << 'EOF' > /etc/yum.repos.d/CentOS-Base.repo
+[base]
+name=CentOS-7 - Base
+baseurl=http://archive.kernel.org/centos-vault/7.9.2009/os/x86_64/
+gpgcheck=0
+
+[updates]
+name=CentOS-7 - Updates
+baseurl=http://archive.kernel.org/centos-vault/7.9.2009/updates/x86_64/
+gpgcheck=0
+
+[extras]
+name=CentOS-7 - Extras
+baseurl=http://archive.kernel.org/centos-vault/7.9.2009/extras/x86_64/
+gpgcheck=0
+EOF
+yum clean all
+yum install -y python3"
+}
+
+docker cp ../input.txt namenode:/tmp/
+docker cp ../mapper.py namenode:/tmp/
+docker cp ../reducer.py namenode:/tmp/
+
+docker exec -it namenode bash
+cd /tmp
+cat input.txt | python3 mapper.py  
+cat input.txt | python3 mapper.py | sort -t',' -k1 | python3 reducer.py | head -n 20
+
+
+========================================================
+
+docker cp ../big.txt namenode:/tmp/
+docker cp ../mapper.py namenode:/tmp/
+docker cp ../reducer.py namenode:/tmp/
+
+docker exec -it namenode bash
+
+cd /tmp
+hdfs dfs -mkdir -p /user/root/input
+hdfs dfs -put -f /tmp/big.txt /user/root/input/
+
+hdfs dfs -rm -r /user/root/output_count
+
+cd /tmp
+hadoop jar /opt/hadoop/share/hadoop/tools/lib/hadoop-streaming-3.3.6.jar \
+  -files /tmp/mapper.py,/tmp/reducer.py \
+  -input /user/root/input/big.txt \
+  -output /user/root/output_count \
+  -mapper "python3 mapper.py" \
+  -reducer "python3 reducer.py"
+
+hdfs dfs -cat /user/root/output_count/part-00000 | head -n 20
+
+=============================================
+
+docker cp ../mapper_distinct.py namenode:/tmp/
+docker cp ../reducer_distinct.py namenode:/tmp/
+
+docker exec -it namenode bash
+cd /tmp
+
+hadoop jar /opt/hadoop/share/hadoop/tools/lib/hadoop-streaming-3.3.6.jar \
+  -files /tmp/mapper_distinct.py,/tmp/reducer_distinct.py \
+  -input /user/root/input/big.txt \
+  -output /user/root/output_distinct \
+  -mapper "python3 mapper_distinct.py" \
+  -reducer "python3 reducer_distinct.py"
+
+# Inspect output
+hdfs dfs -cat /user/root/output_distinct/part-00000 | head -n 20
+
+=====================================================
+
+docker cp ../mapper_wc.py namenode:/tmp/
+docker cp ../combiner_wc.py namenode:/tmp/
+docker cp ../reducer_wc.py namenode:/tmp/
+
+docker exec -it namenode bash
+cd /tmp
+
+hadoop jar /opt/hadoop/share/hadoop/tools/lib/hadoop-streaming-3.3.6.jar \
+  -files /tmp/mapper_wc.py,/tmp/combiner_wc.py,/tmp/reducer_wc.py \
+  -input /user/root/input/big.txt \
+  -output /user/root/output_wc_combiner \
+  -mapper "python3 mapper_wc.py" \
+  -combiner "python3 combiner_wc.py" \
+  -reducer "python3 reducer_wc.py"
+
+# Inspect output
+hdfs dfs -cat /user/root/output_wc_combiner/part-00000 | head -n 20
+
+======================================================
+
+docker cp ../iris.data namenode:/tmp/
+docker cp ../mapper_kmeans.py namenode:/tmp/
+docker cp ../reducer_kmeans.py namenode:/tmp/
+
+docker exec -it namenode bash
+cd /tmp
+
+# Upload dataset to HDFS
+hdfs dfs -put -f /tmp/iris.data /user/root/input/
+
+# Run K-Means MapReduce Streaming Job
+hadoop jar /opt/hadoop/share/hadoop/tools/lib/hadoop-streaming-3.3.6.jar \
+  -files /tmp/mapper_kmeans.py,/tmp/reducer_kmeans.py \
+  -input /user/root/input/iris.data \
+  -output /user/root/output_kmeans \
+  -mapper "python3 mapper_kmeans.py" \
+  -reducer "python3 reducer_kmeans.py"
+
+# View updated candidate centroids
+hdfs dfs -cat /user/root/output_kmeans/part-00000
