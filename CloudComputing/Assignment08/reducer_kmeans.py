@@ -7,13 +7,13 @@ current_cluster = None
 sum_sl = 0.0
 sum_sw = 0.0
 count = 0
-
 # Read input line by line from standard input
 for line in sys.stdin:
 
     line = line.strip()    # Remove leading and trailing whitespace
     if not line:
         continue    # Skip empty lines
+    # C1    2.5,6.3
     cluster, coords = line.split('\t')    # cluster ID and coordinates
     sl, sw = map(float, coords.split(','))
 
