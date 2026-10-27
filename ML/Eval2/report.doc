@@ -94,7 +94,7 @@ ANALYSIS
 1. Quality of Obtained Clusters:
    - Cohesion: High cohesion confirmed by low per-cluster SSD values relative to inter-cluster distances.
    - Separation: High average silhouette score of 0.700671 indicates that each point is significantly closer to its assigned cluster centroid than to any neighboring cluster.
-   - Balance of Sizes: Cluster sizes are nearly identical (75, 75, 75, 75), avoiding degenerate singletons or oversized clusters.
+   - Balance of Sizes: Cluster sizes are identical (75, 75, 75, 75), avoiding degenerate singletons or oversized clusters.
 
 2. Sensitivity to Choice of K and Random Initialization:
    - Sensitivity to K: For K < 4, under-clustering occurs with lower silhouette scores (<0.60). For K > 4, over-clustering fragments natural groups, leading to declining silhouette scores.

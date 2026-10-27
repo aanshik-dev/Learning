@@ -1,0 +1,173 @@
+Name: Ansik Singh Tomar
+Roll Number: 2401037
+
+OVERVIEW & OBJECTIVE
+--------------------------
+In this evaluation assignment, we implemented an ML pipeline to analyze the Kaggle Credit Card Fraud Detection dataset with 284,807 transactions. The goal is to group transactions with similar characteristics into clusters and identify unusual observations (anomalies) that may indicate fraudulent activities.
+
+Due to the massive size of the dataset (2.85 lakh rows, 29 feature dimensions), K-Means clustering was chosen over DBSCAN. K-Means was manually implemented to ensure computational efficiency (running in seconds without external clustering libraries). We evaluated five configurations [K = 2, 3, 4, 5, 6], measured fraud detection metrics (Precision, Recall, F1-Score), computed the Silhouette Score, generated 2D scatter visualizations, and analyzed the suitability of the configurations.
+
+A: DATASET EXPLORATION & DESCRIPTIVE STATISTICS
+-------------------------------------------------
+1. Dimensions:
+   - Total Transactions (Samples): 284,807
+   - Total Attributes (Features): 31
+
+2. Attribute Names:
+   - 'Time'
+   - 'V1' to 'V28'
+   - 'Amount'
+   - 'Class': (0 = Valid transaction, 1 = Fraudulent transaction).
+
+3. Missing Values:
+   - Total missing / null values across all columns: 0 (The dataset is clean and complete).
+
+4. Descriptive Statistics Summary:
+   - Time: Ranges from 0.0 to 172,792.0 seconds (approx. 48 hours), mean = 94,813.86 seconds.
+   - V1 - V28: Principal components are centered around 0 with standard deviations ranging
+     from 0.33 to 1.96.
+   - Amount: Mean = 88.35, Median = 22.00, Standard Deviation = 250.12, Minimum = 0.00,
+     Maximum = 25,691.16. The Amount distribution is heavily right-skewed.
+   
+5. Class Distribution:
+   - Legitimate Transactions (Class 0): 284,315 transactions (99.8273%)
+   - Fraudulent Transactions (Class 1): 492 transactions (0.1727%)
+   - Total Transactions: 284,807 (100.00%)
+   - Observation: The dataset has high class imbalance; fraudulent transactions
+     constitute less than 0.2% of all activity.
+
+B: FEATURE SELECTION & STANDARDIZATION
+----------------------------------------
+1. Feature Extraction:
+   - Included Features (29): V1 through V28 and Amount.
+   - Excluded Features (2):
+     * 'Time': Excluded because elapsed time reflects chronological sequence rather
+       than transaction behavior, which could introduce spurious temporal clustering.
+     * 'Class': Excluded because clustering is unsupervised; ground-truth labels are
+       reserved strictly for subsequent evaluation.
+
+2. Feature Standardization:
+   - Method: Z-score standardization (StandardScaler):
+     X_scaled = (X - mean(X)) / std(X)
+   - Why Standardization is Necessary:
+     * K-Means relies fundamentally on Euclidean distance: d(x, c) = sqrt(sum((x_j - c_j)^2)).
+     * The raw 'Amount' feature ranges up to 25,691.16 with a standard deviation of 250.12,
+       whereas the PCA components (V1-V28) have standard deviations close to 1.0.
+     * Without standardization, the squared difference in 'Amount' would dominate the
+       Euclidean distance by orders of magnitude, rendering the other 28 features virtually
+       negligible in cluster formation and anomaly detection.
+     * Z-score normalization rescales all 29 features to mean 0 and unit variance (std = 1),
+       giving each feature proportional and balanced weight during distance computation.
+
+C: CLUSTERING ALGORITHM IMPLEMENTATION: K-MEANS VS DBSCAN
+================================================================================
+1. Selecting K-Means over DBSCAN:
+   - Computational Complexity:
+     * DBSCAN requires calculating neighborhood densities or pairwise distances, which can lead to brute-force O(N^2) pairwise comparisons.
+     * For N = 284,807, computing the pairwise distance matrix requires 8.11 x 10^10 operations
+       and high ram, causing severe computational stagnation or Out Of Memory errors.
+     * K-Means has time complexity O(K * N * d * iterations). With N = 284,807, d = 29, and K = 2 to 6, each iteration takes 0.08 seconds. Total convergence takes under 40 seconds.
+   - Scalability:
+     * K-Means requires only O(N * d + K * d) complexity, executing seamlessly on large datasets.
+
+2. Anomaly / Unusual Observation Detection:
+   - For every transaction, the Euclidean distance to its assigned cluster centroid is computed
+     as an anomaly reconstruction score: dist(x_i) = ||x_i - mu_{c(i)}||.
+   - Transactions with distance exceeding the 95th percentile threshold are flagged as unusual
+     observations (anomalies / suspicious candidate transactions).
+
+D: CONFIGURATION COMPARISON & EVALUATION TABLE
+-----------------------------------------------
+We evaluated five configurations (K = 2, 3, 4, 5, 6). The resulting metrics are summarized below:
+
+Configuration Summary Table:
+---------------------------------------------------------------------------------------------------------
+ K   Clusters  Distance_Threshold  Unusual_Count  Unusual_Pct  Precision   Recall   F1_Score  Silhouette
+---------------------------------------------------------------------------------------------------------
+ 2      2            7.5486            14241        5.0002%     0.0301     0.8720    0.0582      N/A*
+ 3      3            7.4701            14241        5.0002%     0.0301     0.8720    0.0582     0.1139
+ 4      4            7.2700            14241        5.0002%     0.0302     0.8740    0.0584     0.0594
+ 5      5            7.2281            14241        5.0002%     0.0302     0.8740    0.0584     0.0718
+ 6      6            7.0967            14241        5.0002%     0.0302     0.8740    0.0584     0.0710
+---------------------------------------------------------------------------------------------------------
+Note: For K=2, after removing unusual/noise points, only 1 valid cluster remained in the sample, rendering Silhouette Score mathematically undefined.
+
+Analysis of Parameter Changes on Cluster Formation & Anomaly Detection:
+1. Distance Threshold Reduction:
+   - The anomaly distance threshold decreases monotonically from 7.5486 (K=2) down to 7.0967 (K=6).
+   - Higher K allows the model to capture localized multi-modal clusters of legitimate behavior,
+     bringing cluster centroids closer to normal sub-populations.
+2. Anomaly Detection Stability:
+   - Because the 95th percentile was applied, each configuration flagged exactly 14,241 transactions (5.00%).
+   - Recall remained consistently high across all configurations (87.20% to 87.40%), capturing 430 of
+     the 492 actual fraudulent transactions.
+   - Precision remained steady at 3.02% and F1-score at 0.0584 across all K.
+
+F: FRAUD DETECTION METRICS & NATURE OF UNUSUAL OBSERVATIONS
+-------------------------------------------------------------
+1. Metrics Summary (e.g., K = 3 to K = 6):
+   - Recall: 87.20% - 87.40%
+   - Precision: 3.01% - 3.02%
+   - F1-Score: 0.0582 - 0.0584
+
+2. Why Unusual Observations are NOT Necessarily Fraudulent Transactions:
+   - An anomaly detection algorithm detects statistical outliers
+   - A transaction can be statistically unusual for legitimate reasons, including:
+     * Unusually high transaction amounts.
+     * Transactions occurring during international travel or atypical merchant categories.
+     * Customers with rare spending patterns or seasonal holiday purchases.
+   - In financial fraud systems, an unsupervised clustering filter with high recall (~87%) acts as an
+     effective first-line triaging mechanism, flagging a manageable 5% subset of transactions for
+     rule-based checking or secondary verification, rather than definitive confirmation of fraud.
+
+G: SILHOUETTE SCORE ANALYSIS & MATHEMATICAL APPLICABILITY
+----------------------------------------------------------
+1. Reported Scores (Noise Points Excluded):
+   - K = 2: Not Applicable (Undefined)
+   - K = 3: 0.1139
+   - K = 4: 0.0594
+   - K = 5: 0.0718
+   - K = 6: 0.0710
+
+2. Why the Silhouette Score is NOT Applicable to Every Configuration:
+   - Mathematical Precondition:
+     The Silhouette Coefficient s(i) = (b(i) - a(i)) / max(a(i), b(i)) requires that at least TWO
+     distinct non-empty clusters exist (2 <= K <= N - 1) to define inter-cluster separation b(i).
+   - Single Cluster Collapse after Noise Exclusion (K = 2):
+     In the Credit Card dataset, when K=2 is fitted, one cluster captures the central dense distribution
+     (284,558 points), while the other contains a tiny pocket of extreme outliers (249 points).
+     When the top 5% unusual/noise points are excluded prior to evaluation, all points of the tiny
+     cluster are filtered out as noise. Consequently, only a single cluster remains, making the
+     inter-cluster distance b(i) undefined and raising a mathematical error.
+   - Computational Intractability on Massive Datasets:
+     Computing exact Silhouette scores across 284,807 samples requires an N x N pairwise distance
+     matrix, demanding O(N^2) time and >600 GB of memory. Thus, representative subsampling (sample_size = 10,000) is mandatory for computational feasibility.
+   - Non-Convex Clusters:
+     Silhouette assumes convex, roughly spherical, isotropic clusters. In highly skewed financial
+     data with continuous density gradients, low positive silhouette values are standard and reflect
+     overlapping continuous distributions rather than poorly formed partitions.
+
+H: SELECTION OF THE MOST SUITABLE CONFIGURATION
+------------------------------------------------
+Selected Configuration: K = 3
+Justification:
+1. Highest Cluster Separation (Silhouette Score):
+   - Among all mathematically valid configurations, K = 3 achieves the highest Silhouette Score
+     (0.1139), compared to 0.0594 (K=4), 0.0718 (K=5), and 0.0710 (K=6).
+   - This indicates that K = 3 provides the cleanest separation and cohesion among non-noise transactions.
+2. Robust Anomaly Detection:
+   - K = 3 detects 87.20% of all fraudulent transactions (Recall = 0.8720), matching the detection
+     performance of higher K values while maintaining model parsimony.
+3. Computational Simplicity & Parsimony:
+   - In accordance with Occam's razor, K = 3 avoids over-partitioning the feature space into redundant
+     sub-clusters while maintaining maximum cluster stability and interpretability.
+
+CONCLUSION
+------------
+1. The manual, vectorized procedural K-Means clustering algorithm successfully processed
+   the entire 284,807-sample Credit Card Fraud dataset in under 30 seconds.
+2. Z-score standardization was essential to prevent the high-variance 'Amount' attribute
+   from overwhelming the 28 PCA features.
+3. Distance-based anomaly detection achieved an outstanding 87.4% fraud recall at a 5% inspection rate.
+4. K = 3 was determined to be the optimal clustering configuration, achieving the highest Silhouette
+   Score (0.1139) with maximum model parsimony and high fraud sensitivity.

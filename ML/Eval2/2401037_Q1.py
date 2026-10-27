@@ -17,6 +17,7 @@ print(df.describe())
 
 X = df.values
 
+
 def euclidean_distance(p1, p2):
     return np.sqrt(np.sum((p1 - p2) ** 2))
 
