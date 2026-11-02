@@ -46,8 +46,9 @@ def prefix_to_mask(prefix_length: int) -> int:
     you should special-case (shifting left by 32 is undefined/wrong in
     this context) and simply return 0 for.
     """
-    # TODO: implement this
-    raise NotImplementedError
+    if prefix_length == 0:
+        return 0
+    return (0xFFFFFFFF << (32 - prefix_length)) & 0xFFFFFFFF
 
 
 class RoutingTable:
@@ -69,8 +70,9 @@ class RoutingTable:
         passing a network string that doesn't already have its host
         bits zeroed).
         """
-        # TODO: implement this
-        raise NotImplementedError
+        mask = prefix_to_mask(prefix_length)
+        net_int = ip_to_int(network) & mask
+        self.routes.append((net_int, prefix_length, mask, next_hop, label))
 
     def lookup(self, dest_ip: str):
         """Return the forwarding decision for `dest_ip` using Longest
@@ -91,8 +93,21 @@ class RoutingTable:
                   "matched_prefix_length": <int>}
              If nothing matched at all, return None.
         """
-        # TODO: implement this
-        raise NotImplementedError
+        dest_int = ip_to_int(dest_ip)
+        best = None
+        for net_int, prefix_length, mask, next_hop, label in self.routes:
+            if (dest_int & mask) == net_int:
+                if best is None or prefix_length > best[0]:
+                    best = (prefix_length, next_hop, label)
+
+        if best is None:
+            return None
+
+        return {
+            "next_hop": best[1],
+            "label": best[2],
+            "matched_prefix_length": best[0],
+        }
 
 
 # ---------------------------------------------------------------------
@@ -133,5 +148,3 @@ if __name__ == "__main__":
     rt_no_default = RoutingTable()
     rt_no_default.add_route("172.20.0.0", 16, "10.10.10.2", "R-A")
     assert rt_no_default.lookup("8.8.8.8") is None, "Expected no route (None) when nothing matches and there's no default"
-
-    print("\nSelf-check PASSED.")

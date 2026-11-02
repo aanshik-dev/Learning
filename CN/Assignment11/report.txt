@@ -1,0 +1,58 @@
+Question 1: Scenario 2 - Why Local Preference overrides AS-Path Tie-Break
+-------------------------------------------------------------------------
+Answer: 
+When AS6 sets local preference 200 on routes learned from AS5, only AS6 changes its choice:
+- Candidate via AS4: Local preference = 100, AS-path = (AS4, AS2, AS1), length = 3
+- Candidate via AS5: Local preference = 200, AS-path = (AS5, AS3, AS1), length = 3
+
+In the standard BGP decision process, Rule 1 (Highest Local Preference) is evaluated strictly before Rule 2 (Shortest AS-Path) and Rule 3 (Lowest Next-Hop). Because candidate via AS5 has local preference 200 > 100, it wins at Rule 1 immediately. The algorithm never reaches the AS-path length comparison or next-hop tie-break, flipping AS6's route to AS5.
+
+Question 2: Scenario 3 - AS5 installs a longer path
+---------------------------------------------------
+Answer:
+When AS5 sets local preference 50 on routes learned from AS3:
+- Candidate via AS3: Local preference = 50, AS-path = (AS3, AS1), length = 2
+- Candidate via AS4: Local preference = 100, AS-path = (AS4, AS2, AS1), length = 3
+AS5 installs the length-3 path (AS4, AS2, AS1) via next-hop AS4 instead of the shorter length-2 path (AS3, AS1). AS5 has deliberately chosen a longer path.
+
+Why this cannot happen in the Dijkstra sink-tree lab but is normal in BGP: In Dijkstra's algorithm (used in intra-domain routing like OSPF), a single global objective function strictly minimizes total metric cost (shortest distance). The optimality principle guarantees that sub-paths of optimal paths are optimal. In contrast, BGP is an inter-domain routing protocol driven by administrative policy and commercial agreements (customer-provider transit contracts, peering relationships) rather than shortest path. Local preference allows an autonomous system to intentionally prefer a longer or technically slower route (e.g., routing traffic over a free settlement peering link or an in-house transit link) over a shorter path that would incur costly transit fees.
+
+
+Question 3: How the AS-Path prevents routing loops and avoids count-to-infinity
+-------------------------------------------------------------------------------
+Answer:
+In BGP, every UPDATE message carries the complete list of autonomous systems traversed in the AS_PATH attribute. When an AS receives an advertisement, it checks whether its own AS number already appears inside the advertised AS-path. If it does, the AS rejects the candidate route immediately.
+
+In classical distance-vector protocols (like RIP), routers only exchange scalar distance metrics without path history, which causes routers to form mutual dependencies and continuously increment hop counts when links fail (count-to-infinity). Because BGP is a path-vector protocol containing explicit path histories, any potential routing loop is detected instantly at step 1 before installation, completely eliminating the count-to-infinity problem.
+
+Question 4: Why inter-domain routing uses policy-based path selection
+---------------------------------------------------------------------
+Answer:
+Inter-domain routing interconnects sovereign commercial and organizational networks with competing economic and political interests. Autonomous systems must enforce business agreements (such as preferring revenue-generating customer routes over paid transit routes, or keeping sensitive traffic out of specific competitor countries) rather than blindly following the fewest router hops.
+
+
+
+PART E: 
+Packet 1: TCP 198.51.100.4:50000 -> 198.51.100.6:179, payload: 0 bytes
+Packet 2: TCP 198.51.100.6:179 -> 198.51.100.4:50000, payload: 0 bytes
+Packet 3: TCP 198.51.100.4:50000 -> 198.51.100.6:179, payload: 0 bytes
+Packet 4: TCP 198.51.100.4:50000 -> 198.51.100.6:179, payload: 29 bytes
+  -> BGP Message: Type 1 (OPEN), Length: 29
+Packet 5: TCP 198.51.100.6:179 -> 198.51.100.4:50000, payload: 29 bytes
+  -> BGP Message: Type 1 (OPEN), Length: 29
+Packet 6: TCP 198.51.100.4:50000 -> 198.51.100.6:179, payload: 19 bytes
+  -> BGP Message: Type 4 (KEEPALIVE), Length: 19
+Packet 7: TCP 198.51.100.6:179 -> 198.51.100.4:50000, payload: 19 bytes
+  -> BGP Message: Type 4 (KEEPALIVE), Length: 19
+Packet 8: TCP 198.51.100.4:50000 -> 198.51.100.6:179, payload: 49 bytes
+  -> BGP Message: Type 2 (UPDATE), Length: 49
+     NLRI (Advertised Prefix): 203.0.113.0/24
+     Path Attribute: Type 1 (ORIGIN), Length 1
+     Path Attribute: Type 2 (AS_PATH), Length 8
+       AS_PATH Segment Type: 2 (2=AS_SEQUENCE), Path: [4, 2, 1]
+     Path Attribute: Type 3 (NEXT_HOP), Length 4
+Packet 9: TCP 198.51.100.6:179 -> 198.51.100.4:50000, payload: 0 bytes
+
+
+
+One-Sentence Reconciliation: The AS_PATH attribute sequence [4, 2, 1] in the real Wireshark UPDATE packet corresponds directly to the tuple (4, 2, 1) constructed by our simulator in Scenario 1 at AS6 when prepending next-hop AS4 to AS4's advertised path (2, 1)

@@ -1,0 +1,29 @@
+# Lab 9 FRR container topology. Three BGP speakers in a line:
+#   r1 (AS65001, origin) --- r2 (AS65002, transit) --- r3 (AS65003, receiver)
+# r1 originates 203.0.113.0/24. r3 learns it with AS_PATH [65002, 65001].
+# Validate once on the standard lab image before releasing to students.
+services:
+  r1:
+    image: quay.io/frrouting/frr:8.4.4
+    container_name: r1
+    cap_add: [NET_ADMIN, SYS_ADMIN]
+    volumes: ["./r1:/etc/frr"]
+    networks: { n12: { ipv4_address: 10.0.12.1 } }
+  r2:
+    image: quay.io/frrouting/frr:8.4.4
+    container_name: r2
+    cap_add: [NET_ADMIN, SYS_ADMIN]
+    sysctls: ["net.ipv4.ip_forward=1"]
+    volumes: ["./r2:/etc/frr"]
+    networks:
+      n12: { ipv4_address: 10.0.12.2 }
+      n23: { ipv4_address: 10.0.23.2 }
+  r3:
+    image: quay.io/frrouting/frr:8.4.4
+    container_name: r3
+    cap_add: [NET_ADMIN, SYS_ADMIN]
+    volumes: ["./r3:/etc/frr"]
+    networks: { n23: { ipv4_address: 10.0.23.3 } }
+networks:
+  n12: { ipam: { config: [{ subnet: 10.0.12.0/24, gateway: 10.0.12.254 }] } }
+  n23: { ipam: { config: [{ subnet: 10.0.23.0/24, gateway: 10.0.23.254 }] } }

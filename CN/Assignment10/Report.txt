@@ -1,0 +1,83 @@
+Numerical Exercise (Table 1): Longest Prefix Match Analysis
+============================================================
+
+Routing Table:
+  1. 0.0.0.0/0       -> 198.51.100.1 (default route)
+  2. 172.20.0.0/16   -> 10.10.10.2
+  3. 172.20.4.0/22   -> 10.10.10.3
+  4. 172.20.4.128/25 -> 10.10.10.4
+  5. 192.0.2.0/24    -> directly connected (eth1)
+
+Subnet Ranges:
+  - 0.0.0.0/0:       0.0.0.0      - 255.255.255.255 (Matches all addresses)
+  - 172.20.0.0/16:   172.20.0.0   - 172.20.255.255
+  - 172.20.4.0/22:   172.20.4.0   - 172.20.7.255 (Mask: 255.255.252.0)
+  - 172.20.4.128/25: 172.20.4.128 - 172.20.4.255 (Mask: 255.255.255.128)
+  - 192.0.2.0/24:    192.0.2.0    - 192.0.2.255 (Mask: 255.255.255.0)
+
+Destination Address Lookups:
+------------------------------------------------------------
+a) 172.20.4.200
+   Matching Entries:
+     - 0.0.0.0/0 (prefix /0)
+     - 172.20.0.0/16 (prefix /16)
+     - 172.20.4.0/22 (prefix /22)
+     - 172.20.4.128/25 (prefix /25)
+   Selected Entry (LPM): 172.20.4.128/25
+   Next Hop:             10.10.10.4
+
+b) 172.20.4.5
+   Matching Entries:
+     - 0.0.0.0/0 (prefix /0)
+     - 172.20.0.0/16 (prefix /16)
+     - 172.20.4.0/22 (prefix /22)
+   Selected Entry (LPM): 172.20.4.0/22
+   Next Hop:             10.10.10.3
+
+c) 172.20.9.9
+   Matching Entries:
+     - 0.0.0.0/0 (prefix /0)
+     - 172.20.0.0/16 (prefix /16)
+   Selected Entry (LPM): 172.20.0.0/16
+   Next Hop:             10.10.10.2
+
+d) 192.0.2.77
+   Matching Entries:
+     - 0.0.0.0/0 (prefix /0)
+     - 192.0.2.0/24 (prefix /24)
+   Selected Entry (LPM): 192.0.2.0/24
+   Next Hop:             directly connected (eth1)
+
+e) 203.0.113.50
+   Matching Entries:
+     - 0.0.0.0/0 (prefix /0)
+   Selected Entry (LPM): 0.0.0.0/0
+   Next Hop:             198.51.100.1
+
+
+Task 1: Routing Table LPM Lookup Verification
+=============================================
+Output of task1_routing_table.py:
+172.20.4.200 -> {'next_hop': '10.10.10.4', 'label': 'R-C', 'matched_prefix_length': 25}
+172.20.4.5 -> {'next_hop': '10.10.10.3', 'label': 'R-B', 'matched_prefix_length': 22}
+172.20.9.9 -> {'next_hop': '10.10.10.2', 'label': 'R-A', 'matched_prefix_length': 16}
+192.0.2.77 -> {'next_hop': 'directly connected (eth1)', 'label': 'direct', 'matched_prefix_length': 24}
+203.0.113.50 -> {'next_hop': '198.51.100.1', 'label': 'default', 'matched_prefix_length': 0}
+Self-check PASSED.
+
+
+Task 2: Multi-Hop Forwarding Simulation Verification
+===================================================
+Topology: HostA (192.168.1.0/24) -- R1 -- R2 -- R3 -- HostB (192.168.2.0/24)
+
+Forward Path (HostA -> HostB, 192.168.2.77):
+('R1', 'next_hop=10.0.12.2 (matched /0)')
+('R2', 'next_hop=10.0.23.2 (matched /24)')
+('R3', 'next_hop=directly connected (R3-eth1) (matched /24)')
+Self-check PASSED (R1 -> R2 -> R3 -> delivered).
+
+Reverse Path (HostB -> HostA, 192.168.1.50):
+('R3', 'next_hop=10.0.23.1 (matched /0)')
+('R2', 'next_hop=10.0.12.1 (matched /24)')
+('R1', 'next_hop=directly connected (R1-eth0) (matched /24)')
+Packet delivered to destination host subnet.

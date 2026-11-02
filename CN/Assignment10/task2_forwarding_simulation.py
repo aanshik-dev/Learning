@@ -136,8 +136,25 @@ def trace_path(start_router: str, dest_ip: str, max_hops: int = 10):
       3. If the loop finishes without returning (max_hops exceeded),
          append ("---", "TTL exceeded / loop") to path and return it.
     """
-    # TODO: implement this
-    raise NotImplementedError
+    current = start_router
+    path = []
+
+    for _ in range(max_hops):
+        result = routers[current].lookup(dest_ip)
+        if result is None:
+            path.append((current, "NO ROUTE -- packet dropped"))
+            return path
+
+        path.append((current, f"next_hop={result['next_hop']} (matched /{result['matched_prefix_length']})"))
+
+        if result['next_hop'].startswith("directly connected"):
+            return path
+
+        next_ip = result['next_hop']
+        current = ip_owner[next_ip]
+
+    path.append(("---", "TTL exceeded / loop"))
+    return path
 
 
 # ---------------------------------------------------------------------
