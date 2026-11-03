@@ -51,7 +51,7 @@ def run_kmeans(X, k, max_iter=40, tol=1e-4, seed=42):
         labels = np.argmin(dists_sq, axis=1)
 
         # Update centroids
-        new_centroids = np.zeros_like(centroids)
+        new_centroids = np.zeros((k, 2))
         for j in range(k):
             cluster_pts = X[labels == j]
             if len(cluster_pts) > 0:

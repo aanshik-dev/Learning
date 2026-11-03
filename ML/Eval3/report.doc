@@ -24,8 +24,7 @@ A: DATASET EXPLORATION & DESCRIPTIVE STATISTICS
 
 4. Descriptive Statistics Summary:
    - Time: Ranges from 0.0 to 172,792.0 seconds (approx. 48 hours), mean = 94,813.86 seconds.
-   - V1 - V28: Principal components are centered around 0 with standard deviations ranging
-     from 0.33 to 1.96.
+   - V1 - V28: Principal components are centered around 0 with standard deviations ranging from 0.33 to 1.96.
    - Amount: Mean = 88.35, Median = 22.00, Standard Deviation = 250.12, Minimum = 0.00,
      Maximum = 25,691.16. The Amount distribution is heavily right-skewed.
    
@@ -41,10 +40,8 @@ B: FEATURE SELECTION & STANDARDIZATION
 1. Feature Extraction:
    - Included Features (29): V1 through V28 and Amount.
    - Excluded Features (2):
-     * 'Time': Excluded because elapsed time reflects chronological sequence rather
-       than transaction behavior, which could introduce spurious temporal clustering.
-     * 'Class': Excluded because clustering is unsupervised; ground-truth labels are
-       reserved strictly for subsequent evaluation.
+     * 'Time': Excluded because elapsed time reflects chronological sequence not the transaction behavior, which could cause temporal clustering.
+     * 'Class': Excluded because clustering is unsupervised; ground-truth labels are reserved strictly for subsequent evaluation.
 
 2. Feature Standardization:
    - Method: Z-score standardization (StandardScaler):
@@ -114,7 +111,7 @@ F: FRAUD DETECTION METRICS & NATURE OF UNUSUAL OBSERVATIONS
    - An anomaly detection algorithm detects statistical outliers
    - A transaction can be statistically unusual for legitimate reasons, including:
      * Unusually high transaction amounts.
-     * Transactions occurring during international travel or atypical merchant categories.
+     * Transactions occurring during international travel or a typical merchant categories.
      * Customers with rare spending patterns or seasonal holiday purchases.
    - In financial fraud systems, an unsupervised clustering filter with high recall (~87%) acts as an
      effective first-line triaging mechanism, flagging a manageable 5% subset of transactions for
@@ -141,7 +138,7 @@ G: SILHOUETTE SCORE ANALYSIS & MATHEMATICAL APPLICABILITY
      inter-cluster distance b(i) undefined and raising a mathematical error.
    - Computational Intractability on Massive Datasets:
      Computing exact Silhouette scores across 284,807 samples requires an N x N pairwise distance
-     matrix, demanding O(N^2) time and >600 GB of memory. Thus, representative subsampling (sample_size = 10,000) is mandatory for computational feasibility.
+     matrix, demanding O(N^2) time and high memory. Thus, representative subsampling (sample_size = 10,000) is mandatory for computational feasibility.
    - Non-Convex Clusters:
      Silhouette assumes convex, roughly spherical, isotropic clusters. In highly skewed financial
      data with continuous density gradients, low positive silhouette values are standard and reflect
@@ -159,7 +156,7 @@ Justification:
    - K = 3 detects 87.20% of all fraudulent transactions (Recall = 0.8720), matching the detection
      performance of higher K values while maintaining model parsimony.
 3. Computational Simplicity & Parsimony:
-   - In accordance with Occam's razor, K = 3 avoids over-partitioning the feature space into redundant
+   - K = 3 avoids over-partitioning the feature space into redundant
      sub-clusters while maintaining maximum cluster stability and interpretability.
 
 CONCLUSION
