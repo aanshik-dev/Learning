@@ -57,7 +57,7 @@ B: FEATURE SELECTION & STANDARDIZATION
        giving each feature proportional and balanced weight during distance computation.
 
 C: CLUSTERING ALGORITHM IMPLEMENTATION: K-MEANS VS DBSCAN
-================================================================================
+==========================================================
 1. Selecting K-Means over DBSCAN:
    - Computational Complexity:
      * DBSCAN requires calculating neighborhood densities or pairwise distances, which can lead to brute-force O(N^2) pairwise comparisons.

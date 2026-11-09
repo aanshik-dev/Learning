@@ -1,12 +1,22 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import os
 
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 from sklearn.decomposition import PCA
 
+# Setup output folders
+script_dir = os.path.dirname(os.path.abspath(__file__))
+plots_dir = os.path.join(script_dir, "plots")
+output_dir = os.path.join(script_dir, "output")
+dataset_dir = os.path.join(script_dir, "dataset")
+
+os.makedirs(plots_dir, exist_ok=True)
+os.makedirs(output_dir, exist_ok=True)
+os.makedirs(dataset_dir, exist_ok=True)
 
 # 1. Read the dataset
 url = "https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data"
@@ -19,7 +29,28 @@ columns = [
     "class"
 ]
 
-df = pd.read_csv(url, names=columns)
+local_dataset = os.path.join(dataset_dir, "iris.data")
+if os.path.exists(local_dataset):
+    df = pd.read_csv(local_dataset, names=columns)
+else:
+    try:
+        df = pd.read_csv(url, names=columns)
+        df.to_csv(local_dataset, index=False, header=False)
+    except Exception:
+        fallback = os.path.join(script_dir, "..", "Assignment06", "dataset", "dataset_iris.csv")
+        if os.path.exists(fallback):
+            raw_df = pd.read_csv(fallback)
+            rename_map = {
+                "SepalLengthCm": "sepal_length",
+                "SepalWidthCm": "sepal_width",
+                "PetalLengthCm": "petal_length",
+                "PetalWidthCm": "petal_width",
+                "Species": "class"
+            }
+            df = raw_df.rename(columns=rename_map)[columns]
+            df.to_csv(local_dataset, index=False, header=False)
+        else:
+            raise
 # Remove empty rows if present
 df = df.dropna()
 
@@ -160,7 +191,8 @@ plt.title("Elbow Method - Custom K-Means")
 plt.xticks(list(k_values))
 plt.grid(True)
 
-plt.show()
+plt.savefig(os.path.join(plots_dir, "elbow_custom_kmeans.png"))
+plt.close()
 
 
 # ---------------------------------------------------------
@@ -178,7 +210,8 @@ plt.title("Silhouette Score - Custom K-Means")
 plt.xticks(list(k_values))
 plt.grid(True)
 
-plt.show()
+plt.savefig(os.path.join(plots_dir, "silhouette_custom_kmeans.png"))
+plt.close()
 
 
 # ---------------------------------------------------------
@@ -220,7 +253,8 @@ for index, k in enumerate(k_values):
 axes[1, 3].axis("off")
 
 plt.tight_layout()
-plt.show()
+plt.savefig(os.path.join(plots_dir, "custom_kmeans_clusters.png"))
+plt.close()
 
 
 # ---------------------------------------------------------
@@ -284,7 +318,8 @@ plt.xticks(list(k_values))
 plt.legend()
 plt.grid(True)
 
-plt.show()
+plt.savefig(os.path.join(plots_dir, "elbow_comparison.png"))
+plt.close()
 
 
 # ---------------------------------------------------------
@@ -315,7 +350,8 @@ plt.xticks(list(k_values))
 plt.legend()
 plt.grid(True)
 
-plt.show()
+plt.savefig(os.path.join(plots_dir, "silhouette_comparison.png"))
+plt.close()
 
 
 # ---------------------------------------------------------
@@ -388,4 +424,29 @@ plt.title(
 
 plt.grid(True)
 
-plt.show()
+plt.savefig(os.path.join(plots_dir, "final_kmeans_clustering.png"))
+plt.close()
+
+
+# ---------------------------------------------------------
+# 17. Save results to output folder
+# ---------------------------------------------------------
+
+output_excel = os.path.join(output_dir, "kmeans_results.xlsx")
+output_csv = os.path.join(output_dir, "kmeans_results.csv")
+
+with pd.ExcelWriter(output_excel, engine="openpyxl") as writer:
+    results.to_excel(writer, sheet_name="KMeans Results", index=False)
+    summary_df = pd.DataFrame([
+        {"Metric": "Best K (Custom Silhouette)", "Value": best_k_custom},
+        {"Metric": "Best K (Sklearn Silhouette)", "Value": best_k_library},
+        {"Metric": "Selected Final K", "Value": final_k}
+    ])
+    summary_df.to_excel(writer, sheet_name="Summary", index=False)
+
+results.to_csv(output_csv, index=False)
+
+print(f"\nOutputs saved successfully to:")
+print(f"  - {output_excel}")
+print(f"  - {output_csv}")
+print(f"Plots saved to: {plots_dir}")

@@ -2,6 +2,11 @@ import numpy as np
 import pandas as pd
 from itertools import product
 import matplotlib.pyplot as plt
+import os
+
+os.makedirs('Assignment06/dataset', exist_ok=True)
+os.makedirs('Assignment06/output', exist_ok=True)
+os.makedirs('Assignment06/plots', exist_ok=True)
 
 # Reading dataset
 columns = [
@@ -12,7 +17,7 @@ columns = [
     "Species"
 ]
 
-df = pd.read_csv('./dataset_iris.csv', names=columns)
+df = pd.read_csv('./Assignment06/dataset/dataset_iris.csv')
 df = df.dropna(subset=columns)
 print(df.describe())
 
@@ -360,12 +365,11 @@ for i, cm in enumerate(all_confusion_matrices):
 
     plt.colorbar()
     plt.tight_layout()
-    plt.savefig("confusion_matrix_fold_" + str(i + 1) + ".png")
-    plt.show()
+    plt.savefig("./Assignment06/plots/confusion_matrix_fold_" + str(i + 1) + ".png")
 
 
 # Save to Excel
-output_file = "iris_logistic_regression_results.xlsx"
+output_file = "./Assignment06/output/iris_results.xlsx"
 
 with pd.ExcelWriter(output_file, engine="openpyxl") as writer:
     results_df.to_excel(

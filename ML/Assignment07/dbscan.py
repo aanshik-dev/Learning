@@ -1,12 +1,22 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import os
 
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import DBSCAN
 from sklearn.metrics import silhouette_score
 from sklearn.decomposition import PCA
 
+# Setup output folders
+script_dir = os.path.dirname(os.path.abspath(__file__))
+plots_dir = os.path.join(script_dir, "plots")
+output_dir = os.path.join(script_dir, "output")
+dataset_dir = os.path.join(script_dir, "dataset")
+
+os.makedirs(plots_dir, exist_ok=True)
+os.makedirs(output_dir, exist_ok=True)
+os.makedirs(dataset_dir, exist_ok=True)
 
 # 1. Read the dataset
 url = "https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data"
@@ -19,7 +29,28 @@ columns = [
     "class"
 ]
 
-df = pd.read_csv(url, names=columns)
+local_dataset = os.path.join(dataset_dir, "iris.data")
+if os.path.exists(local_dataset):
+    df = pd.read_csv(local_dataset, names=columns)
+else:
+    try:
+        df = pd.read_csv(url, names=columns)
+        df.to_csv(local_dataset, index=False, header=False)
+    except Exception:
+        fallback = os.path.join(script_dir, "..", "Assignment06", "dataset", "dataset_iris.csv")
+        if os.path.exists(fallback):
+            raw_df = pd.read_csv(fallback)
+            rename_map = {
+                "SepalLengthCm": "sepal_length",
+                "SepalWidthCm": "sepal_width",
+                "PetalLengthCm": "petal_length",
+                "PetalWidthCm": "petal_width",
+                "Species": "class"
+            }
+            df = raw_df.rename(columns=rename_map)[columns]
+            df.to_csv(local_dataset, index=False, header=False)
+        else:
+            raise
 df = df.dropna()
 
 print("Dataset:")
@@ -168,8 +199,8 @@ for i in range(plot_idx, 6):
 
 plt.suptitle("Custom DBSCAN Clustering")
 plt.tight_layout()
-plt.savefig("Assignment08/custom_dbscan_clusters.png")
-plt.show()
+plt.savefig(os.path.join(plots_dir, "custom_dbscan_clusters.png"))
+plt.close()
 
 
 # 9. Sklearn DBSCAN
@@ -241,8 +272,8 @@ for i in range(plot_idx, 6):
 
 plt.suptitle("Sklearn DBSCAN Clustering")
 plt.tight_layout()
-plt.savefig("Assignment08/sklearn_dbscan_clusters.png")
-plt.show()
+plt.savefig(os.path.join(plots_dir, "sklearn_dbscan_clusters.png"))
+plt.close()
 
 
 # 11. Comparison table
@@ -295,9 +326,39 @@ if len(best_sklearn_row) > 0:
     plt.ylabel("PCA 2")
     plt.title(f"Final DBSCAN (eps={final_eps}, min_pts={final_min_pts})")
     plt.grid(True)
-    plt.savefig("Assignment08/final_dbscan.png")
-    plt.show()
+    plt.savefig(os.path.join(plots_dir, "final_dbscan.png"))
+    plt.close()
 
     n_clusters = len(set(final_labels)) - (1 if -1 in final_labels else 0)
     n_noise = list(final_labels).count(-1)
     print(f"\nFinal: Clusters={n_clusters}, Noise={n_noise}")
+
+
+# 14. Save outputs to Excel and CSV
+output_excel = os.path.join(output_dir, "dbscan_results.xlsx")
+output_csv = os.path.join(output_dir, "dbscan_comparison.csv")
+
+with pd.ExcelWriter(output_excel, engine="openpyxl") as writer:
+    comparison.to_excel(writer, sheet_name="Comparison", index=False)
+    custom_df.to_excel(writer, sheet_name="Custom DBSCAN", index=False)
+    sklearn_df.to_excel(writer, sheet_name="Sklearn DBSCAN", index=False)
+
+    summary_rows = []
+    if len(best_custom_row) > 0:
+        row = best_custom_row.iloc[0].to_dict()
+        row["Method"] = "Best Custom DBSCAN"
+        summary_rows.append(row)
+    if len(best_sklearn_row) > 0:
+        row = best_sklearn_row.iloc[0].to_dict()
+        row["Method"] = "Best Sklearn DBSCAN"
+        summary_rows.append(row)
+    if summary_rows:
+        pd.DataFrame(summary_rows).to_excel(writer, sheet_name="Best Parameters", index=False)
+
+comparison.to_csv(output_csv, index=False)
+
+print(f"\nOutputs saved successfully to:")
+print(f"  - {output_excel}")
+print(f"  - {output_csv}")
+print(f"Plots saved to: {plots_dir}")
+
