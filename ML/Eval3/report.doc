@@ -23,7 +23,7 @@ A: DATASET EXPLORATION & DESCRIPTIVE STATISTICS
    - Total missing / null values across all columns: 0 (The dataset is clean and complete).
 
 4. Descriptive Statistics Summary:
-   - Time: Ranges from 0.0 to 172,792.0 seconds (approx. 48 hours), mean = 94,813.86 seconds.
+   - Time: Ranges from 0.0 to 172,792.0 seconds, mean = 94,813.86 seconds.
    - V1 - V28: Principal components are centered around 0 with standard deviations ranging from 0.33 to 1.96.
    - Amount: Mean = 88.35, Median = 22.00, Standard Deviation = 250.12, Minimum = 0.00,
      Maximum = 25,691.16. The Amount distribution is heavily right-skewed.

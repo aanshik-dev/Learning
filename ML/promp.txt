@@ -15,5 +15,27 @@ The syllabus include, All the assignments till now. the format is like till now 
 All these with & without using package.
 
 You have to create an md file covering all these in simple python with comments and short explanation of the code below.
-
 Graphs and visualization can be asked, but with less chances, so keep it at the bottom.
+
+This was done till the premidsem and now i have the endsem for that i am having some more topics to cover
+- DBscan
+- Heirarchical clustering (all 4 linkages - single, complete, average, centroid)
+- Fuzzy C-means clustering
+- KNN
+- Weighted Nearest Neighbour
+- Arteficial neural network (mp neuron, perceptron, sigmoid neuron,slp, mlp)
+- Baysian Classifier, neive bayes Classifier, Gaussian neive bayes Classifier
+and other algos which are asked in the labs
+
+There will be multiple set of question paper and i will get any one, the format is like.
+- A) read the dataset
+- B) remove nulls, and describe
+- C) perform feature scaling if needed
+- D) K fold cross validtion set
+- E) THE MAIN ALGO - any one done in the lab and given in the syllabus
+- G) confusion matrix etc
+- F) Plot visualization
+
+this is not the exact format, but just an idea, some step might add or remove based on the algorithm, but overall the question will ask to do everything.
+
+create a separate Endsem.md file and write small and simple code in python that is easy to understand, use the known functions

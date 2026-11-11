@@ -3,55 +3,6 @@
 > **Pen & Paper Ready** — Every block is self-contained. Comments explain the _why_.
 > Sections ordered by exam likelihood. Graphs/Visualization at the bottom.
 
----
-
-## Table of Contents
-
-1. [Imports (Common)](#1-imports)
-2. [Data Reading & Preprocessing](#2-data-reading--preprocessing)
-   - [Label / Categorical Encoding](#categorical--label-encoding-class-names-to-numbers)
-   - [Synthetic Dataset Generation](#generating-synthetic-regression-dataset)
-3. [Train-Test Split](#3-train-test-split)
-   - [Multi-Ratio Split Loop (10:90 to 90:10)](#multi-ratio-train-test-split-loop-1090-to-9010)
-4. [Normalization & Scaling](#4-normalization--scaling)
-5. [OLS – Ordinary Least Squares](#5-ols--ordinary-least-squares)
-   - [Covariance, Variance & Pearson Correlation](#covariance-variance-and-pearson-correlation-from-scratch)
-6. [Gradient Descent (All Variants)](#6-gradient-descent)
-   - [Batch GD (1D)](#6a-batch-gradient-descent-uses-all-samples-per-step)
-   - [Stochastic GD (1D)](#6b-stochastic-gradient-descent-uses-1-sample-per-step)
-   - [Mini-Batch GD (1D)](#6c-mini-batch-gradient-descent-uses-a-batch-of-b-samples)
-   - [Multiple Linear Regression GD (Vectorized)](#6d-multiple-linear-regression-via-batch-gradient-descent-vectorized)
-   - [Weight Initializations Comparison](#6e-weight-initializations-comparison)
-7. [Performance Metrics – Regression](#7-performance-metrics--regression)
-   - [Saving & Loading Parameters to Text File](#saving--loading-model-parameters-to-text-file)
-   - [Multi-Sheet Excel Reports](#saving-results--multi-sheet-excel-reports)
-8. [Logistic Regression (Binary & One-vs-All)](#8-logistic-regression)
-9. [Confusion Matrix & Classification Metrics](#9-confusion-matrix--classification-metrics)
-   - [Class-Specific Accuracy & Macro Averaging](#class-specific-accuracy--macro-averaging)
-10. [K-Fold Cross Validation](#10-k-fold-cross-validation)
-    - [Hyperparameter Grid Search (Manual)](#hyperparameter-grid-search-manual)
-11. [K-Means Clustering](#11-k-means-clustering)
-    - [Vectorized Pairwise Distance Matrix](#vectorized-pairwise-distance-matrix-broadcasting)
-12. [DBSCAN](#12-dbscan)
-13. [Standard Library Implementations (scikit-learn)](#13-standard-library-implementations-scikit-learn)
-    - [13.1 Label Encoding](#131-label-encoding)
-    - [13.2 Train-Test Split](#132-train-test-split)
-    - [13.3 Normalization & Scaling](#133-normalization--scaling)
-    - [13.4 Linear Regression / OLS](#134-linear-regression--ols)
-    - [13.5 Gradient Descent (SGDRegressor)](#135-gradient-descent-sgdregressor)
-    - [13.6 Regression Metrics](#136-performance-metrics--regression)
-    - [13.7 Logistic Regression](#137-logistic-regression-binary--multi-class)
-    - [13.8 Confusion Matrix & Metrics](#138-confusion-matrix--classification-metrics)
-    - [13.9 K-Fold CV & Grid Search](#139-k-fold-cross-validation--grid-search)
-    - [13.10 K-Means Clustering & Silhouette](#1310-k-means-clustering--silhouette-score)
-    - [13.11 DBSCAN](#1311-dbscan)
-14. [Visualization / Graphs](#14-visualization--graphs)
-    - [Train vs Test Comparison Curves](#train-vs-test-mean-rss--r2-comparison-curves)
-    - [Feature Variance Analysis (without PCA)](#feature-variance-analysis-for-2d-visualization-without-pca)
-15. [Quick Reference – Formulas](#quick-reference--formulas)
-
----
-
 ## 1. Imports
 
 ```python
@@ -1243,8 +1194,8 @@ plt.show()
 
 ## Quick Reference – Formulas
 
-| Metric                       | Formula                                     |
-| ---------------------------- | ------------------------------------------- |
+| Metric                             | Formula                                       |
+| ---------------------------------- | --------------------------------------------- |
 | **MSE**                      | `(1/n) * sum(yi - yi_hat)^2`                |
 | **RMSE**                     | `sqrt(MSE)`                                 |
 | **MAE**                      | `(1/n) * sum(abs(yi - yi_hat))`             |
