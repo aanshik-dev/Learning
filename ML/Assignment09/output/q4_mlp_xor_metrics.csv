@@ -1,5 +1,0 @@
-Dataset,Class,Accuracy (Sensitivity),Precision,Recall,F1-Score,TP,FP,FN,TN
-Train (2 Epochs),Class 0,1.0,0.5,1.0,0.6667,70,70,0,0
-Train (2 Epochs),Class 1,0.0,0.0,0.0,0.0,0,0,70,70
-Test (2 Epochs),Class 0,1.0,0.5,1.0,0.6667,20,20,0,0
-Test (2 Epochs),Class 1,0.0,0.0,0.0,0.0,0,0,20,20

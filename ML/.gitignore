@@ -12,3 +12,12 @@ datasets/
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
+
+# Ignore all nested dataset folders
+**/dataset/
+**/datasets/
+
+# Python generated files
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
