@@ -465,6 +465,7 @@ def predict_knn(X_train, y_train, X_test, k=3):
     for test_pt in X_test:
         # 1. Calculate Euclidean distances to all train points
         distances = np.sqrt(np.sum((X_train - test_pt) ** 2, axis=1))
+        distance = np.linalg.norm(X_train - test_pt, axis = 1)
         # 2. Get indices of k smallest distances
         k_indices = np.argsort(distances)[:k]
         k_labels = y_train[k_indices]
@@ -730,37 +731,53 @@ print(predictions)
 
 ```python
 # WITHOUT PACKAGE:
-class GaussianNaiveBayes:
-    def fit(self, X, y):
-        self.classes = np.unique(y)
-        self.mean = {}
-        self.var = {}
-        self.priors = {}
+import numpy as np
 
-        for c in self.classes:
-            X_c = X[y == c]
-            self.mean[c] = np.mean(X_c, axis=0)
-            self.var[c] = np.var(X_c, axis=0) + 1e-9  # small epsilon avoids zero variance
-            self.priors[c] = len(X_c) / len(X)
+def gaussian_pdf(x, mean, var):
+    return (1 / np.sqrt(2 * np.pi * var)) * np.exp(-((x - mean) ** 2) / (2 * var))
 
-    def _pdf(self, c, x):
-        mean = self.mean[c]
-        var = self.var[c]
-        numerator = np.exp(-((x - mean) ** 2) / (2 * var))
-        denominator = np.sqrt(2 * np.pi * var)
-        return numerator / denominator
 
-    def predict(self, X):
-        preds = []
-        for x in X:
-            posteriors = {}
-            for c in self.classes:
-                prior = np.log(self.priors[c])
-                likelihood = np.sum(np.log(self._pdf(c, x) + 1e-15))
-                posteriors[c] = prior + likelihood
-            preds.append(max(posteriors, key=posteriors.get))
-        return np.array(preds)
+def gaussian_nb(X_train, y_train, X_test):
+    classes = np.unique(y_train)
+    predictions = []
 
+    for x in X_test:
+        scores = []
+
+        for c in classes:
+            prior = np.sum(y_train == c) / len(y_train)
+            likelihood = 1
+            for j in range(X_train.shape[1]):
+                mean = np.mean(X_class[:, j])
+                var = np.var(X_class[:, j]) + 1e-9
+
+                prob = gaussian_pdf(x[j], mean, var)
+                likelihood *= prob
+            scores.append(prior * likelihood)
+        predictions.append(classes[np.argmax(scores)])
+
+    return np.array(predictions)
+
+
+# Example
+X_train = np.array([
+    [20, 5000],
+    [22, 5500],
+    [25, 6000],
+    [35, 8000],
+    [40, 9000],
+    [45, 9500]
+])
+
+y_train = np.array([0, 0, 0, 1, 1, 1])
+
+X_test = np.array([
+    [23, 5200],
+    [42, 9200]
+])
+
+predictions = gaussian_nb(X_train, y_train, X_test)
+print(predictions)
 # WITH PACKAGE:
 from sklearn.naive_bayes import GaussianNB
 gnb = GaussianNB()

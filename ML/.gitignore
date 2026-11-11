@@ -1,0 +1,14 @@
+# Dataset folders
+dataset/
+datasets/
+
+# Large data files
+*.csv
+*.xlsx
+*.xls
+*.parquet
+
+# Python generated files
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
