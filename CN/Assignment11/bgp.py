@@ -4,20 +4,20 @@
 def best_route(as_num, advertised_routes, localpref):
     # Select best route among candidate routes from neighbors
     candidates = []
+    #   4: ((2, 1), 2),
+    #   5: ((3, 1), 3),
     for neighbor, route in advertised_routes.items():
         if route is None:
             continue
-        advertised_path, _ = route
-        candidate_path = (neighbor,) + advertised_path
-        # Loop prevention: reject route if deciding AS is already in candidate AS-path
+        advertised_path, _ = route # 2, 1
+        candidate_path = (neighbor,) + advertised_path # 4 2 1
+        # Loop prevention
         if as_num in candidate_path:
             continue
         pref = localpref.get(as_num, {}).get(neighbor, 100)
         candidates.append((pref, len(candidate_path), neighbor, candidate_path))
-
     if not candidates:
         return None
-
     # Decision rule: highest localpref, shortest AS-path, lowest next-hop AS
     candidates.sort(key=lambda c: (-c[0], c[1], c[2]))
     best = candidates[0]

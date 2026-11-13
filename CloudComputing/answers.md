@@ -922,7 +922,1037 @@ When architecting an enterprise cloud-native application, engineers must priorit
 
 ---
 
-# 🐦‍🔥 TOP 25 HIGH-YIELD EXAMINATION QUESTIONS & MODEL ANSWERS
+
+
+# 🐦‍🔥 END SEMESTER EXAMINATION 2024
+
+---
+
+<br>
+
+## 🔥 Q1(a) [2 points] Map Reduce can help in achieving scalability. Justify how.
+
+**Answer:**
+
+MapReduce achieves horizontal scalability through three foundational architectural principles:
+
+1. **Compute-to-Data (Data Locality):** In traditional distributed systems, large datasets are transferred across the network to centralized compute nodes, causing severe network switch bottlenecks. MapReduce moves computation to the data: Map tasks are scheduled directly on the physical cluster nodes (DataNodes) that already store the required 128 MB data blocks locally. Network transfer is strictly minimized.
+2. **Shared-Nothing Parallel Partitioning:** Input datasets are divided into independent chunks (input splits). Thousands of Mappers process these chunks concurrently without requiring shared memory or cross-node synchronization locks.
+3. **Linear Performance Scaling with Commodity Hardware:** Throughput scales linearly: adding $N$ additional commodity worker nodes to a Hadoop cluster proportionally increases Map and Reduce processing capacity without modifying application source code.
+
+<br>
+
+## 🔥 Q1(b) [4 points] We have a server log having different HTTP status codes (e.g., 200, 404). Write pseudocodes for mapper and reducer to find the count of different HTTP status codes.
+
+**Answer:**
+
+### Mapper Pseudocode:
+The Mapper parses each log entry line from standard input, extracts the HTTP status code (using string splitting or regex matching), and emits the status code as the key with an integer count of 1 as the value.
+
+```python
+import sys
+import re
+
+# Regex matching standard Apache/Nginx combined log HTTP status code field
+LOG_PATTERN = re.compile(r'"\s+(\d{3})\s+')
+
+def mapper():
+    for line in sys.stdin:
+        line = line.strip()
+        match = LOG_PATTERN.search(line)
+        if match:
+            status_code = match.group(1)
+            # Emit key and value separated by a tab
+            sys.stdout.write(f"{status_code}\t1\n")
+
+if __name__ == "__main__":
+    mapper()
+```
+
+### Reducer Pseudocode:
+Hadoop automatically sorts and groups emitted keys during the Shuffle phase. The Reducer reads intermediate key-value pairs sorted by `status_code`, sums the counts for identical codes, and prints the aggregated totals.
+
+```python
+import sys
+
+def reducer():
+    current_status = None
+    current_count = 0
+
+    for line in sys.stdin:
+        line = line.strip()
+        if not line:
+            continue
+        
+        status_code, count_str = line.split('\t', 1)
+        count = int(count_str)
+
+        if current_status == status_code:
+            current_count += count
+        else:
+            if current_status is not None:
+                # Output final aggregated count for previous status code
+                sys.stdout.write(f"{current_status}\t{current_count}\n")
+            current_status = status_code
+            current_count = count
+
+    # Flush the last status code aggregation
+    if current_status is not None:
+        sys.stdout.write(f"{current_status}\t{current_count}\n")
+
+if __name__ == "__main__":
+    reducer()
+```
+
+<br>
+
+## 🔥 Q2(a) [3 points] Write about three main features of Hadoop Distributed File System (HDFS).
+
+**Answer:**
+
+1. **Large Block-Based Distribution (Default 128 MB / 256 MB):**
+   Unlike traditional OS filesystems that manage data in small 4 KB blocks, HDFS divides multi-gigabyte and terabyte files into large contiguous blocks (default 128 MB). This amortizes disk seek time, ensuring that data access is dominated by sustained streaming transfer rates.
+2. **Replication & Rack-Aware Fault Tolerance:**
+   Every block is automatically replicated across multiple physical nodes (default replication factor = 3). HDFS applies **rack awareness**: Replica 1 is placed on the local DataNode, Replica 2 on a remote rack, and Replica 3 on a different node in that same remote rack. This guarantees high availability against both individual machine failures and entire rack switch outages.
+3. **Write-Once, Read-Many (WORM) Consistency Model:**
+   Files in HDFS cannot be arbitrarily modified in-place at random offsets. Once created and written, files are immutable, though appending data to the end of a file is supported. This write-once paradigm simplifies distributed caching, eliminates cache coherence overhead, and enables high-throughput concurrent reads.
+
+<br>
+
+## 🔥 Q2(b) [2 points] Write the differences between HDFS and HBase.
+
+**Answer:**
+
+| 🌟 Dimension | Hadoop Distributed File System (HDFS) | Apache HBase |
+| :--- | :--- | :--- |
+| **System Classification** | Distributed File System | Distributed Column-Oriented NoSQL Database |
+| **Data Access Pattern** | Sequential batch read/write access | Low-latency, random read/write access |
+| **Data Modification** | Append-only; no in-place record updates or deletes | In-place record updates and row-level deletes (via tombstone markers) |
+| **Latency Profile** | High latency (seconds to minutes via MapReduce) | Real-time, low latency (sub-5 milliseconds per record) |
+| **Underlying Layer** | Runs on commodity hardware local filesystems | Runs on top of HDFS (persists data as HFiles) |
+
+<br>
+
+## 🔥 Q2(c) [2 points] What are the different schedulers available in Hadoop?
+
+**Answer:**
+
+Hadoop YARN provides three pluggable schedulers within the ResourceManager:
+
+1. **FIFO Scheduler (First-In, First-Out):** The simplest scheduler. Jobs are placed in a single queue and executed strictly in the order of their arrival. Suffers from **head-of-line blocking** where long batch jobs delay small interactive queries.
+2. **Capacity Scheduler (Developed by Yahoo):** Designed for multi-tenant enterprises. Resources are partitioned into dedicated departmental queues, each guaranteed a minimum capacity percentage. Unused capacity can be dynamically borrowed by active queues.
+3. **Fair Scheduler (Developed by Facebook):** Dynamically allocates resources such that all running applications receive, on average, an equal share of cluster capacity over time.
+
+<br>
+
+## 🔥 Q3(a) [2 points] How Apache Hive performs integration with Hadoop Ecosystem?
+
+**Answer:**
+
+Apache Hive integrates with the Hadoop ecosystem through three foundational architectural mechanisms:
+
+1. **Schema-on-Read over HDFS Storage:** Hive does not store data in proprietary database formats. Instead, raw data files (CSV, JSON, ORC, Parquet) reside directly in HDFS. Hive uses **SerDe (Serializer/Deserializer)** interfaces to interpret raw bytes according to schema definitions upon query execution.
+2. **Metadata Abstraction via Hive Metastore:** Hive maintains structural table definitions, column types, partitions, and HDFS physical storage locations in a centralized relational database (Metastore).
+3. **Query Compilation to Distributed Execution Engines:** The Hive Driver and Compiler parse declarative SQL queries (HiveQL), construct an optimized execution DAG, and automatically compile them into physical **MapReduce, Apache Tez, or Apache Spark** jobs executed across YARN cluster nodes.
+
+<br>
+
+## 🔥 Q3(b) [3 points] Write a user-defined function (UDF) in Apache Pig to find the length of a text field (say name) for each record of a dataset.
+
+**Answer:**
+
+### Python UDF Implementation:
+```python
+# filename: text_udf.py
+from pig_util import outputSchema
+
+@outputSchema("name_length:int")
+def calculate_name_length(text_field):
+    """Computes the length of the string field."""
+    if text_field is None:
+        return 0
+    return len(str(text_field).strip())
+```
+
+### Apache Pig Latin Script:
+```pig
+-- Register the Python UDF file
+REGISTER 'text_udf.py' USING jython AS my_udf;
+
+-- Load the dataset from HDFS
+records = LOAD '/user/hadoop/customer_records.txt' 
+          USING PigStorage(',') 
+          AS (id:int, name:chararray, city:chararray);
+
+-- Apply the custom UDF to each record
+projected_data = FOREACH records GENERATE 
+                    id, 
+                    name, 
+                    my_udf.calculate_name_length(name) AS name_length, 
+                    city;
+
+-- Display the results to standard output
+DUMP projected_data;
+```
+
+<br>
+
+## 🔥 Q4(a) [3 points] Explain the architecture of Apache Spark with a diagram.
+
+**Answer:**
+
+### Architectural Overview:
+Apache Spark follows a master-slave distributed computing architecture. It eliminates MapReduce disk I/O bottlenecks by maintaining working datasets in cluster RAM across iterative operations.
+
+```
++-----------------------------------------------------------------------------------+
+|                            APACHE SPARK ARCHITECTURE                              |
++-----------------------------------------------------------------------------------+
++------------------------------------------------------------------+
+|                          DRIVER PROGRAM                          |
+|  - SparkContext / SparkSession                                   |
+|  - DAGScheduler (Converts RDD operations into physical stages)   |
+|  - TaskScheduler (Dispatches tasks to workers)                   |
++------------------------------------------------------------------+
+                                  |
+                                  v
++------------------------------------------------------------------+
+|                         CLUSTER MANAGER                          |
+|  (Hadoop YARN / Kubernetes / Apache Mesos / Spark Standalone)    |
++------------------------------------------------------------------+
+                 |                                                 |
+                 v                                                 v
++----------------------------------+             +----------------------------------+
+|           WORKER NODE 1          |             |           WORKER NODE 2          |
+| +------------------------------+ |             | +------------------------------+ |
+| |          EXECUTOR 1          | |             | |          EXECUTOR 2          | |
+| | - In-Memory Cache (RAM)      | |             | | - In-Memory Cache (RAM)      | |
+| | - Task 1 | Task 2            | |             | | - Task 3 | Task 4            | |
+| +------------------------------+ |             | +------------------------------+ |
++----------------------------------+             +----------------------------------+
+```
+
+### Core Components:
+1. **Driver Program:** Hosts the application's `main()` function, instantiates `SparkSession`, constructs the execution DAG, and coordinates task scheduling.
+2. **Cluster Manager:** Allocates physical cluster compute resources (CPU cores and RAM).
+3. **Worker Nodes:** Cluster machines that launch and host executor processes.
+4. **Executors:** Dedicated JVM processes running on worker nodes. Executors run tasks concurrently across threads and maintain in-memory storage for cached RDD partitions.
+5. **Tasks:** Individual units of physical work executed over a single data partition.
+
+<br>
+
+## 🔥 Q4(b) [3 points] What are the functions of collect() and map() in Apache Spark?
+
+**Answer:**
+
+| 🌟 Feature | `map()` Function | `collect()` Function |
+| :--- | :--- | :--- |
+| **Operation Type** | **Transformation** (Lazy) | **Action** (Eager) |
+| **Execution Trigger** | Does NOT trigger immediate computation; only records transformation in DAG lineage. | **Triggers immediate execution** of the entire DAG lineage across the cluster. |
+| **Return Value** | Returns a **new RDD** representing transformed elements (`RDD[U]`). | Returns an array containing **all dataset elements** to the Driver program memory. |
+| **Execution Location** | Executed in parallel by Worker Executors across distributed partitions. | Executes distributed tasks and pulls all results into the centralized **Driver**. |
+| **Memory Risk** | Low memory footprint; processes data streaming partition-by-partition. | **High Out-Of-Memory (OOM) Risk** if dataset size exceeds Driver RAM capacity. |
+| **Functionality** | Applies a user function element-wise: $f(x) \to y$. | Retrieves final computed dataset for client inspection or local file export. |
+
+<br>
+
+## 🔥 Q5(a) [3 points] How does Single Sign-On (SSO) based authentication work?
+
+**Answer:**
+
+Single Sign-On (SSO) is a centralized authentication framework that allows users to authenticate once with an Identity Provider (IdP) and gain seamless access to multiple independent Service Providers (SPs) without repeatedly entering passwords.
+
+### Step-by-Step Workflow (SAML 2.0 Web SSO):
+1. **Resource Request:** The user navigates to a protected cloud application (Service Provider, e.g., AWS Console).
+2. **Authentication Challenge:** The Service Provider detects no active session, generates an encoded XML `<AuthnRequest>`, and redirects the user's browser to the enterprise **Identity Provider (IdP)** (e.g., Okta, Azure AD).
+3. **User Authentication:** The IdP prompts the user for corporate credentials (username, password, MFA). The IdP verifies credentials against the central user directory.
+4. **Assertion Generation:** Upon successful verification, the IdP generates a cryptographically signed XML document called a **SAML Assertion** containing user identity attributes (e.g., email, role) and expiration timestamps.
+5. **Token POST:** The user's browser forwards the signed SAML Assertion token to the Service Provider's Assertion Consumer Service (ACS).
+6. **Signature Verification & Access Grant:** The Service Provider verifies the digital signature using the IdP's pre-configured Public Key Certificate, establishes an authenticated session, and grants access.
+
+<br>
+
+## 🔥 Q5(b) [3 points] Asymmetric encryption can help in securing data in cloud. Justify.
+
+**Answer:**
+
+Asymmetric encryption utilizes a mathematically linked key pair: a **Public Key** (openly published) and a **Private Key** (kept strictly confidential by the owner). It secures cloud data through three critical capabilities:
+
+1. **Elimination of Secret Key Distribution Vulnerability:** In symmetric encryption, communicating parties must share a single secret key. Distributing secret keys over untrusted public networks is vulnerable to interception. Asymmetric encryption eliminates this risk: anyone can encrypt data using the recipient's public key, but **only the intended recipient** holding the matching private key can decrypt it.
+2. **Secure Key Exchange for Hybrid Cryptosystems:** Asymmetric cryptography (e.g., RSA, ECDHE) is used in TLS/SSL to securely negotiate ephemeral symmetric session keys (AES-256) between cloud clients and cloud load balancers over public networks.
+3. **Digital Signatures & Identity Verification:** Cloud administrators and compute services use asymmetric private keys to sign API requests, code packages, and access tokens (JWTs), ensuring non-repudiation, tamper detection, and identity verification.
+
+<br>
+
+## 🔥 Q6(a) [3 points] You have a dataset having many features of the objects. Write map and reduce functions (pseudo-codes) to perform grouping of these objects.
+
+**Answer:**
+
+To group objects across multiple features, the Mapper extracts the desired grouping attributes, concatenates them into a unified **composite key**, and emits the remaining object data as the value. The Reducer collects all objects belonging to each composite key group.
+
+### Grouping Mapper Pseudocode:
+```python
+import sys
+import json
+
+# Grouping by multiple features: e.g., 'category' and 'region'
+GROUP_ATTRIBUTES = ["category", "region"]
+
+def grouping_mapper():
+    for line in sys.stdin:
+        line = line.strip()
+        if not line:
+            continue
+        record = json.loads(line)
+        
+        # Form composite key from specified features
+        composite_key = "#".join(str(record.get(attr, "")) for attr in GROUP_ATTRIBUTES)
+        
+        # Emit composite key and entire object payload
+        print(f"{composite_key}\t{json.dumps(record)}")
+
+if __name__ == "__main__":
+    grouping_mapper()
+```
+
+### Grouping Reducer Pseudocode:
+```python
+import sys
+import json
+
+def grouping_reducer():
+    current_key = None
+    grouped_objects = []
+
+    for line in sys.stdin:
+        line = line.strip()
+        if not line:
+            continue
+        composite_key, record_str = line.split('\t', 1)
+        record = json.loads(record_str)
+
+        if current_key == composite_key:
+            grouped_objects.append(record)
+        else:
+            if current_key is not None:
+                # Output group key and the collection of matching objects
+                print(f"{current_key}\t{json.dumps(grouped_objects)}")
+            current_key = composite_key
+            grouped_objects = [record]
+
+    if current_key is not None:
+        print(f"{current_key}\t{json.dumps(grouped_objects)}")
+
+if __name__ == "__main__":
+    grouping_reducer()
+```
+
+<br>
+
+## 🔥 Q6(b) [3 points] Explain with an example how Apache Spark helps in classifying big data.
+
+**Answer:**
+
+Supervised classification of big data requires training predictive models over millions of high-dimensional records. Apache Spark achieves this via its **MLlib** library, which leverages in-memory caching and distributed linear algebra to scale algorithms (Logistic Regression, Random Forests, Gradient Boosted Trees) across cluster executors.
+
+### Example: Predicting Customer Churn using PySpark:
+```python
+from pyspark.sql import SparkSession
+from pyspark.ml.feature import VectorAssembler
+from pyspark.ml.classification import LogisticRegression
+
+# 1. Initialize SparkSession
+spark = SparkSession.builder.appName("ChurnClassification").getOrCreate()
+
+# 2. Ingest massive distributed dataset from HDFS
+df = spark.read.parquet("hdfs://cluster/data/telecom_churn.parquet")
+
+# 3. Assemble multiple numerical features into a single feature vector
+feature_cols = ["account_length", "monthly_charges", "customer_service_calls"]
+assembler = VectorAssembler(inputCols=feature_cols, outputCol="features")
+vectorized_df = assembler.transform(df)
+
+# 4. Train-Test Split (80% Training, 20% Testing)
+train_data, test_data = vectorized_df.randomSplit([0.8, 0.2], seed=42)
+
+# 5. Distributed Model Training (Logistic Regression)
+lr = LogisticRegression(featuresCol="features", labelCol="churned", maxIter=20)
+model = lr.fit(train_data)
+
+# 6. Parallel Inference over Unseen Data
+predictions = model.transform(test_data)
+predictions.select("features", "churned", "prediction", "probability").show(5)
+```
+
+**Why Spark excels:**
+- Features are transformed in parallel across partitions.
+- Iterative optimization (L-BFGS gradient descent) retains intermediate weight vectors in executor RAM rather than reading/writing to disk each iteration.
+
+<br>
+
+## 🔥 Q7(a) [4 points] How can we distribute multimedia files globally using cloud computing? How can cloud perform media transcoding here?
+
+**Answer:**
+
+### 1. Global Distribution of Multimedia Files:
+1. **Multi-Region Object Storage Origin:** Mezzanine video and audio master files are uploaded to cloud object storage (e.g., Amazon S3). S3 provides high durability (99.999999999%) and cross-region replication.
+2. **Content Delivery Network (CDN) Edge Caching:** A global CDN (e.g., Amazon CloudFront, Akamai) caches video segments at hundreds of **Edge Locations (Points of Presence - PoPs)** distributed globally.
+3. **Anycast DNS Routing & Origin Shielding:** When a user requests a video, Anycast routing directs the request to the topologically closest edge cache. If cached, content is served with minimal network latency (< 20ms). Uncached segments are fetched through an intermediate Origin Shield cache to protect origin storage.
+
+### 2. Cloud Media Transcoding:
+Raw video files are uncompressed and too large for direct consumer streaming. Cloud transcoding services (e.g., AWS Elemental MediaConvert, Google Transcoder API):
+- Ingest raw source files and utilize elastic compute worker clusters (GPU/CPU instances) to decode and re-encode videos in parallel.
+- Generate an **Adaptive Bitrate Streaming (ABR)** ladder: encoding the video into multiple resolution/bitrate profiles (e.g., 1080p @ 4.5 Mbps, 720p @ 2 Mbps, 480p @ 800 Kbps, 360p @ 400 Kbps).
+- Package encoded fragments into chunked streaming protocols (**HLS** `.m3u8` playlist index and MPEG-DASH `.mpd` manifest).
+
+<br>
+
+## 🔥 Q7(b) [2 points] Write about the advantages of two main streaming protocols present in multimedia cloud.
+
+**Answer:**
+
+### 1. HLS (HTTP Live Streaming - Apple Standard):
+- **Universal Device Compatibility:** Natively supported on iOS, macOS, Android, smart TVs, and all modern web browsers via HTML5 video extensions.
+- **Standard HTTP & CDN Caching:** Because HLS segments video into standard HTTP chunks (`.ts` or `.m4s`), traffic flows through standard port 80/443 firewalls and is natively cached across existing global CDN edge servers without requiring specialized streaming servers.
+
+### 2. MPEG-DASH (Dynamic Adaptive Streaming over HTTP):
+- **International ISO Standard & Vendor Neutrality:** Unlike Apple's proprietary HLS, MPEG-DASH is an open international standard supported across heterogeneous platforms.
+- **Codec Independence:** Supports arbitrary modern video and audio codecs (H.264, HEVC/H.265, AV1, VP9) and dynamic multi-language audio track selection.
+
+<br>
+
+## 🔥 Q8(a) [2 points] Write about the main features of Docker Containers.
+
+**Answer:**
+
+1. **OS-Level Virtualization via Linux Namespaces & Cgroups:** Containers share the host operating system kernel while isolating process IDs (`pid`), networking (`net`), filesystem mounts (`mnt`), and restricting CPU/RAM usage (`cgroups`).
+2. **Layered Copy-on-Write Filesystem (UnionFS):** Docker images consist of read-only stacked filesystem layers. Running containers add only a thin writable top layer, enabling lightweight storage footprints and fast image sharing.
+3. **Portability ("Build Once, Run Anywhere"):** Packages application binaries, libraries, and configurations together, ensuring identical execution across developer laptops, test staging, and cloud production environments.
+4. **Millisecond Boot Latency:** Because containers do not boot a full guest operating system, they start almost instantaneously compared to virtual machines.
+
+<br>
+
+## 🔥 Q8(b) [4 points] You have an web application written in Python. Write a Dockerfile and create a docker image from the Dockerfile. Write the commands needed.
+
+**Answer:**
+
+### Complete Dockerfile:
+```dockerfile
+# 1. Base official Python runtime
+FROM python:3.11-slim
+
+# 2. Environment variables to optimize Python execution
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# 3. Set working directory inside container
+WORKDIR /app
+
+# 4. Copy and install dependencies first (leverages layer caching)
+COPY requirements.txt /app/
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 5. Copy application source code
+COPY . /app/
+
+# 6. Expose the port the web app listens on
+EXPOSE 8080
+
+# 7. Start the application using a production WSGI server
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "2", "app:application"]
+```
+
+### Terminal Commands to Build and Run the Docker Image:
+```bash
+# Step 1: Build the Docker image tagged as 'python-web-app:v1'
+docker build -t python-web-app:v1 .
+
+# Step 2: Verify the newly created image is present locally
+docker images
+
+# Step 3: Run the container in detached mode mapping host port 8080 to container port 8080
+docker run -d -p 8080:8080 --name my-running-web-app python-web-app:v1
+
+# Step 4: Verify the running container status and check logs
+docker ps
+docker logs my-running-web-app
+```
+
+<br>
+
+## 🔥 Q9(a) [3 points] How can two docker containers communicate with each other? Explain.
+
+**Answer:**
+
+Two Docker containers communicate with each other using **Docker Bridge Networks**:
+
+```
+[Host Machine]
+       |
++--------------------------------------+
+| User-Defined Bridge: "my-net"        |
+| IP Subnet: 172.20.0.0/16             |
++--------------------------------------+
+       |                        |
+       v                        v
++--------------------+   +--------------------+
+| Container: "web"   |   | Container: "db"    |
+| IP: 172.20.0.2     |   | IP: 172.20.0.3     |
+| Talks to "db:5432" |-->| Listens on 5432    |
++--------------------+   +--------------------+
+```
+
+1. **User-Defined Bridge Network:** When containers are attached to a user-defined bridge network, Docker automatically provides **Automatic Service Discovery via an Embedded DNS Server**.
+2. **Name-Based Resolution:** Containers do not need hardcoded IP addresses. Container `web` can connect directly to container `db` by using its container name as a hostname: `db:5432`. Docker's internal DNS daemon (`127.0.0.11`) resolves `db` to its active internal IP.
+3. **Port Isolation:** Containers on the same bridge network communicate directly across all ports without needing host port publication (`-p`). External traffic is blocked unless ports are explicitly exposed to the host.
+
+<br>
+
+## 🔥 Q9(b) [3 points] What are the pods and deployments in Kubernetes? How do they work together?
+
+**Answer:**
+
+### 1. Pods:
+A **Pod** is the smallest and most fundamental deployable execution unit in Kubernetes. A Pod encapsulates one or more tightly-coupled containers (e.g., an application container and a logging sidecar) that share the same network namespace (single IP address and localhost port space) and storage volumes. Pods are ephemeral; if a Pod dies, it is not recreated automatically.
+
+### 2. Deployments:
+A **Deployment** is a declarative controller that manages the lifecycle of Pods. You describe the *desired state* in a YAML manifest (e.g., running 3 replicas of an image). The Deployment automatically manages an underlying **ReplicaSet**, continuously comparing the cluster's actual state to the desired state. Deployments provide automated self-healing, zero-downtime rolling updates, and rollbacks.
+
+### How They Work Together:
+In production, developers **never deploy naked Pods**. Instead, they define a **Deployment**. The Deployment controller creates a ReplicaSet, which launches and supervises the specified number of Pods. If a worker node crashes, the Deployment immediately creates identical replacement Pods on surviving healthy nodes, guaranteeing application availability.
+
+<br>
+
+## 🔥 Q10(a) [3 points] How micro-services are deployed in cloud computing? Explain.
+
+**Answer:**
+
+Microservices are deployed in cloud computing using containerized and serverless deployment architectures:
+
+1. **Containerized Deployment on Kubernetes / AWS ECS:** Each microservice is packaged as an independent Docker container image. Services are deployed as Kubernetes Deployments across elastic worker node clusters, isolated in dedicated namespaces with resource CPU/RAM limits.
+2. **API Gateway Pattern:** External client traffic routes through a centralized cloud API Gateway (e.g., AWS API Gateway, Kong). The gateway handles SSL termination, OAuth token validation, request routing to internal microservices, and rate limiting.
+3. **Service Mesh (Istio / Envoy):** Internal service-to-service communication is governed by a service mesh sidecar proxy. The mesh transparently enforces mutual TLS (mTLS) encryption, handles dynamic traffic routing, and provides distributed tracing (Jaeger).
+4. **Serverless Microservices (AWS Lambda / Google Cloud Run):** Individual microservice endpoints execute as event-driven functions that automatically scale from zero to thousands of concurrent instances on demand.
+
+<br>
+
+## 🔥 Q10(b) [3 points] How do we benchmark a cloud application? Explain the steps.
+
+**Answer:**
+
+Benchmarking a cloud application involves subjecting the system to controlled synthetic workloads to evaluate throughput, latency, and resource limits. The systematic process follows these steps:
+
+1. **Define Objectives & SLOs:** Establish target metrics: maximum acceptable P99 response time (e.g., < 200ms), target throughput (e.g., 5,000 RPS), and workload traffic profile (read vs write ratios).
+2. **Setup Isolated Mirror Environment:** Deploy a dedicated staging environment mirroring production hardware, database engines, and network topologies.
+3. **Generate Synthetic Workloads:** Utilize distributed load-testing tools (e.g., **Apache JMeter, Locust, wrk**) to generate concurrent virtual users with stepped load profiles (ramp-up, steady-state, spike testing).
+4. **Collect Metrics & Telemetry:** Continuously monitor multi-tier performance using cloud monitoring tools (Amazon CloudWatch, Prometheus): measuring CPU usage, memory saturation, database IOPS, and network egress.
+5. **Identify Bottlenecks:** Profile slow SQL queries, database connection pool exhaustion, memory leaks, and CPU throttling.
+6. **Apply System Tuning:** Add database indexes, configure Redis caching, increase worker threads, and optimize Auto Scaling thresholds.
+7. **Verify & Validate:** Re-run the benchmark to confirm performance improvements and guarantee SLA compliance.
+
+<br>
+
+
+<br>
+
+
+# 🐦‍🔥 END SEMESTER EXAMINATION 2025
+
+---
+
+<br>
+
+## 🔥 Q1(a) [4 points] You need to build a web application for a multi-user event management system. How would you develop this application using Django?
+
+**Answer:**
+
+Developing a multi-user event management system using Django leverages its built-in **Model-Template-View (MTV)** architecture and batteries-included security features:
+
+### 1. Data Modeling (`models.py`):
+Define relational data entities representing events, organizers, ticket categories, and user registrations:
+```python
+from django.db import models
+from django.contrib.auth.models import User
+
+class Event(models.Model):
+    organizer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='events')
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+    capacity = models.PositiveIntegerField()
+    banner = models.ImageField(upload_to='event_banners/')
+
+class TicketRegistration(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='registrations')
+    attendee = models.ForeignKey(User, on_delete=models.CASCADE)
+    registration_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('event', 'attendee') # Prevent duplicate registrations
+```
+
+### 2. Business Logic & Transactional Views (`views.py`):
+Handle ticket registration with strict database transaction isolation to prevent overselling:
+```python
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from django.db import transaction
+from .models import Event, TicketRegistration
+
+@login_required
+def book_ticket(request, event_id):
+    event = get_object_or_404(Event, id=event_id)
+    if request.method == 'POST':
+        with transaction.atomic():
+            # Lock row using select_for_update to handle race conditions
+            locked_event = Event.objects.select_for_update().get(id=event_id)
+            current_bookings = locked_event.registrations.count()
+            if current_bookings < locked_event.capacity:
+                TicketRegistration.objects.create(event=locked_event, attendee=request.user)
+                return redirect('event_success')
+            else:
+                return render(request, 'sold_out.html', {'event': locked_event})
+    return render(request, 'book_ticket.html', {'event': event})
+```
+
+### 3. Template Presentation Layer (`templates/`):
+Django template engine renders dynamic event listings and dashboards using template tags (`{% for event in events %}`).
+
+### 4. Cloud Architecture Integration:
+- **Relational Metadata:** Deployed on **Amazon RDS PostgreSQL** (Multi-AZ) for ACID transactional consistency.
+- **Media Storage:** Event banners uploaded directly to **Amazon S3** via `django-storages`.
+- **Caching & Sessions:** User login sessions and hot trending events cached in **Amazon ElastiCache Redis**.
+
+<br>
+
+## 🔥 Q1(b) [2 points] Service integration is an essential component in the design of Platform-as-a-Service (PaaS) solutions. Explain.
+
+**Answer:**
+
+In Platform-as-a-Service (PaaS) environments (e.g., AWS Elastic Beanstalk, Google App Engine, Heroku), the underlying compute nodes and container instances are **stateless and ephemeral**: they can be terminated, recycled, or scaled out elastically at any time.
+
+Consequently, PaaS applications cannot store persistent data on local filesystems or run internal database daemons on the application container. **Service integration** is essential because:
+1. **Managed Data Persistence:** Applications must integrate with external managed persistence services (e.g., Amazon RDS, DynamoDB, Amazon S3) via environment variables and standard connection URIs.
+2. **Decoupled Enterprise Capabilities:** Critical capabilities such as distributed caching (Redis/Memcached), message queuing (RabbitMQ, SQS), identity authentication (OAuth 2.0/SAML), and centralized logging (CloudWatch, Datadog) must be integrated as loosely-coupled managed services.
+
+<br>
+
+## 🔥 Q2(a) [4 points] Fill in the blanks. Given a collection of documents, we implement a MapReduce solution to count the frequency of each word across all documents. The functions will be called in the following sequence: map_phase() -> shuffle_sort() -> reduce_phase()
+
+```python
+def map_phase(doc):
+    words = doc.split()
+    return [(word, 1) for word in words]
+
+def reduce_phase(grouped_data):
+    word, counts = grouped_data
+    return (word, sum(counts))
+
+def shuffle_sort(mapped_data):
+    grouped_data = __(a)__
+    for __(b)__ in mapped_data:
+        __(c)__
+    return __(d)__
+```
+
+**Answer:**
+
+The complete, filled-in `shuffle_sort` function implementation is:
+
+- **(a)** `defaultdict(list)` *(or `{}`)*
+- **(b)** `word, count` *(or `item`)*
+- **(c)** `grouped_data[word].append(count)` *(or `grouped_data.setdefault(word, []).append(count)`)*
+- **(d)** `list(grouped_data.items())` *(or `grouped_data.items()`)*
+
+### Complete Verified Implementation:
+```python
+from collections import defaultdict
+
+def shuffle_sort(mapped_data):
+    grouped_data = defaultdict(list)           # Blank (a)
+    for word, count in mapped_data:            # Blank (b)
+        grouped_data[word].append(count)       # Blank (c)
+    return list(grouped_data.items())          # Blank (d)
+```
+
+<br>
+
+## 🔥 Q2(b) [2 points] Is random read and write access allowed in HBase? Explain.
+
+**Answer:**
+
+**YES, random read and write access is fully allowed and supported in Apache HBase.**
+
+### Explanation:
+HBase is designed as a distributed, column-oriented NoSQL database running on top of HDFS:
+- **Random Writes:** When a write arrives, HBase appends it to a durable Write-Ahead Log (WAL) on HDFS and stores the record in an in-memory sorted buffer called **MemStore**. Once in MemStore, the write is immediately acknowledged to the client (sub-millisecond latency). When full, MemStore flushes sequentially to disk as an immutable **HFile**.
+- **Random Reads:** To retrieve a record by its `RowKey`, HBase checks the in-memory **MemStore**, the in-memory **BlockCache**, and utilizes **Bloom Filters** to identify the exact HFile block containing the key, bypassing full-table scans. This delivers point lookups in 1 to 5 milliseconds across billions of rows.
+
+<br>
+
+## 🔥 Q3(a) [3 points] Explain the differences between the ResourceManager and the NodeManager in a YARN-based Hadoop cluster.
+
+**Answer:**
+
+| 🌟 Feature | ResourceManager (RM) | NodeManager (NM) |
+| :--- | :--- | :--- |
+| **Architectural Scope** | Global master authority for the entire cluster. | Local slave daemon running on a single physical node. |
+| **Primary Responsibility** | Arbitrates and allocates cluster compute resources (CPU vCores, RAM) among all competing applications. | Manages the lifecycles of local containers and monitors node hardware health. |
+| **Internal Components** | Contains the **Scheduler** (pluggable resource allocator) and **ApplicationsManager** (manages AM lifecycle). | Launches container processes, monitors resource limits, and runs container health checks. |
+| **Heartbeat Role** | Receives periodic heartbeats and node status updates from all NodeManagers. | Transmits periodic heartbeats containing CPU/memory utilization and active container status to the RM. |
+| **Instance Count** | One active per cluster (with an optional standby for HA). | One instance per physical worker machine in the cluster. |
+
+<br>
+
+## 🔥 Q3(b) [3 points] You have n cloud tasks, and each task i has a reward that reflects how much it benefits from being allocated to a resource. Your objective is to maximize the total reward by choosing a set of tasks to allocate, subject to the constraint that no two consecutive tasks can be allocated to the same resource. Write an algorithm to solve this problem.
+
+**Answer:**
+
+### Algorithm Analysis:
+This optimization problem is formulated using **Dynamic Programming**. For each task $i$, we decide between:
+1. **Excluding Task $i$:** The optimal reward is $DP[i-1]$.
+2. **Including Task $i$:** We receive reward $R[i]$ plus the optimal reward from non-consecutive tasks up to $i-2$, i.e., $R[i] + DP[i-2]$.
+
+Recurrence:
+$$\mathbf{DP[i] = \max\left(DP[i-1],\, R[i] + DP[i-2]ight)}$$
+
+### Python Algorithm (O(n) Time, O(1) Space):
+```python
+def maximize_task_reward(rewards: list[int]) -> int:
+    """
+    Computes maximum reward without allocating two consecutive tasks.
+    Time Complexity: O(n)
+    Space Complexity: O(1)
+    """
+    if not rewards:
+        return 0
+    n = len(rewards)
+    if n == 1:
+        return rewards[0]
+
+    # prev2 stores DP[i-2], prev1 stores DP[i-1]
+    prev2 = rewards[0]
+    prev1 = max(rewards[0], rewards[1])
+
+    for i in range(2, n):
+        current = max(prev1, rewards[i] + prev2)
+        prev2 = prev1
+        prev1 = current
+
+    return prev1
+
+# Example Test Case:
+# rewards = [10, 25, 30, 15, 40]
+# Result: 80 (choosing tasks 0, 2, and 4: 10 + 30 + 40 = 80)
+```
+
+<br>
+
+## 🔥 Q4(a) [4 points] Write HiveQL statement to find the average salary of employees in each department, but only for employees whose salary is greater than the average salary for their own department.
+
+**Answer:**
+
+### HiveQL Query (Using Window Analytic Function & Subquery):
+```sql
+SELECT 
+    dept,
+    AVG(salary) AS avg_salary_above_dept_mean
+FROM (
+    SELECT 
+        id,
+        name,
+        dept,
+        salary,
+        AVG(salary) OVER (PARTITION BY dept) AS dept_avg_salary
+    FROM employee
+) subquery
+WHERE salary > dept_avg_salary
+GROUP BY dept;
+```
+
+### Alternative HiveQL Query (Using Correlated Join with Group By):
+```sql
+SELECT 
+    e.dept,
+    AVG(e.salary) AS avg_salary_above_dept_mean
+FROM employee e
+JOIN (
+    SELECT dept, AVG(salary) AS dept_avg
+    FROM employee
+    GROUP BY dept
+) d_avg 
+ON e.dept = d_avg.dept
+WHERE e.salary > d_avg.dept_avg
+GROUP BY e.dept;
+```
+
+<br>
+
+## 🔥 Q4(b) [2 points] Can Pig Execution Engine execute the Pig Latin scripts by compiling them into MapReduce jobs?
+
+**Answer:**
+
+**YES, absolutely.** 
+
+### Technical Explanation:
+The primary execution mode of Apache Pig is its **MapReduce Mode** (`pig -x mapreduce`). 
+1. When a user submits a Pig Latin script, the Pig compiler builds a logical plan of dataflow transformations (`FILTER`, `GROUP`, `JOIN`).
+2. An optimization pass reorganizes the DAG (e.g., pushing projection and filter operations earlier).
+3. The **Pig Execution Engine** compiles the physical plan into one or more native Java **Hadoop MapReduce jobs**.
+4. These jobs are packaged into JAR files, submitted to Hadoop YARN, and executed in parallel across the cluster reading and writing data to HDFS.
+
+<br>
+
+## 🔥 Q5(a) [3 points] How does Spark Streaming ensure fault tolerance? Explain.
+
+**Answer:**
+
+Spark Streaming achieves end-to-end fault tolerance through four complementary mechanisms:
+
+1. **Deterministic Lineage Recomputation:** In Spark's micro-batch model (DStreams), data is discretized into a continuous sequence of immutable RDDs. If a worker node crashes and loses an in-memory RDD partition, Spark recomputes that specific missing partition using the RDD's deterministic DAG lineage without physical data replication.
+2. **Write-Ahead Logs (WAL):** When streaming receivers ingest raw data from external message queues (e.g., Kafka, Flume), data is simultaneously written synchronously to a durable Write-Ahead Log in HDFS or S3. If a node fails before processing buffered data, the newly spawned executor recovers the uncommitted data from the WAL.
+3. **Reliable Receivers with Acknowledgments:** Receivers acknowledge message receipt back to sources (like Kafka) only after data is durably replicated across nodes or committed to WAL.
+4. **State Checkpointing:** For stateful streaming transformations (such as windowed aggregations or `updateStateByKey`), Spark periodically serializes the state RDDs and metadata to durable HDFS storage.
+
+<br>
+
+## 🔥 Q5(b) [3 points] How is the data integrity managed in cloud computing? Give an example.
+
+**Answer:**
+
+Data integrity ensures that data remains uncorrupted, unaltered, and protected against unauthorized tampering during transmission, processing, and storage.
+
+### Integrity Management Mechanisms:
+1. **Cryptographic Checksums & Hashing:** Generating one-way cryptographic hash digests (e.g., SHA-256, MD5) upon data generation and verifying the hash upon retrieval.
+2. **Message Authentication Codes (HMAC):** Using shared secret keys to guarantee that data in transit has not been tampered with by an active attacker.
+3. **Database Constraints & ACID Transactions:** Enforcing entity integrity, referential foreign keys, and atomic commits.
+
+### Concrete Example: Amazon S3 Content-MD5 / ETag Verification:
+When a client uploads an object to Amazon S3 using the Boto3 SDK, the client computes the MD5/SHA-256 hash of the file payload and transmits it in the `Content-MD5` HTTP header. Amazon S3 receives the binary stream, independently computes the hash, and compares it against the client-provided digest. If even a single byte differs (due to packet corruption or network bit-flips), S3 rejects the upload with an `InvalidDigest` error and forces a retransmission.
+
+<br>
+
+## 🔥 Q6(a) [3 points] In Security Assertion Markup Language (SAML) based authentication, who performs the user authentication? Explain with an example.
+
+**Answer:**
+
+In SAML-based authentication, the **Identity Provider (IdP)** performs the user authentication.
+
+### Explanation:
+- The **Service Provider (SP)** (e.g., Salesforce, AWS Management Console, Google Workspace) never prompts for, receives, or validates the user's password. It delegates authentication entirely to the Identity Provider.
+- The **Identity Provider (IdP)** (e.g., Okta, Microsoft Entra ID / Azure AD, Ping Identity) hosts the authoritative corporate user directory (Active Directory/LDAP), prompts the user for login credentials and MFA tokens, and validates their identity.
+
+### Concrete Example:
+Suppose an employee at a corporation attempts to log into the company's AWS Cloud Console (Service Provider). 
+1. The AWS Console redirects the employee's browser to **Okta** (the enterprise Identity Provider).
+2. **Okta** presents the login screen, authenticates the employee's username, password, and Duo MFA push notification.
+3. Once authenticated, **Okta** signs an XML SAML assertion token certifying the employee's identity and roles (`Role: CloudAdmin`), and redirects the browser back to AWS.
+4. AWS verifies Okta's cryptographic signature and admits the employee into the console.
+
+<br>
+
+## 🔥 Q6(b) [3 points] Can Digital Signatures guarantee confidentiality? Justify.
+
+**Answer:**
+
+**NO, Digital Signatures CANNOT guarantee confidentiality.**
+
+### Technical Justification:
+1. **Purpose of Digital Signatures:** A digital signature is created by computing a cryptographic hash of a plaintext message ($H = 	ext{SHA-256}(M)$) and encrypting only that hash using the sender's **Private Key** ($S = E_{K_{priv}}(H)$).
+2. **Plaintext Transmission:** The generated signature $S$ is transmitted across the network **alongside the original, unencrypted plaintext message $M$**.
+3. **What Digital Signatures Provide:**
+   - *Authenticity:* Proves who sent the message (verified using sender's public key).
+   - *Integrity:* Proves the message was not modified in transit.
+   - *Non-Repudiation:* Sender cannot deny sending the message.
+4. **Why Confidentiality Fails:** Because the message body $M$ is transmitted in unencrypted plaintext, any passive eavesdropper intercepting the packet on the network wire can read the message contents directly. To achieve confidentiality, the plaintext message must be encrypted using symmetric/asymmetric encryption (forming a **Digital Envelope**).
+
+<br>
+
+## 🔥 Q7(a) [3 points] How Message Authentication Code prevents Data Tampering? Explain with an example.
+
+**Answer:**
+
+A Message Authentication Code (MAC or HMAC) is a cryptographic checksum generated using a shared symmetric secret key $K$ and the message $M$:
+$$\mathbf{	ext{MAC} = 	ext{HMAC}(K,\, M)}$$
+
+### How it Prevents Tampering:
+1. **Shared Secret Requirement:** Computing a valid MAC requires possession of the secret key $K$, which is known only to the legitimate sender and receiver.
+2. **Tamper Detection:** If an attacker intercepts the transmission and alters the message content from $M$ to $M'$ (tampering), the attacker cannot generate the corresponding valid $	ext{MAC}' = 	ext{HMAC}(K, M')$ without knowing secret key $K$.
+3. When the receiver calculates $	ext{HMAC}(K, M')$ using their secret key, the value will not match the transmitted MAC. The receiver immediately detects tampering and discards the packet.
+
+### Concrete Example:
+Consider a cloud banking API transferring funds:
+- Plaintext Message: `Transfer $500 from Acc_A to Acc_B`
+- Shared Key: `SecretKey987`
+- Sender transmits: `Message` + `MAC: 4a8f9c...`
+- Attacker alters message to: `Transfer $50,000 from Acc_A to Acc_B`
+- When the cloud server recomputes the HMAC of the altered message with `SecretKey987`, the resulting digest is `e2b17a...`, which does not match `4a8f9c...`. The fraudulent transfer is aborted immediately.
+
+<br>
+
+## 🔥 Q7(b) [3 points] How can we implement K-Nearest Neighbors Algorithm using Map Reduce? Write map and reduce functions.
+
+**Answer:**
+
+The K-Nearest Neighbors (KNN) algorithm classifies an unlabeled query point $\mathbf{q}$ by finding the $k$ closest labeled training samples from a distributed dataset.
+
+### Map Function:
+The Mapper reads training instances $(\mathbf{x}_i, 	ext{label}_i)$, computes the Euclidean distance between $\mathbf{x}_i$ and the broadcast query point $\mathbf{q}$, and emits all distances under a single common key.
+
+```python
+import math
+
+QUERY_POINT = [2.5, 4.0, 1.2]  # Broadcast test query point
+
+def knn_mapper(training_sample):
+    """
+    Input: training_sample = (features_list, label)
+    Emits: (1, (distance, label))
+    """
+    features, label = training_sample
+    # Compute Euclidean Distance
+    distance = math.sqrt(sum((f - q) ** 2 for f, q in zip(features, QUERY_POINT)))
+    # Emit dummy key 1 to channel all distances to the Reducer
+    return (1, (distance, label))
+```
+
+### Reduce Function:
+The Reducer collects all `(distance, label)` pairs, sorts them in ascending order of distance, selects the top-$k$ nearest instances, and performs majority voting to output the predicted class label.
+
+```python
+from collections import Counter
+
+K = 5  # Number of nearest neighbors
+
+def knn_reducer(key, distance_label_pairs):
+    """
+    Input: distance_label_pairs = [(dist1, label1), (dist2, label2), ...]
+    Emits: (QUERY_POINT, predicted_class)
+    """
+    # Sort pairs by distance ascending
+    distance_label_pairs.sort(key=lambda x: x[0])
+    
+    # Extract labels of top-k nearest neighbors
+    top_k_labels = [label for dist, label in distance_label_pairs[:K]]
+    
+    # Majority voting
+    predicted_class = Counter(top_k_labels).most_common(1)[0][0]
+    
+    return (tuple(QUERY_POINT), predicted_class)
+```
+
+<br>
+
+## 🔥 Q8(a) [4 points] Explain how Multimedia Cloud Infrastructure can perform Video Encoding and Media Analytics.
+
+**Answer:**
+
+### 1. Video Encoding in Multimedia Cloud:
+- **Distributed Chunk Encoding:** Raw mezzanine master video files (e.g., ProRes 4K) stored in object storage (Amazon S3) are partitioned into short temporal segments.
+- **Elastic Transcoding Farms:** Transcoding compute clusters (e.g., AWS Elemental MediaConvert, auto-scaled GPU EC2 worker nodes) encode these segments concurrently into an **Adaptive Bitrate (ABR)** ladder (1080p, 720p, 480p, 360p at varying bitrates).
+- **HLS/DASH Packaging:** Encoded fragments are packaged into chunked container formats (`.m4s` / `.ts`) along with master manifest playlist files (`.m3u8` / `.mpd`) and pushed to CDN edge caches.
+
+### 2. Media Analytics in Multimedia Cloud:
+- **Automated Computer Vision & Object Recognition:** Serverless video processing pipelines extract video keyframes and submit them to deep learning APIs (e.g., AWS Rekognition) to identify faces, athletes, brand logos, and explicit content.
+- **Audio Speech-to-Text & Translation:** Audio streams are parsed through speech recognition models (e.g., AWS Transcribe) to generate automated multi-lingual closed captions and searchable subtitle transcripts.
+- **Viewer Telemetry Analytics:** CDN edge logs capture real-time player buffer underruns, bitrate switching events, and viewer drop-off timestamps, feeding Kinesis and Spark pipelines to optimize video encoding ladders.
+
+<br>
+
+## 🔥 Q8(b) [2 points] What mechanisms are used to ensure low latency during live streaming?
+
+**Answer:**
+
+1. **Chunked Media Application Format (CMAF) Chunked Transfer-Encoding:** Traditional HLS downloads entire 6-second segments before playing. CMAF breaks video segments into tiny 200ms chunks; web servers stream these fragments to players via HTTP/1.1 chunked transfer encoding as they are being encoded, reducing broadcast delay to 1-2 seconds.
+2. **Low-Latency HLS (LL-HLS) & LL-DASH:** Utilizes partial video segment generation and HTTP/2 multiplexed push updates to minimize round-trip playlist polling delays.
+3. **WebRTC for Ultra-Low Latency (< 500ms):** Uses UDP-based Real-Time Transport Protocol (RTP) with selective retransmission, eliminating TCP head-of-line blocking for interactive use cases (sports betting, live gaming auctions).
+
+<br>
+
+## 🔥 Q9(a) [3 points] Write a Dockerfile for a python application. Assume that the python application will run in port 8080.
+
+**Answer:**
+
+```dockerfile
+# Step 1: Minimal official Python runtime
+FROM python:3.11-slim
+
+# Step 2: Prevent Python from buffering standard output and writing .pyc files
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# Step 3: Set working directory inside container
+WORKDIR /app
+
+# Step 4: Copy and install Python dependencies first to utilize Docker layer cache
+COPY requirements.txt /app/
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Step 5: Copy application source code
+COPY . /app/
+
+# Step 6: Document listening port
+EXPOSE 8080
+
+# Step 7: Define startup command
+CMD ["python", "app.py"]
+```
+
+<br>
+
+## 🔥 Q9(b) [3 points] We want to run a container for a Python app, and another container for a Redis database. Both containers need to communicate with each other. Write Docker commands to create a bridge network to enable this communication.
+
+**Answer:**
+
+```bash
+# Step 1: Create a custom user-defined bridge network
+docker network create --driver bridge my-app-network
+
+# Step 2: Run the Redis container on the custom bridge network
+# Specifying '--name redis-db' registers the container with Docker's internal DNS
+docker run -d --name redis-db --network my-app-network redis:7-alpine
+
+# Step 3: Run the Python application container on the same bridge network
+# In the Python application code, configure Redis connection to: "redis://redis-db:6379"
+docker run -d --name python-app --network my-app-network -p 8080:8080 my-python-app:v1
+
+# Step 4: Verify DNS resolution and inter-container network connectivity
+docker exec -it python-app ping -c 2 redis-db
+```
+
+<br>
+
+## 🔥 Q10(a) [3 points] Communication between services over a network can introduce latency compared to monolithic architectures. Justify.
+
+**Answer:**
+
+In a monolithic architecture, communication between components occurs via **in-process function calls** in local CPU memory registers, executing in less than **10 to 50 nanoseconds**.
+
+In a microservices architecture, every service boundary crossing requires network transit, introducing significant latency due to:
+1. **Network Serialization & Deserialization:** Transforming native objects into JSON or Protocol Buffer byte streams and parsing them back at the destination consumes CPU cycles.
+2. **Transport Handshakes & Protocol Overhead:** Establishing TCP connections, negotiating TLS 1.3 encryption handshakes, and handling HTTP headers introduce substantial round-trip delays (RTT).
+3. **Physical Network Transit & Routing:** Packets must traverse virtual network interfaces (vNICs), virtual switches, physical routers, and cabling, introducing **1 to 5 milliseconds** of latency per hop.
+4. **Cascading Network Calls (Fanout Amplification):** A single user request may trigger a synchronous chain of 5 to 10 downstream REST calls, multiplying total latency.
+
+<br>
+
+## 🔥 Q10(b) [3 points] Why do Microservices need a Message Broker for communication?
+
+**Answer:**
+
+Microservices rely on Message Brokers (e.g., Apache Kafka, RabbitMQ, Amazon SQS) to implement **asynchronous, event-driven communication**, addressing critical limitations of synchronous REST calls:
+
+1. **Temporal & Architectural Decoupling:** The producing service sends an event and immediately resumes execution without blocking. Services operate independently of each other's availability.
+2. **Traffic Spike Buffering (Load Leveling):** Brokers absorb sudden incoming request spikes (e.g., 20,000 orders/sec during flash sales) into durable queues. Downstream services process messages at their own sustainable rate without crashing.
+3. **Fault Isolation & Resilience:** If a downstream consumer (e.g., Notification Service) experiences an outage, the producer continues operating smoothly. Messages wait safely in the queue until the consumer recovers.
+4. **Publish-Subscribe (Pub/Sub) Fanout:** A single event (e.g., `OrderPlaced`) is simultaneously delivered to multiple independent subscribers (Payment, Inventory, Analytics, Shipping) without the producer having any knowledge of downstream consumers.
+
+<br>
+
+
+<br>
+# 🐦‍🔥 TOP 25 FOUNDATIONAL PRE-MIDSEM EXAMINATION QUESTIONS & MODEL ANSWERS
 
 ---
 
@@ -1501,3 +2531,735 @@ Virtual Machines:                 Containers:
 
 </div>
 </div>
+
+
+<br>
+
+
+# 🐦‍🔥 TOP 25 HIGH-YIELD POST-MIDSEM EXAMINATION QUESTIONS & MODEL ANSWERS
+
+---
+
+<br>
+
+## 🔥 Q1. Detail the complete MapReduce execution pipeline step-by-step from Input Splits to HDFS storage with an architectural diagram.
+
+**Answer:**
+
+```
+[Raw HDFS Data File (e.g., 1 GB)]
+               |
+               v
+[Input Splits (8 splits of 128 MB each)]
+               |
+               v
+[RecordReader] -> Parses raw bytes into (k1, v1) records (e.g., byte_offset, line_text)
+               |
+               v
+[Map Phase]    -> User logic transforms (k1, v1) into intermediate [(k2, v2)]
+               |
+               v
+[Combiner]     -> (Optional mini-reducer) In-memory local aggregation on the Mapper node
+               |
+               v
+[Partitioner]  -> Assigns intermediate keys to Reducers via: hash(k2) % num_reducers
+               |
+               v
+[Shuffle & Sort] -> HTTP network transfer: groups and sorts all values for identical k2
+               |
+               v
+[Reduce Phase] -> User logic aggregates: (k2, list(v2)) -> [(k3, v3)]
+               |
+               v
+[RecordWriter] -> Writes final key-value pairs sequentially into HDFS (3x replicated)
+```
+
+### Detailed Pipeline Stages:
+1. **Input Splitting & RecordReader:** HDFS files are logically split into chunks (typically 128 MB). A `RecordReader` translates split byte offsets into discrete records `(k1, v1)`.
+2. **Map Phase:** An independent Mapper task runs on each split, emitting intermediate `(k2, v2)` pairs to an in-memory buffer (100 MB circular buffer).
+3. **Combiner (Mini-Reducer):** If configured, performs local pre-aggregation in memory when the buffer reaches 80% capacity to dramatically shrink network transfer volume.
+4. **Partitioner:** Directs keys to target Reducers using hash partitioning ($	ext{hash}(k_2) \pmod{R}$).
+5. **Shuffle & Sort:** Copies partitioned data from Mapper nodes to Reducer nodes across the cluster network and sorts records by key.
+6. **Reduce Phase:** Invokes the user reduce function once per unique key `k2` over its iterator of values `[v2]`.
+7. **RecordWriter:** Formats and writes the final output to persistent HDFS storage.
+
+<br>
+
+## 🔥 Q2. What is a Combiner in MapReduce? Differentiate between a Combiner and a Reducer. When can a Combiner NOT be used?
+
+**Answer:**
+
+A **Combiner** is an optional optimization component in MapReduce that performs **local in-memory pre-aggregation** of intermediate key-value pairs directly on the worker node running the Mapper, before data is sent across the network.
+
+### Differences Between Combiner and Reducer:
+| 🌟 Dimension | Combiner | Reducer |
+| :--- | :--- | :--- |
+| **Execution Location** | Runs locally on the individual **Mapper node**. | Runs on dedicated **Reducer nodes** across the cluster. |
+| **Input Data Scope** | Processes only intermediate data produced by a **single Mapper**. | Processes grouped data gathered from **all Mappers** cluster-wide. |
+| **Execution Guarantee** | Optional; Hadoop makes no guarantee on execution frequency (0, 1, or multiple times). | Mandatory; guaranteed to execute exactly once per key group. |
+| **Primary Purpose** | Bandwidth optimization: shrinks data volume before network Shuffle. | Final aggregation and output production to HDFS. |
+
+### When a Combiner CANNOT be Used:
+A Combiner can **only** be safely used if the reduction operation is both **associative and commutative**:
+$$f(a,\, f(b, c)) = f(f(a, b),\, c) \quad 	ext{and} \quad f(a, b) = f(b, a)$$
+- **Valid (Combiner Allowed):** Summation, Count, Maximum, Minimum.
+- **INVALID (Combiner CANNOT be Used):** **Average / Mean**.
+  - *Mathematical Justification:* The average of averages does not equal the global average:
+    $$rac{10 + 20}{2} = 15; \quad rac{30 + 40 + 50}{3} = 40; \quad 	ext{Combined: } rac{15 + 40}{2} = 27.5$$
+    Whereas the true global average is:
+    $$rac{10 + 20 + 30 + 40 + 50}{5} = rac{150}{5} = 30 
+e 27.5$$
+    Using a Combiner for Average produces mathematically incorrect results.
+
+<br>
+
+## 🔥 Q3. Explain the Partitioning Function in MapReduce. How does HashPartitioner prevent reducer workload skew?
+
+**Answer:**
+
+### Role of the Partitioner:
+The **Partitioner** sits between the Map phase and the Reduce phase. Its sole responsibility is to assign each intermediate key-value pair `(k2, v2)` produced by Mappers to exactly one target **Reducer task** $r \in [0, R-1]$.
+
+### HashPartitioner Mechanism:
+The default partitioner in Apache Hadoop is the **`HashPartitioner`**. It evaluates the Java `hashCode()` of the key modulo the total number of configured reducers:
+$$\mathbf{	ext{Target Reducer ID} = \left(	ext{key.hashCode()} \ \& \ 	ext{0x7FFFFFFF}ight) \pmod{	ext{numReducers}}}$$
+
+### Workload Balancing & Mitigating Skew:
+- **Uniform Distribution:** A robust hash function projects arbitrary keys uniformly across the range of reducer IDs, preventing a single reducer from being overwhelmed by disproportionate data volumes.
+- **Deterministic Key Routing:** It guarantees that **all intermediate values associated with the exact same key are routed to the identical Reducer**, which is required for correct aggregation.
+- **Custom Partitioners:** If data possesses severe intrinsic skew (e.g., 90% of web traffic originates from one country), developers implement custom partitioners that isolate skewed keys to dedicated reducers while spreading normal keys evenly.
+
+<br>
+
+## 🔥 Q4. How does HDFS achieve fault tolerance and high availability? Explain Rack Awareness and block replication policy.
+
+**Answer:**
+
+HDFS is engineered to execute reliably on commodity hardware clusters where individual node failures are common.
+
+### 1. Block Replication Policy:
+- Files are divided into contiguous blocks (default 128 MB).
+- Each block is replicated $N$ times (default replication factor = 3).
+
+### 2. Rack Awareness Placement Algorithm:
+To survive switch failures and balance inter-rack network traffic:
+- **Replica 1:** Placed on the local DataNode running the client application (or an arbitrary node).
+- **Replica 2:** Placed on a DataNode residing in a **different physical rack** (survives rack switch failure).
+- **Replica 3:** Placed on a different DataNode in the **same remote rack as Replica 2** (minimizes cross-rack write traffic).
+- *Subsequent Replicas (if factor > 3):* Placed on random nodes across different racks.
+
+### 3. Automated Failure Recovery:
+- **Heartbeat & Dead Node Detection:** DataNodes send heartbeats every 3 seconds to the NameNode. If no heartbeat arrives for 10 minutes, the node is marked dead.
+- **Under-Replication Healing:** The NameNode scans the block namespace, identifies blocks with replica count $< 3$, and immediately schedules background replication to healthy nodes.
+- **Active-Standby NameNode HA:** In Hadoop 2.x+, two synchronized NameNodes (Active and Standby) share a distributed transaction log via **Quorum Journal Managers (QJM)** and ZooKeeper, enabling instant sub-second failover.
+
+<br>
+
+## 🔥 Q5. What are the roles of FsImage and EditLog in HDFS NameNode? How does the Secondary NameNode perform checkpointing?
+
+**Answer:**
+
+The NameNode maintains the entire filesystem namespace, directory hierarchy, and file-to-block mappings in high-speed RAM for microsecond lookup performance.
+
+### 1. FsImage and EditLog:
+- **`FsImage`:** A point-in-time serialized snapshot of the entire HDFS filesystem namespace and directory structure stored on the NameNode's local disk.
+- **`EditLog`:** A write-ahead transaction journal recording every incremental modification (file creation, deletion, rename) made since the last `FsImage` was generated. Every write transaction is flushed to the `EditLog` before being acknowledged to the client.
+
+### 2. The Unbounded Growth Problem:
+If the NameNode runs for months, the `EditLog` grows to gigabytes in size. Upon reboot, the NameNode would take hours to replay millions of edits into the `FsImage`, causing extended cluster downtime.
+
+### 3. Checkpointing via Secondary NameNode:
+The **Secondary NameNode** (Checkpoint Node) solves this problem by performing scheduled background merges:
+```
++-----------------------------------------------------------------------------------+
+|                        CHECKPOINTING WORKFLOW SEQUENCE                            |
++-----------------------------------------------------------------------------------+
+[NameNode]                                                   [Secondary NameNode]
+    |                                                                 |
+    | 1. Rolls current EditLog; starts writing new edits to new file   |
+    | 2. Sends old EditLog and current FsImage ---------------------> |
+    |                                                                 | 3. Loads FsImage into RAM
+    |                                                                 | 4. Replays EditLog records
+    |                                                                 | 5. Generates compact
+    |                                                                 |    new "fsimage.ckpt"
+    |                                                                 |
+    | <--- 6. Transfers fresh merged "fsimage.ckpt" back -------------+
+    |
+    | 7. Renames "fsimage.ckpt" to "FsImage"
+```
+
+<br>
+
+## 🔥 Q6. Compare Hadoop 1.x (JobTracker/TaskTracker) and Hadoop 2.x/3.x (YARN). What architectural limitations did YARN overcome?
+
+**Answer:**
+
+### Architectural Evolution:
+In **Hadoop 1.x**, compute resource management and application processing were tightly coupled within the MapReduce execution engine managed by the **JobTracker** (master) and **TaskTrackers** (slaves).
+
+```
+    HADOOP 1.x ARCHITECTURE                        HADOOP 2.x/3.x (YARN) ARCHITECTURE
++-----------------------------+               +----------------------------------------+
+|   MapReduce Execution Engine|               | Applications: Spark | Flink | MapReduce|
+| (Resource Mgmt + Compute)   |               +----------------------------------------+
++-----------------------------+               | YARN: Decoupled Resource Management    |
+|   HDFS Storage              |               +----------------------------------------+
++-----------------------------+               | HDFS / Ozone / Cloud Storage           |
+                                              +----------------------------------------+
+```
+
+### Limitations of Hadoop 1.x Overcome by YARN:
+1. **Single Point of Failure & Scalability Bottleneck:** JobTracker performed both resource scheduling and individual task tracking. It could not scale beyond ~4,000 nodes or 40,000 concurrent tasks. YARN decouples these: ResourceManager handles pure resource allocation, scaling to 10,000+ nodes.
+2. **Fixed Map/Reduce Slots:** Hadoop 1.x partitioned hardware into static "Map Slots" and "Reduce Slots". If an application had only Map tasks, Reduce slots sat completely idle, wasting up to 50% of cluster hardware. YARN allocates generic dynamic **Resource Containers** (CPU + RAM), achieving near 100% hardware utilization.
+3. **Monolithic Programming Model:** Hadoop 1.x supported only MapReduce batch jobs. YARN transformed Hadoop into a general-purpose distributed cluster OS capable of running Apache Spark, Flink, Storm, and MPI alongside MapReduce.
+
+<br>
+
+## 🔥 Q7. Detail the complete execution lifecycle of an application submitted to a YARN cluster.
+
+**Answer:**
+
+```
+[Client]
+    |
+    | 1. Submits application (JAR, configuration)
+    v
+[ResourceManager (ApplicationsManager)]
+    |
+    | 2. Allocates Container 1 on NodeManager A
+    v
+[NodeManager A] ---> Launches [ApplicationMaster (AM)]
+                                      |
+    +---------------------------------+---------------------------------+
+    | 3. AM evaluates data locality; requests task containers from RM   |
+    v                                                                   v
+[ResourceManager (Scheduler)]                                           |
+    |                                                                   |
+    | 4. Grants Container Leases (NodeManager B, NodeManager C) <-------+
+    v
+[ApplicationMaster]
+    |
+    | 5. Instructs NodeManagers B and C to launch container processes
+    +---------------------------------+---------------------------------+
+    |                                 |
+    v                                 v
+[NodeManager B: Container 2]       [NodeManager C: Container 3]
+(Runs Task 1)                      (Runs Task 2)
+    |                                 |
+    +--- 6. Reports status to AM -----+
+                               |
+    7. Once complete, AM unregisters with RM; RM releases containers!
+```
+
+### Lifecycle Steps:
+1. Client submits application to the ResourceManager.
+2. The ApplicationsManager negotiates a container from the Scheduler and launches the application's dedicated **ApplicationMaster (AM)**.
+3. The AM calculates data locality from HDFS block locations and requests specific resource containers from the ResourceManager Scheduler.
+4. The Scheduler grants container allocations.
+5. The AM contacts target NodeManagers to launch tasks inside the allocated containers.
+6. NodeManagers monitor execution and report container status back to the AM.
+7. Upon job completion, the AM unregisters with the RM and releases all containers back to the cluster pool.
+
+<br>
+
+## 🔥 Q8. How does Apache HBase achieve sub-millisecond random writes and reads on top of an append-only distributed file system (HDFS)? Explain MemStore, WAL, and HFiles.
+
+**Answer:**
+
+HBase employs a **Log-Structured Merge-Tree (LSM-Tree)** architecture to provide real-time random read/write access over append-only HDFS storage:
+
+### 1. Sub-Millisecond Random Writes:
+1. **Write-Ahead Log (WAL):** When a `Put` request arrives, HBase immediately writes the mutation sequentially to the WAL stored on HDFS. Sequential writes to disk are extremely fast. This guarantees crash durability.
+2. **In-Memory MemStore:** Simultaneously, the record is placed into **MemStore**—an in-memory sorted data structure (ConcurrentSkipListMap).
+3. Once in MemStore, the write operation is immediately acknowledged to the client with sub-millisecond response time.
+4. **HFile Flushing:** When MemStore reaches its threshold (default 128 MB), it flushes sequentially to HDFS as an immutable, indexed **HFile**. Sequential HDFS block creation avoids random disk write overhead.
+
+### 2. Sub-Millisecond Random Point Reads:
+To read a record by its `RowKey`:
+1. Checks **MemStore** for uncommitted modifications.
+2. Checks **BlockCache** (an in-memory LRU cache of frequently accessed HFile blocks).
+3. If not cached, it queries **Bloom Filters** associated with each HFile. Bloom filters mathematically determine if a key is definitely NOT present in an HFile, eliminating 99% of unnecessary disk I/O seeks.
+4. Performs a single targeted read on the exact HFile block containing the key.
+
+<br>
+
+## 🔥 Q9. What is the role of Apache ZooKeeper in the Hadoop ecosystem? Give two concrete examples (HBase and NameNode HA).
+
+**Answer:**
+
+Apache ZooKeeper is a centralized, highly reliable distributed coordination service providing distributed synchronization, consensus (Zab protocol), group membership, and configuration management across cloud clusters.
+
+### Concrete Example 1: Apache HBase Cluster Coordination:
+- **Active HMaster Election:** If multiple HMasters are launched for high availability, ZooKeeper coordinates leader election via ephemeral znodes (`/hbase/master`).
+- **RegionServer Health Tracking:** Each RegionServer creates an ephemeral znode upon startup. If a RegionServer crashes or network partitions, its ephemeral znode expires; ZooKeeper alerts the HMaster, which triggers immediate region reassignment to surviving servers.
+- **Root Table Location:** Clients query ZooKeeper to discover which RegionServer is hosting the `hbase:meta` system catalog table.
+
+### Concrete Example 2: HDFS NameNode High Availability (Active-Standby Failover):
+- The **ZKFailoverController (ZKFC)** runs on both NameNodes.
+- Active NameNode holds a lock on an ephemeral znode (`/hadoop-ha/dfs-cluster/ActiveBreadCrumb`).
+- If the Active NameNode stops sending heartbeats, the znode drops. ZooKeeper notifies the standby ZKFC, which automatically transitions the Standby NameNode to Active state with zero human intervention.
+
+<br>
+
+## 🔥 Q10. Differentiate between Apache Hive and Apache Pig across five key technical dimensions.
+
+**Answer:**
+
+| 🌟 Dimension | Apache Hive | Apache Pig |
+| :--- | :--- | :--- |
+| **Language & Style** | **HiveQL (HQL):** Declarative SQL-like query language. | **Pig Latin:** Procedural, high-level dataflow scripting language. |
+| **Primary Data Abstraction** | Relational Tables, Rows, Columns, Partitions, Buckets. | Multi-valued nested data models: Atoms, Tuples, Bags, and Maps. |
+| **Target User Base** | Business analysts, SQL developers, data reporting teams. | Data engineers, researchers, ETL pipeline architects. |
+| **Use Case Focus** | Enterprise Data Warehousing, OLAP aggregations, ad-hoc queries. | Complex ETL pipelines, raw unstructured data cleaning, log parsing. |
+| **Extensibility Mechanism** | Hive UDFs (User Defined Functions), UDAFs (Aggregates), UDTFs. | Pig EvalFunc UDFs (implemented in Java, Python/Jython, Ruby). |
+
+<br>
+
+## 🔥 Q11. Explain Schema-on-Read in Apache Hive vs Schema-on-Write in traditional RDBMS. How does Hive Metastore work?
+
+**Answer:**
+
+### Schema-on-Write (Traditional RDBMS):
+In traditional relational databases (MySQL, Oracle), the table schema is enforced **when data is inserted or loaded into the database**. The database parses the incoming data, validates constraints, checks column data types, and lays it out in proprietary disk storage. If an incoming record fails validation, the write is aborted. Loading large datasets is time-consuming.
+
+### Schema-on-Read (Apache Hive):
+In Apache Hive, raw data files (CSV, TSV, JSON, Parquet) are simply copied directly into HDFS storage **without parsing or verification**. The schema is applied **dynamically when the data is read during query execution**. Hive applies **SerDe (Serializer/Deserializer)** interfaces to interpret raw text lines into structured rows on the fly. This enables instantaneous multi-terabyte data ingestion into the data lake.
+
+### Role of the Hive Metastore:
+The **Hive Metastore** is a central repository (typically backed by MySQL or PostgreSQL) that stores all structural metadata:
+- Table schemas (column names, data types, comment strings).
+- Physical HDFS directory paths mapping to tables.
+- Partition key values and file format SerDe definitions.
+The Hive compiler contacts the Metastore during query parsing to validate SQL syntax and plan execution stages.
+
+<br>
+
+## 🔥 Q12. Detail the internal execution workflow when an Apache Pig script is compiled and executed in MapReduce mode.
+
+**Answer:**
+
+When a user submits a Pig Latin script in MapReduce mode (`pig -x mapreduce myscript.pig`), the script passes through four compilation phases:
+
+```
+[Pig Latin Script]
+        |
+        v
+[1. Parser]             --> Validates syntax, verifies schemas, builds Abstract Syntax Tree (AST)
+        |
+        v
+[2. Logical Plan Gen.]  --> Builds DAG of logical relational operators (LOAD, FILTER, FOREACH, GROUP)
+        |
+        v
+[3. Optimizer]          --> Pushes projections/filters early; eliminates redundant transformations
+        |
+        v
+[4. Physical Plan Gen.] --> Translates logical operations into physical execution primitives
+        |
+        v
+[5. MapReduce Compiler] --> Decomposes physical DAG into a sequence of native Hadoop MapReduce jobs
+        |
+        v
+[6. Execution Engine]   --> Submits JAR jobs to YARN ResourceManager; coordinates HDFS data flow
+```
+
+1. **Parser:** Checks syntax, verifies schemas, and outputs an Abstract Syntax Tree.
+2. **Logical Plan:** Generates an acyclic directed graph of logical relational operators.
+3. **Optimization:** Performs relational algebra optimizations: pushing `FILTER` operations before expensive `JOIN` or `GROUP` operations to prune data early.
+4. **Physical Plan & MapReduce Compiler:** Maps logical operators to physical MapReduce constructs (e.g., `GROUP` maps to MapReduce Shuffle/Sort; `FOREACH` maps to Mapper projections). It chains these into executable Java MapReduce JARs.
+5. **Execution:** Submits the compiled jobs to YARN and manages pipeline completion.
+
+<br>
+
+## 🔥 Q13. Why is Apache Spark up to 100x faster than Hadoop MapReduce for iterative algorithms and interactive analytics?
+
+**Answer:**
+
+1. **In-Memory Computing Model:**
+   - *MapReduce:* Every iteration reads input from disk, writes intermediate map output to local disk, shuffles across the network, and writes final reduce output back to HDFS disk with 3x replication overhead. For an iterative algorithm (e.g., 50 iterations of K-Means), this entails 100 disk read/write cycles.
+   - *Spark:* Iterative working datasets are cached in distributed **RAM across Executor JVMs**. Subsequent iterations read directly from memory at memory-bus speeds (gigabytes/sec), avoiding disk I/O and replication overhead.
+2. **Advanced DAG Execution Engine:**
+   - MapReduce enforces a rigid, two-stage Map-then-Reduce cycle. Multi-stage pipelines require separate jobs.
+   - Spark's **DAGScheduler** constructs an arbitrary graph of execution stages, pipelining multiple narrow transformations (e.g., `map` $	o$ `filter` $	o$ `map`) into a single execution stage without materializing intermediate data.
+3. **Thread-Based Concurrency:**
+   - MapReduce launches a new OS-level process (JVM) for every individual task, incurring severe process creation and JVM startup latency.
+   - Spark executes tasks as lightweight **threads** within long-running Executor JVMs, launching tasks in milliseconds.
+
+<br>
+
+## 🔥 Q14. Explain Resilient Distributed Datasets (RDDs). How does Spark achieve fault tolerance using DAG lineage without physical disk replication?
+
+**Answer:**
+
+An **RDD (Resilient Distributed Dataset)** is an immutable, lazily-evaluated, partitioned collection of data records distributed across cluster worker nodes.
+
+### Fault Tolerance via Lineage (DAG Recomputation):
+Traditional distributed filesystems (like HDFS) achieve fault tolerance by physically copying every data block 3 times across physical disks, consuming 200% storage overhead and significant network write bandwidth.
+
+Spark avoids physical replication by recording an **RDD Lineage Graph (Directed Acyclic Graph - DAG)**:
+- Spark maintains the exact mathematical deterministic sequence of transformations used to construct each RDD partition from external source data (e.g., `HDFS File` $	o$ `map()` $	o$ `filter()` $	o$ `RDD_B`).
+- If an executor crashes and an in-memory partition of `RDD_B` is lost:
+  1. The Driver detects the missing partition.
+  2. Spark consults the lineage DAG.
+  3. It schedules a task to recompute **only that specific missing partition** by re-applying the upstream transformations from the source data.
+  4. Surviving partitions on other executors remain untouched.
+
+<br>
+
+## 🔥 Q15. Differentiate between Narrow Dependencies and Wide Dependencies in Apache Spark transformations with examples.
+
+**Answer:**
+
+```
+      NARROW DEPENDENCY (No Shuffle)                  WIDE DEPENDENCY (Shuffle Required)
+   Partition 1 ---> Partition A                  Partition 1 ---+---> Partition A
+   Partition 2 ---> Partition B                  Partition 2 ---X---> Partition B
+   Partition 3 ---> Partition C                  Partition 3 ---+---> Partition C
+   (Local, Pipelineable, Fast)                   (Cross-Network Shuffle, Synchronization)
+```
+
+| 🌟 Dimension | Narrow Dependencies | Wide Dependencies |
+| :--- | :--- | :--- |
+| **Partition Relationship** | Each parent partition is used by **at most one** child partition. | Multiple child partitions depend on data from a **single parent partition**. |
+| **Network Shuffle** | **NO network shuffle** required; operations execute locally within executor memory. | **Requires a full network shuffle**; intermediate records are sorted and sent across network. |
+| **Pipelining** | Can be pipelined together into a single physical execution stage. | Forms a **stage boundary**; downstream stage cannot start until shuffle completes. |
+| **Failure Recovery** | Fast; lost child partition requires recomputing only one parent partition. | Expensive; recomputing a lost partition may require recomputing all parent partitions. |
+| **Examples** | `map()`, `filter()`, `flatMap()`, `mapPartitions()` | `groupByKey()`, `reduceByKey()`, `join()`, `distinct()` |
+
+<br>
+
+## 🔥 Q16. Differentiate between Transformations and Actions in Apache Spark. Why are transformations lazily evaluated?
+
+**Answer:**
+
+### Differences:
+| 🌟 Dimension | Transformations | Actions |
+| :--- | :--- | :--- |
+| **Operation Behavior** | Constructs a **new RDD/DataFrame** from an existing one. | Computes a final result and returns a value to Driver or writes to storage. |
+| **Evaluation Strategy** | **Lazy Evaluation:** No immediate computation takes place. | **Eager Evaluation:** Triggers immediate execution of the entire DAG. |
+| **Return Value** | Returns an `RDD[T]` or `DataFrame`. | Returns a non-RDD value (e.g., `Long`, `Array[T]`, `Unit`). |
+| **Examples** | `map()`, `filter()`, `flatMap()`, `groupByKey()`, `sample()` | `collect()`, `count()`, `take()`, `first()`, `saveAsTextFile()` |
+
+### Why Transformations are Lazily Evaluated:
+1. **Global Query Optimization (Catalyst Optimizer):** By deferring execution until an Action is requested, Spark can inspect the entire pipeline of transformations. It can combine multiple transformations into a single execution pass (e.g., chaining `filter` followed by `map` into a single loop) and push predicates directly to data sources.
+2. **Minimizing Intermediate Data Materialization:** Avoids writing massive intermediate datasets to memory or disk.
+3. **Fault Tolerance Efficiency:** Allows Spark to capture the entire lineage DAG cleanly before execution begins.
+
+<br>
+
+## 🔥 Q17. Explain Spark Streaming architecture. How do Discretized Streams (DStreams) work, and how does Spark handle node failures in streaming?
+
+**Answer:**
+
+### Discretized Streams (DStreams) Micro-Batch Model:
+Spark Streaming models live real-time continuous data streams as a continuous sequence of small, discrete micro-batches called **DStreams (Discretized Streams)**.
+- Incoming data is buffered over a small user-configured time window $\Delta t$ (e.g., 500ms to 2 seconds).
+- Each micro-batch interval produces a standard Spark RDD containing all events ingested during that interval.
+- The standard Spark Core engine processes these RDDs using standard parallel transformations.
+
+### Fault Tolerance Architecture:
+1. **Worker Node Failure:**
+   - Any RDD partition generated during streaming is immutable and possesses a deterministic lineage DAG. Lost partitions are automatically recomputed from upstream data.
+2. **Write-Ahead Logs (WAL):**
+   - For streaming sources with potential message loss, streaming receivers synchronously write received bytes to a Write-Ahead Log in durable distributed storage (HDFS/S3). If an executor crashes, the replacement executor recovers uncommitted records from the WAL.
+3. **Driver Failure & State Checkpointing:**
+   - For stateful operations (e.g., `window`, `updateStateByKey`), Spark periodically checkpoints state RDDs and DAG metadata to HDFS. If the Driver process crashes, a new Driver resumes from the last checkpointed state with zero data loss.
+
+<br>
+
+## 🔥 Q18. Detail the steps to implement a machine learning classification pipeline in Apache Spark MLlib (e.g., predicting on the Adult Census dataset).
+
+**Answer:**
+
+Apache Spark MLlib utilizes the **Pipeline API** (inspired by scikit-learn) to construct reproducible machine learning workflows:
+
+```python
+from pyspark.sql import SparkSession
+from pyspark.ml import Pipeline
+from pyspark.ml.feature import StringIndexer, OneHotEncoder, VectorAssembler
+from pyspark.ml.classification import LogisticRegression
+from pyspark.ml.evaluation import BinaryClassificationEvaluator
+
+# 1. Initialize SparkSession
+spark = SparkSession.builder.appName("AdultCensusPipeline").getOrCreate()
+
+# 2. Load Dataset from HDFS
+df = spark.read.csv("hdfs://cluster/data/adult.csv", header=True, inferSchema=True)
+
+# 3. Stage 1: Categorical Feature String Indexing
+workclass_indexer = StringIndexer(inputCol="workclass", outputCol="workclass_idx")
+education_indexer = StringIndexer(inputCol="education", outputCol="education_idx")
+label_indexer = StringIndexer(inputCol="income", outputCol="label")
+
+# 4. Stage 2: Feature Vector Assembly
+feature_cols = ["age", "hours_per_week", "workclass_idx", "education_idx"]
+assembler = VectorAssembler(inputCols=feature_cols, outputCol="features")
+
+# 5. Stage 3: Estimator (Classifier)
+lr = LogisticRegression(featuresCol="features", labelCol="label", maxIter=20)
+
+# 6. Chain Stages into an End-to-End Pipeline
+pipeline = Pipeline(stages=[workclass_indexer, education_indexer, label_indexer, assembler, lr])
+
+# 7. Train-Test Split and Model Fitting
+train_df, test_df = df.randomSplit([0.8, 0.2], seed=42)
+pipeline_model = pipeline.fit(train_df)
+
+# 8. Model Evaluation
+predictions = pipeline_model.transform(test_df)
+evaluator = BinaryClassificationEvaluator(labelCol="label", metricName="areaUnderROC")
+auc = evaluator.evaluate(predictions)
+print(f"Area Under ROC (AUC): {auc:.4f}")
+```
+
+<br>
+
+## 🔥 Q19. How is the K-Means clustering algorithm parallelized using the MapReduce framework? Detail the Map, Combine, and Reduce phases.
+
+**Answer:**
+
+### Objective:
+Given $n$ $d$-dimensional data points $\mathbf{x}_i$ and $k$ cluster centroids $\{\mathbf{c}_1, \dots, \mathbf{c}_k\}$, K-Means iteratively minimizes within-cluster variance.
+
+### MapReduce Parallelization Strategy:
+The massive dataset of data points resides on HDFS. Centroids are small ($k 	imes d$ floats) and are broadcast to all cluster nodes via the DistributedCache.
+
+```
+[Broadcast Centroids {C_1, ..., C_k}]
+                  |
+                  v
+[Mapper Phase]    -> Reads sample x; computes Euclidean distance to all centroids;
+                     Finds nearest centroid index j = argmin ||x - C_j||;
+                     Emits: (j, x)
+                  |
+                  v
+[Combiner Phase]  -> Performs local vector summation on mapper node:
+                     Emits: (j, (partial_sum_vector, local_count))
+                  |
+                  v
+[Shuffle & Sort]  -> Gathers all partial sums and counts for centroid j
+                  |
+                  v
+[Reducer Phase]   -> Aggregates global vector sum and global point count:
+                     Computes new centroid coordinates: C_j_new = global_sum / global_count;
+                     Emits: (j, C_j_new)
+                  |
+                  v
+[Driver Loop]     -> Checks if ||C_j_new - C_j_old|| < epsilon. If not converged, repeats!
+```
+
+- **Mapper:** Computes distance between point $\mathbf{x}$ and all $k$ centroids. Emits `(centroid_id, point)`.
+- **Combiner:** Locally pre-aggregates points to emit `(centroid_id, (local_vector_sum, local_count))`, drastically shrinking network shuffle traffic.
+- **Reducer:** Sums all partial vector sums and counts across all mappers for centroid $j$. Divides total vector sum by total count to yield the updated centroid $\mathbf{c}_j^{new}$.
+- **Driver:** Compares old and new centroids. If maximum shift $< \epsilon$ or maximum iterations reached, terminates; otherwise updates centroids file and triggers the next MapReduce iteration.
+
+<br>
+
+## 🔥 Q20. Detail the K-Nearest Neighbors (KNN) classification algorithm using MapReduce. Explain how pairwise distance computations and top-K sorting are distributed.
+
+**Answer:**
+
+### Problem Definition:
+Given an unlabelled query test sample $\mathbf{q}$ and a distributed training dataset of millions of labeled points $\{(\mathbf{x}_i, y_i)\}$, find the $K$ points in the training set closest to $\mathbf{q}$ and predict the class via majority voting.
+
+### Distributed Execution Design:
+1. **Query Point Broadcast:** The test sample $\mathbf{q}$ is distributed to all Mappers via configuration or distributed cache.
+2. **Mapper Phase (Parallel Pairwise Distance Calculation):**
+   - Each Mapper processes its local split of training samples.
+   - For every sample $(\mathbf{x}_i, y_i)$, it calculates Euclidean distance $d_i = \|\mathbf{x}_i - \mathbf{q}\| = \sqrt{\sum_{j=1}^m (x_{ij} - q_j)^2}$.
+   - To optimize network transfer, each Mapper can maintain a local bounded **Max-Heap of size $K$** and emit only its local top-$K$ smallest distances.
+   - Emits: `(dummy_key=1, (distance, label))`.
+3. **Shuffle & Sort:** All candidate pairs converge to a single Reducer (or a small set of Reducers).
+4. **Reducer Phase (Global Top-K Selection & Majority Voting):**
+   - The Reducer maintains a global Max-Heap of size $K$.
+   - Iterates through all incoming pairs, keeping only the $K$ smallest distances globally.
+   - Extracts the class labels of the final $K$ nearest neighbors and executes majority voting:
+     $$\hat{y} = rg\max_{c} \sum_{i=1}^K I(y_i = c)$$
+   - Outputs the predicted class $\hat{y}$ for test sample $\mathbf{q}$.
+
+<br>
+
+## 🔥 Q21. Explain SAML-based Single Sign-On (SSO). Diagram the complete authentication sequence between User, Service Provider, and Identity Provider.
+
+**Answer:**
+
+### SAML 2.0 Web Browser SSO Sequence:
+
+```
+[User Browser (Principal)]       [Service Provider (SP)]       [Identity Provider (IdP)]
+           |                                |                              |
+           | 1. GET /protected-resource     |                              |
+           |------------------------------->|                              |
+           |                                |                              |
+           | 2. 302 Redirect to IdP         |                              |
+           |    with encoded <AuthnRequest> |                              |
+           |<-------------------------------|                              |
+           |                                                               |
+           | 3. GET /sso-login with <AuthnRequest>                         |
+           |-------------------------------------------------------------->|
+           |                                                               |
+           | 4. Prompts user for credentials & MFA challenge               |
+           |<------------------------------------------------------------->|
+           |    (IdP verifies credentials against internal User Directory) |
+           |                                                               |
+           | 5. Generates cryptographically signed XML <SAMLResponse>      |
+           |    Returns HTML form with embedded assertion                  |
+           |<--------------------------------------------------------------|
+           |                                                               |
+           | 6. HTTP POST /acs with signed SAML Assertion                  |
+           |------------------------------->|                              |
+           |                                | 7. Verifies IdP signature    |
+           |                                |    via pre-shared X.509 cert;|
+           |                                |    Extracts user identity;   |
+           |                                |    Creates local session.    |
+           | 8. 200 OK: Protected Dashboard |                              |
+           |<-------------------------------|                              |
+```
+
+### Key Elements:
+- **SP-Initiated Flow:** User begins by accessing the cloud application (SP).
+- **Zero Credential Sharing:** The SP never touches or stores the user's password.
+- **IdP Authority:** The Identity Provider performs authentication and signs the XML assertion using its private key.
+
+<br>
+
+## 🔥 Q22. Explain the OAuth 2.0 authorization framework. Detail the roles, token lifecycle, and the Authorization Code Grant flow.
+
+**Answer:**
+
+OAuth 2.0 is an authorization protocol enabling third-party applications to obtain limited access to an HTTP service on behalf of a resource owner without sharing the user's credentials.
+
+### Four Core Roles:
+1. **Resource Owner:** The end-user owning the data.
+2. **Client:** The third-party application requesting access.
+3. **Resource Server:** The API server hosting protected resources.
+4. **Authorization Server:** The server authenticating the user and issuing access tokens.
+
+### Authorization Code Flow:
+```
+[User / Browser]            [Client Web App]            [Authorization Server]        [Resource Server API]
+       |                            |                              |                            |
+       | 1. Clicks "Login with Google"                             |                            |
+       |<---------------------------|                              |                            |
+       | 2. Redirects to Auth Server with client_id, scope, redirect_uri                        |
+       |---------------------------------------------------------->|                            |
+       | 3. Prompts user for credentials & consent                 |                            |
+       |<--------------------------------------------------------->|                            |
+       | 4. Redirects to Client redirect_uri with ?code=AUTH_CODE  |                            |
+       |--------------------------->|                              |                            |
+       |                            | 5. POST /token (AUTH_CODE, client_secret)                 |
+       |                            |----------------------------->|                            |
+       |                            | 6. Validates code; Returns Access Token & Refresh Token   |
+       |                            |<-----------------------------|                            |
+       |                            |                                                           |
+       |                            | 7. API Call: GET /userinfo (Bearer ACCESS_TOKEN)          |
+       |                            |---------------------------------------------------------->|
+       |                            | 8. Verifies token; Returns protected user data            |
+       |                            |<----------------------------------------------------------|
+```
+
+<br>
+
+## 🔥 Q23. Explain how Time-based One-Time Password (TOTP) algorithm works mathematically (RFC 6238) and why it resists replay attacks.
+
+**Answer:**
+
+### Mathematical Formulation:
+TOTP generates short-lived numeric passcodes based on a pre-shared secret key $K$ and the current time:
+
+1. **Calculate Moving Factor (Time Counter $T$):**
+   $$\mathbf{T = \left\lfloor rac{	ext{Current\_Unix\_Time} - T_0}{T_X} ightfloor}$$
+   where $T_0 = 0$ (Unix Epoch: Jan 1, 1970 UTC) and $T_X$ is the time step (default = **30 seconds**).
+2. **Generate HMAC Hash:**
+   $$\mathbf{H = 	ext{HMAC-SHA-1}(K,\, T)}$$
+   $H$ is a 20-byte (160-bit) hash digest.
+3. **Dynamic Truncation (Extract 4-byte integer):**
+   - Take the last 4 bits of $H[19]$ as offset: $	ext{offset} = H[19] \ \& \ 	ext{0x0F}$.
+   - Extract a 31-bit positive integer starting from byte offset:
+     $$	ext{code} = \left((H[	ext{offset}] \ \& \ 	ext{0x7F}) \ll 24ight) \ | \ \left(H[	ext{offset}+1] \ll 16ight) \ | \ \left(H[	ext{offset}+2] \ll 8ight) \ | \ H[	ext{offset}+3]$$
+4. **Modulo Reduction (6 Digits):**
+   $$\mathbf{	ext{TOTP} = 	ext{code} \pmod{10^6}}$$
+
+### Why it Resists Replay Attacks:
+- Every generated passcode is valid **only for that single 30-second time interval $T$**.
+- Once a user enters a passcode and it is verified, the server caches the counter value $T$ for that user. If an eavesdropper captures the passcode over the network and attempts to replay it, the server rejects it because either:
+  1. The 30-second window has expired ($T_{	ext{current}} > T_{	ext{token}}$).
+  2. The server marks the token for interval $T$ as already used, enforcing single-use semantics.
+
+<br>
+
+## 🔥 Q24. Explain Diffie-Hellman Key Exchange mathematically. Why is it vulnerable to Man-in-the-Middle (MitM) attacks, and how do digital certificates resolve this?
+
+**Answer:**
+
+### Mathematical Protocol:
+Alice and Bob agree publicly on a large prime $p$ and a generator base $g$ ($g < p$).
+
+```
+        ALICE                                                  BOB
+1. Selects private secret integer a.                 1. Selects private secret integer b.
+2. Computes Public Value:                            2. Computes Public Value:
+   A = (g^a) mod p                                      B = (g^b) mod p
+3. Sends A to Bob ===============[Public Network]===============> Sends B to Alice
+4. Computes Shared Secret:                           3. Computes Shared Secret:
+   S_Alice = (B^a) mod p                                S_Bob = (A^b) mod p
+   S_Alice = ((g^b)^a) mod p = (g^(ab)) mod p           S_Bob = ((g^a)^b) mod p = (g^(ab)) mod p
+
+===> Both Alice and Bob now possess identical secret: S = (g^(ab)) mod p!
+```
+
+An eavesdropper seeing $g, p, A, B$ cannot compute $S$ due to the intractability of the **Discrete Logarithm Problem**.
+
+### Man-in-the-Middle (MitM) Vulnerability:
+Diffie-Hellman provides **no authentication of communicating parties**. An active attacker (Eve) on the network wire can intercept Alice's public value $A$ and substitute her own value $E_A$, and intercept Bob's value $B$ and substitute $E_B$. Alice establishes a shared secret with Eve, and Bob establishes a shared secret with Eve. Eve decrypts, inspects, and re-encrypts all traffic.
+
+### Resolution via Digital Certificates (PKI & TLS):
+In modern protocols (e.g., **ECDHE in TLS 1.3**), Diffie-Hellman is combined with **asymmetric digital signatures**. The server sends its public DH parameters signed by its private key, accompanied by an X.509 digital certificate signed by a trusted Certificate Authority (CA). The client verifies the CA signature, authenticating that the public DH key belongs to the legitimate server, preventing MitM spoofing.
+
+<br>
+
+## 🔥 Q25. Detail the systematic seven-step cloud application benchmarking methodology. What are the key metrics measured, and how are bottlenecks identified and tuned?
+
+**Answer:**
+
+Benchmarking evaluates application scalability and identifies performance bottlenecks under synthetic loads.
+
+```
++-----------------------------------------------------------------------------------+
+|                        7-STEP BENCHMARKING METHODOLOGY                            |
++-----------------------------------------------------------------------------------+
+[Step 1: Define Objectives & SLAs]  --> Specify target RPS, max P99 latency, and cost limits
+                 |
+                 v
+[Step 2: Setup Test Environment]    --> Deploy isolated staging mirror of production
+                 |
+                 v
+[Step 3: Workload Generation]       --> Inject load using JMeter, Locust, wrk, or Gatling
+                 |
+                 v
+[Step 4: Metric & Telemetry Mon.]   --> Track CPU, RAM, IOPS, and network across all tiers
+                 |
+                 v
+[Step 5: Bottleneck Analysis]       --> Profile slow queries, thread locks, and pool limits
+                 |
+                 v
+[Step 6: Tuning & Optimization]     --> Add DB indexes, enable Redis caching, scale workers
+                 |
+                 v
+[Step 7: Verification & Validation] --> Re-run benchmark to verify SLA compliance!
+```
+
+### Key Metrics Measured:
+- **Throughput:** Requests Per Second (RPS) or Transactions Per Second (TPS).
+- **Latency Percentiles:** Median (P50), P95, and P99 tail latency.
+- **Resource Utilization:** CPU utilization %, memory saturation, disk read/write IOPS, and network bandwidth.
+- **Error Rate:** Percentage of HTTP 5xx errors or dropped connections.
+
+### Bottleneck Identification & Tuning Actions:
+1. **Database Tier Bottleneck:** High CPU on database and slow query logs.
+   - *Tuning:* Add B-tree indexes, optimize query execution plans, deploy **Amazon ElastiCache Redis** for read-heavy caching, configure Aurora read replicas.
+2. **Application Worker Saturation:** High latency with low database load indicates application server thread pool exhaustion.
+   - *Tuning:* Increase Gunicorn worker count (`2 * vCPU + 1`), enable asynchronous I/O (AsyncIO/Gevent), and tune thread pool sizes.
+3. **Connection Pool Exhaustion:** HTTP 500 errors during sudden traffic spikes.
+   - *Tuning:* Deploy connection pooling proxies (e.g., PgBouncer, AWS RDS Proxy) to reuse database connections.
+
+<br>
